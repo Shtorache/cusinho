@@ -33,4 +33,5 @@ urlpatterns = [
     path('reservar-espaco/', reservar_espaco, name='reservar_espaco'),
     path('participardois/', participar_dois, name='participar_dois'),
     path('criar-partida/', criar_partida, name='criar_partida')
+    
 ]
