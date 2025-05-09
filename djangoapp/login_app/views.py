@@ -269,8 +269,14 @@ def feedPage(request,id):
     return render(request,"pages/feedPage.html",context)
 
 def selecao_opcao(request, esporte):
-    esporte_formatado = esporte.capitalize()
-    return render(request, 'pages/selecao_opcao.html', {'esporte': esporte_formatado})
+    local = "Quadra Principal"
+    return render(request, 'pages/selecao_opcao.html', {
+        'esporte': esporte.lower(),  # sempre em minúsculo
+        'local': local
+    })
+
+
+
 
 def reservar_espaco(request):
     return render(request, 'pages/reservar-espaco.html') 
