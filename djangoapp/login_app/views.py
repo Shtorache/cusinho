@@ -75,47 +75,94 @@ def available_places(request):
 
 
 
+from django.shortcuts import render, get_object_or_404
+from django.http import Http404
+import json
+
 def campo_detalhes(request, nome_campo):
-    # Dicionário com informações dos campos
+    # Dicionário com todas as chaves usadas nas URLs
     campos = {
+        # Região Itaipuaçu
+        "campo_a": {
+            "nome": "Arena Itaipuaçu",
+            "imagem_capa": "/static/images/arena_itaipuaçu.jpg",
+            "partidas": [
+                {"id": 1, "titulo": "Clássico da Região Oceânica", "data": "2025-05-15", "horario": "20:00", "categoria": "adulto", "genero": "misto", "vagas": 10},
+            ],
+        },
+        "campo_itaipuacu_1": {
+            "nome": "Arena Barroco",
+            "imagem_capa": "/static/images/arena_barroco.jpg",
+            "partidas": [],
+        },
+        "arena_marques": {
+            "nome": "Campo Divino Esporte e Lazer",
+            "imagem_capa": "/static/images/campo_divino.jpg",
+            "partidas": [],
+        },
+        "campo_palmeiras": {
+            "nome": "Campo Inter Academy",
+            "imagem_capa": "/static/images/campo_inter_academy.jpg",
+            "partidas": [],
+        },
+
+        # Região Centro
         "arena_flamengo": {
             "nome": "Arena Flamengo",
             "imagem_capa": "/static/images/arena_flamengo1.jpg",
             "partidas": [
-                {
-                    "id": 1,
-                    "titulo": "Flamengo vs Vasco",
-                    "data": "2025-04-10",
-                    "horario": "18:00",
-                    "categoria": "adulto",
-                    "genero": "masculino",
-                    "vagas": 5
-                },
-                {
-                    "id": 2,
-                    "titulo": "Amistoso Feminino",
-                    "data": "2025-04-12",
-                    "horario": "15:00",
-                    "categoria": "adulto",
-                    "genero": "feminino",
-                    "vagas": 8
-                },
-                # Mais partidas...
-            ]
+                {"id": 1, "titulo": "Flamengo vs Vasco", "data": "2025-04-10", "horario": "18:00", "categoria": "adulto", "genero": "masculino", "vagas": 5},
+                {"id": 2, "titulo": "Amistoso Feminino",   "data": "2025-04-12", "horario": "15:00", "categoria": "adulto", "genero": "feminino",  "vagas": 8},
+            ],
         },
-        # Outros campos...
+        "campo_central": {
+            "nome": "Arena Centro",
+            "imagem_capa": "/static/images/arena centro.png",
+            "partidas": [],
+        },
+        "quadra_centro": {
+            "nome": "Campo Amparo Esporte Clube",
+            "imagem_capa": "/static/images/amparo.jpg",
+            "partidas": [],
+        },
+
+        # Região São José
+        "campo_c": {
+            "nome": "Arena Itapeba",
+            "imagem_capa": "/static/images/arena_itapeba.jpeg",
+            "partidas": [],
+        },
+        "campo_saojose_1": {
+            "nome": "Arena São José",
+            "imagem_capa": "/static/images/arena_são josé.jpg",
+            "partidas": [],
+        },
+        "arena_jose": {
+            "nome": "Quadra Inoã",
+            "imagem_capa": "/static/images/quadra_inoã.jpg",
+            "partidas": [],
+        },
+        "quadra_saojose": {
+            "nome": "Quadra Poliesportiva Parque Nanci",
+            "imagem_capa": "/static/images/parque_nanci.jpg",
+            "partidas": [],
+        },
     }
 
+    # Se a chave não existir, retorna 404 em vez de erro de template
     if nome_campo not in campos:
-        return render(request, "pages/erro.html", {"mensagem": "Campo não encontrado!"})
+        raise Http404("Campo não encontrado")
 
+    # Monta o contexto para o template genérico de detalhes
     contexto = {
         "campo": campos[nome_campo],
         "nome": campos[nome_campo]["nome"],
         "imagem_capa": request.build_absolute_uri(campos[nome_campo]["imagem_capa"]),
-        "partidas_json": json.dumps(campos[nome_campo]["partidas"])
+        "partidas_json": json.dumps(campos[nome_campo]["partidas"]),
     }
+
     return render(request, "pages/campo_detalhes.html", contexto)
+
 
 
 @login_required

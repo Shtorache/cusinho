@@ -1,91 +1,175 @@
-/* Estilizando o h1 */
-h1 {
-    font-size: 2rem;
-    text-align: center;
-    color: #222;
-    margin-bottom: 1rem;
+/* ==========================
+   Design Premium - Modal Elegante
+   ========================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Variáveis CSS para consistência */
+:root {
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --danger-gradient: linear-gradient(135deg, #ff416c, #ff4b2b);
+  --dark-color: #2d3748;
+  --light-color: #f8fafc;
+  --border-radius: 20px;
+  --box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* Body com background moderno */
+/* Reset e estilos base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    background: linear-gradient(135deg, #3f464d, #30b15b);
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #8b2547, #a77b90);
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: var(--dark-color);
 }
 
-/* Modal Overlay para centralizar o modal na tela */
+/* Overlay com efeito de vidro */
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(5px);
-    z-index: 999;
-    padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.4s ease-out;
 }
 
-/* Estilo do modal – design moderno */
+/* Card do modal */
 .modal {
-    background-color: #fff;
-    color: #333;
-    padding: 2rem 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-    width: 90%;
-    max-width: 420px;
-    text-align: center;
-    animation: fadeIn 0.5s ease-out;
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  width: 100%;
+  max-width: 450px;
+  padding: 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Animação suave de entrada para o modal */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+/* Efeito de borda gradiente */
+.modal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: var(--primary-gradient);
 }
 
-/* Estilizando o parágrafo */
+/* Tipografia */
+h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--dark-color);
+  margin-bottom: 20px;
+  letter-spacing: -0.5px;
+}
+
 p {
-    font-size: 1.2rem;
-    text-align: center;
-    color: #555;
-    margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #64748b;
+  margin-bottom: 30px;
 }
 
-/* Estilizando o formulário */
+/* Formulário */
 form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
 }
 
-/* Estilizando o botão – visual moderno */
+/* Botões */
 button[type="submit"] {
-    background: linear-gradient(135deg, #424040, #575757);
-    color: #fff;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background 0.3s ease, transform 0.3s ease;
-    width: 100%;
+  background: var(--primary-gradient);
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+button[type="submit"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--danger-gradient);
+  opacity: 0;
+  transition: var(--transition);
+  z-index: -1;
 }
 
 button[type="submit"]:hover {
-    background: linear-gradient(135deg, #b61d1d, #ff6b6b);
-    transform: scale(1.03);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+}
+
+button[type="submit"]:hover::before {
+  opacity: 1;
+}
+
+
+/* Animações */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .modal {
+    padding: 30px 20px;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  p {
+    font-size: 1rem;
+  }
 }

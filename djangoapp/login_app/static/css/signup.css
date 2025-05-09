@@ -1,4 +1,4 @@
-/* Fonte moderna e fundo escuro com gradiente */
+/* === Base === */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #1e2413, #1f801f);
@@ -6,12 +6,12 @@ body {
     padding: 20px;
     min-height: 100vh;
     color: #eaeaea;
+    box-sizing: border-box;
 }
 
-/* Container principal */
+/* === Container === */
 .signup-container {
-    width: 100%;
-    max-width: 360px;
+    max-width: 380px;
     margin: 60px auto;
     padding: 25px;
     background-color: #121212;
@@ -22,20 +22,20 @@ body {
     align-items: center;
 }
 
-/* Títulos */
+/* === Títulos e Textos === */
 h1, h2 {
     text-align: center;
     color: #ffffff;
-    margin-bottom: 20px;
     font-weight: 600;
+    margin-bottom: 20px;
 }
 
 h1 {
-    font-size: 1.8rem;
+    font-size: 1.9rem;
 }
 
 h2 {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     margin-top: 20px;
 }
 
@@ -46,7 +46,7 @@ p {
     margin-bottom: 10px;
 }
 
-/* Formulário */
+/* === Formulário === */
 form {
     width: 100%;
     display: flex;
@@ -54,28 +54,34 @@ form {
     gap: 12px;
 }
 
-/* Inputs */
+/* === Inputs (texto, email, senha) === */
 input[type="text"],
 input[type="password"],
-input[type="email"],
-input[type="radio"] {
+input[type="email"] {
     width: 100%;
     padding: 10px;
     border-radius: 6px;
-    border: 1px solid #333;
+    border: 1px solid #444;
     background-color: #2b2b2b;
     color: #eaeaea;
     font-size: 0.95rem;
     box-sizing: border-box;
+    transition: border-color 0.2s ease;
 }
 
+input:focus {
+    border-color: #4dd0e1;
+    outline: none;
+}
+
+/* === Radio === */
 input[type="radio"] {
     transform: scale(1.1);
     accent-color: #4dd0e1;
-    width: auto;
+    margin-right: 8px;
 }
 
-/* Botões */
+/* === Botões === */
 button {
     padding: 12px;
     font-size: 1rem;
@@ -85,7 +91,7 @@ button {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background 0.3s ease, transform 0.3s ease;
 }
 
 button:hover {
@@ -93,7 +99,7 @@ button:hover {
     transform: translateY(-2px);
 }
 
-/* Link estilizado como botão */
+/* === Link como botão === */
 a {
     display: flex;
     justify-content: center;
@@ -110,4 +116,113 @@ a {
 a:hover {
     background-color: #333;
     color: #fff;
+}
+
+/* === Navbar === */
+.navbar {
+    background-color: #1a1a1a;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.navbar-logo {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.navbar-menu {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+}
+
+.navbar-menu li a {
+    color: #4dd0e1;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar-menu li a:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+/* === Mensagens === */
+.messages {
+    background-color: #1e1e1e;
+    border-left: 4px solid #4dd0e1;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+}
+
+.messages ul {
+    margin: 10px 0 0;
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+.messages li {
+    color: #eaeaea;
+    font-size: 0.95rem;
+}
+
+/* === Responsividade === */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .signup-container {
+        padding: 20px;
+        margin: 30px 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    p {
+        font-size: 0.95rem;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .navbar-menu {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .navbar-menu li {
+        width: 100%;
+    }
+
+    .navbar-menu li a {
+        width: 100%;
+        display: block;
+        text-align: left;
+        padding: 8px;
+    }
 }
