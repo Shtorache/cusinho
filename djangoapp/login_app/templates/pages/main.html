@@ -18,17 +18,14 @@
         max-width: 1400px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         text-align: center;
-    }   
+    }
 
     .intro-section:hover {
-    box-shadow: 0 4px 16px rgba(255, 77, 77, 0.4);
-}
+        box-shadow: 0 4px 16px rgba(255, 77, 77, 0.4);
+    }
 
-
-
-
-
-    .intro-section h1, .intro-section p {
+    .intro-section h1,
+    .intro-section p {
         margin-bottom: 20px;
         line-height: 1.4;
     }
@@ -49,7 +46,7 @@
         background-color: #1c1c1c;
         padding: 10px;
         border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     }
 
     .sport-icon:hover {
@@ -87,6 +84,24 @@
         color: #ff4d4d;
     }
 
+    /* Animação de entrada */
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .fade-in-up {
+        animation: fadeInUp 0.8s ease forwards;
+        opacity: 0;
+    }
+
+    /* Responsividade */
     @media (max-width: 768px) {
         .intro-section {
             margin-top: 100px;
@@ -116,36 +131,33 @@
 </style>
 {% endblock %}
 
-
-
 {% block content %}
 <div class="content">
     <div class="intro-section">
         <h1>Bem-vindo ao EsporteFY!</h1>
-        <p>Encontre as melhores quadras esportivos da sua região</p>
-        
-        <div class="sport-icons">
-            <div class="sport-icon">
-                <a href="{% url 'selecao_opcao' 'futebol' %}">
+        <p>Encontre as melhores quadras esportivas da sua região</p>
 
+        <div class="sport-icons">
+            <div class="sport-icon fade-in-up" style="animation-delay: 0.1s">
+                <a href="{% url 'selecao_opcao' 'futebol' %}" title="Ver quadras de Futebol">
                     <img src="{% static 'images/soccer-ball.png' %}" alt="Futebol">
                     <span>Futebol</span>
                 </a>
             </div>
-            <div class="sport-icon">
-                <a href="{% url 'selecao_opcao' 'basquete' %}">
+            <div class="sport-icon fade-in-up" style="animation-delay: 0.2s">
+                <a href="{% url 'selecao_opcao' 'basquete' %}" title="Ver quadras de Basquete">
                     <img src="{% static 'images/basketball.jpg' %}" alt="Basquete">
                     <span>Basquete</span>
                 </a>
             </div>
-            <div class="sport-icon">
-                <a href="{% url 'selecao_opcao' 'vôlei' %}">
+            <div class="sport-icon fade-in-up" style="animation-delay: 0.3s">
+                <a href="{% url 'selecao_opcao' 'vôlei' %}" title="Ver quadras de Vôlei">
                     <img src="{% static 'images/volleyball.jpg' %}" alt="Vôlei">
                     <span>Vôlei</span>
                 </a>
             </div>
-            <div class="sport-icon">
-                <a href="{% url 'selecao_opcao' 'tênis' %}">
+            <div class="sport-icon fade-in-up" style="animation-delay: 0.4s">
+                <a href="{% url 'selecao_opcao' 'tênis' %}" title="Ver quadras de Tênis">
                     <img src="{% static 'images/tennis.jpg' %}" alt="Tênis">
                     <span>Tênis</span>
                 </a>

@@ -6,9 +6,9 @@
     align-items: center;
     color: #fff;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(270deg, #8d4242, #e60000, #868181);
-    background-size: 600% 600%;
-    animation: gradientFlow 12s ease infinite;
+    background: linear-gradient(-45deg, #fc6163, #f83434, #f50004);
+    background-size: 400% 400%;
+    animation: gradientFlow 15s ease infinite;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(4px);
@@ -18,38 +18,66 @@
     border-radius: 0 0 16px 16px;
 }
 
-.navbar-logo {
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #c5c5c5;
-    text-shadow: 0 0 10px rgba(192, 11, 11, 0.4);
-    transition: transform 0.3s ease;
-}
-.navbar-logo:hover {
-    transform: scale(1.05);
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
+.navbar-logo {
+    font-size: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #fff;
+    text-shadow:
+        0 0 5px rgba(255, 0, 0, 0.3),
+        0 0 10px rgba(255, 0, 0, 0.3),
+        0 0 15px rgba(255, 0, 0, 0.2);
+    transition: all 0.4s ease-in-out;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.navbar-logo:hover {
+    transform: scale(1.08);
+    color: #ff4c4c;
+    text-shadow:
+        0 0 10px rgba(255, 0, 0, 0.6),
+        0 0 20px rgba(255, 50, 50, 0.5),
+        0 0 30px rgba(255, 100, 100, 0.4);
+}
+
+
+
 /* Container do menu para animação de slide */
+/* Base do menu */
 .navbar-menu {
     list-style: none;
     display: flex;
     gap: 25px;
     margin: 0;
     padding: 0;
-    transition: max-height 0.3s ease;
+    transition: max-height 0.4s ease-in-out;
+    overflow: hidden;
 }
 
+/* Estados do menu (para mobile) */
 .navbar-menu.collapsed {
     max-height: 0;
-    overflow: hidden;
+    flex-direction: column;
 }
 
 .navbar-menu.expanded {
-    max-height: 500px; /* valor suficiente para conter itens */
-    overflow: hidden;
+    max-height: 500px;
     flex-direction: column;
 }
+
 
 .navbar-menu li {
     position: relative;

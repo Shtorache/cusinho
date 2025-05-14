@@ -20,68 +20,164 @@
     transition: box-shadow 0.3s;
 }
 
-
 .option-section:hover {
     box-shadow: 0 4px 16px rgba(255, 77, 77, 0.4);
 }
 
+/* Título */
+.option-section h1 {
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #ff4d4d;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
 
+/* Texto da descrição */
+.option-section p {
+    font-size: 19px; /* Aumentei um pouco o tamanho da fonte para tornar o texto mais legível */
+    line-height: 1.8; /* Aumentei a altura da linha para dar mais espaço entre as linhas */
+    margin-bottom: 25px; /* Aumentei a margem inferior para dar mais espaçamento entre os parágrafos */
+    color: #f1f1f1; /* Mantive o tom suave de branco */
+    font-weight: 300; /* Deixei o peso da fonte mais leve para um toque mais suave */
+    letter-spacing: 0.8px; /* Aumentei o espaçamento entre as letras para dar mais leveza */
+    text-align: center; /* Centralizei o texto para dar mais harmonia à seção */
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Adicionei uma sombra suave para dar profundidade ao texto */
+}
+
+/* Para o caso de ter um título ou outra seção específica */
+.option-section h1 {
+    font-size: 30px;
+    color: #ff5757; /* Uma cor mais vibrante e chamativa */
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    text-transform: uppercase; /* Tornando o título em maiúsculas para destacar */
+    text-align: center;
+}
+
+
+/* Texto de esportes selecionados */
+.option-section p span {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ff7373;
+}
+
+/* Ícones de ações */
+.action-icons {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 10px;
+}
+
+.action-icon {
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    background-color: #1c1c1c;
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.action-icon:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 16px rgba(255, 77, 77, 0.4);
+}
+
+.action-icon img {
+    width: 85px;
+    height: 85px;
+    object-fit: cover;
+    border-radius: 50%;
+    padding: 6px;
+    background-color: #1e1e1e;
+    border: 2px solid #ff4d4d;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Efeito de hover mais suave */
+.action-icon img:hover {
+    transform: scale(1.1);
+    border-color: #ff7373;
+    box-shadow: 0 4px 12px rgba(255, 77, 77, 0.6);
+}
+
+
+.action-icon a {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 8px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.action-icon a:hover {
+    color: #ff4d4d;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .option-section {
+        margin-top: 100px;
+        padding: 20px;
+    }
 
     .action-icons {
-        display: flex;
-        justify-content: center;
-        gap: 40px;
-        margin: 20px 0;
-        flex-wrap: wrap;
-        width: 100%;
-        padding: 10px;
-    }
-
-    .action-icon {
-        text-align: center;
-        transition: transform 0.3s, box-shadow 0.3s;
-        cursor: pointer;
-        background-color: #1c1c1c;
-        padding: 12px;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    }
-
-    .action-icon:hover {
-        transform: scale(1.1);
-        box-shadow: 0 4px 16px rgba(255, 77, 77, 0.4);
+        gap: 25px;
     }
 
     .action-icon img {
-        width: 80px;
-        height: 80px;
-        object-fit: cover;
-        border-radius: 50%;
-        padding: 6px;
-        background-color: #222;
-        border: 2px solid #e60000;
-        transition: border-color 0.3s;
+        width: 70px;
+        height: 70px;
     }
+}
 
-    .action-icon:hover img {
-        border-color: #ff4d4d;
+@media (max-width: 480px) {
+    .action-icon img {
+        width: 60px;
+        height: 60px;
     }
 
     .action-icon a {
-        text-decoration: none;
-        color: white;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 8px;
-        font-weight: 500;
-        transition: color 0.3s;
+        font-size: 14px;
     }
+}
+
 
     .action-icon a:hover {
         color: #ff4d4d;
     }
 
+    /* Animações suaves */
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .fade-in-up {
+        animation: fadeInUp 0.8s ease forwards;
+        opacity: 0;
+    }
+
+    /* Responsividade */
     @media (max-width: 768px) {
         .option-section {
             margin-top: 100px;
@@ -118,17 +214,16 @@
         {% if esporte %}
             <p>Você selecionou: {{ esporte }}</p>
         {% endif %}
-
         <p>Escolha uma das opções abaixo</p>
 
         <div class="action-icons">
-            <div class="action-icon">
+            <div class="action-icon fade-in-up" style="animation-delay: 0.1s">
                 <a href="{% url 'available_places' %}">
                     <img src="{% static 'images/soccer-ball.png' %}" alt="Futebol">
                     <span>Encontrar partida</span>
                 </a>
             </div>
-            <div class="action-icon">
+            <div class="action-icon fade-in-up" style="animation-delay: 0.2s">
                 <a href="{% url 'reservar_espaco' %}">
                     <img src="{% static 'images/soccer-ball.png' %}" alt="Futebol">
                     <span>Criar partida</span>
