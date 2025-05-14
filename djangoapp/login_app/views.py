@@ -82,72 +82,125 @@ import json
 def campo_detalhes(request, nome_campo):
     # Dicionário com todas as chaves usadas nas URLs
     campos = {
-        # Região Itaipuaçu
-        "campo_a": {
-            "nome": "Arena Itaipuaçu",
-            "imagem_capa": "/static/images/arena_itaipuaçu.jpg",
-            "partidas": [
-                {"id": 1, "titulo": "Clássico da Região Oceânica", "data": "2025-05-15", "horario": "20:00", "categoria": "adulto", "genero": "misto", "vagas": 10},
-            ],
-        },
-        "campo_itaipuacu_1": {
-            "nome": "Arena Barroco",
-            "imagem_capa": "/static/images/arena_barroco.jpg",
-            "partidas": [],
-        },
-        "arena_marques": {
-            "nome": "Campo Divino Esporte e Lazer",
-            "imagem_capa": "/static/images/campo_divino.jpg",
-            "partidas": [],
-        },
-        "campo_palmeiras": {
-            "nome": "Campo Inter Academy",
-            "imagem_capa": "/static/images/campo_inter_academy.jpg",
-            "partidas": [],
-        },
+    # Região Itaipuaçu
+    "campo_a": {
+        "nome": "Arena Itaipuaçu",
+        "imagem_capa": "/static/images/arena_itaipuaçu.jpg",
+        "partidas": [
+            {"id": 1, "titulo": "Clássico da Região Oceânica", "data": "2025-05-15", "horario": "20:00", "categoria": "adulto", "genero": "misto", "vagas": 10},
+            {"id": 2, "titulo": "Torneio de Verão Masculino", "data": "2025-06-20", "horario": "19:00", "categoria": "adulto", "genero": "masculino", "vagas": 8},
+            {"id": 3, "titulo": "Escolinha de Futebol", "data": "2025-05-10", "horario": "09:00", "categoria": "infantil", "genero": "misto", "vagas": 15},
+            {"id": 4, "titulo": "Liga Feminina", "data": "2025-06-05", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 12},
+            {"id": 5, "titulo": "Torneio Master", "data": "2025-05-25", "horario": "16:00", "categoria": "master", "genero": "masculino", "vagas": 10}
+        ],
+    },
+    "campo_itaipuacu_1": {
+        "nome": "Arena Barroco",
+        "imagem_capa": "/static/images/arena_barroco.jpg",
+        "partidas": [
+            {"id": 1, "titulo": "Liga Barroco", "data": "2025-04-25", "horario": "18:30", "categoria": "adulto", "genero": "masculino", "vagas": 7},
+            {"id": 2, "titulo": "Treino Livre", "data": "2025-05-05", "horario": "14:00", "categoria": "livre", "genero": "misto", "vagas": 12},
+            {"id": 3, "titulo": "Campeonato Feminino", "data": "2025-05-12", "horario": "19:00", "categoria": "adulto", "genero": "feminino", "vagas": 9},
+            {"id": 4, "titulo": "Torneio Juvenil", "data": "2025-06-08", "horario": "15:00", "categoria": "juvenil", "genero": "misto", "vagas": 14}
+        ],
+    },
+    "arena_marques": {
+        "nome": "Campo Divino Esporte e Lazer",
+        "imagem_capa": "/static/images/campo_divino.jpg",
+        "partidas": [
+            {"id": 1, "titulo": "Torneio Divino", "data": "2025-05-08", "horario": "20:00", "categoria": "adulto", "genero": "misto", "vagas": 10},
+            {"id": 2, "titulo": "Aulão de Futsal", "data": "2025-04-30", "horario": "10:00", "categoria": "infantil", "genero": "misto", "vagas": 20},
+            {"id": 3, "titulo": "Liga Masculina", "data": "2025-06-15", "horario": "19:30", "categoria": "adulto", "genero": "masculino", "vagas": 8},
+            {"id": 4, "titulo": "Treino Feminino", "data": "2025-05-22", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 10}
+        ],
+    },
+    "campo_palmeiras": {
+        "nome": "Campo Inter Academy",
+        "imagem_capa": "/static/images/campo_inter_academy.jpg",
+        "partidas": [
+            {"id": 1, "titulo": "Treino de Equipe", "data": "2025-05-12", "horario": "08:00", "categoria": "juvenil", "genero": "masculino", "vagas": 18},
+            {"id": 2, "titulo": "Interclasses", "data": "2025-06-05", "horario": "16:00", "categoria": "juvenil", "genero": "misto", "vagas": 15},
+            {"id": 3, "titulo": "Torneio Feminino Juvenil", "data": "2025-05-20", "horario": "14:00", "categoria": "juvenil", "genero": "feminino", "vagas": 12},
+            {"id": 4, "titulo": "Escolinha de Futebol", "data": "2025-06-12", "horario": "09:00", "categoria": "infantil", "genero": "misto", "vagas": 20}
+        ],
+    },
 
-        # Região Centro
-        "arena_flamengo": {
-            "nome": "Arena Flamengo",
-            "imagem_capa": "/static/images/arena_flamengo1.jpg",
-            "partidas": [
-                {"id": 1, "titulo": "Flamengo vs Vasco", "data": "2025-04-10", "horario": "18:00", "categoria": "adulto", "genero": "masculino", "vagas": 5},
-                {"id": 2, "titulo": "Amistoso Feminino",   "data": "2025-04-12", "horario": "15:00", "categoria": "adulto", "genero": "feminino",  "vagas": 8},
-            ],
-        },
-        "campo_central": {
-            "nome": "Arena Centro",
-            "imagem_capa": "/static/images/arena centro.png",
-            "partidas": [],
-        },
-        "quadra_centro": {
-            "nome": "Campo Amparo Esporte Clube",
-            "imagem_capa": "/static/images/amparo.jpg",
-            "partidas": [],
-        },
+    # Região Centro
+    "arena_flamengo": {
+        "nome": "Arena Flamengo",
+        "imagem_capa": "/static/images/arena_flamengo1.jpg",
+        "partidas": [
+            {"id": 1, "titulo": "Flamengo vs Vasco", "data": "2025-04-10", "horario": "18:00", "categoria": "adulto", "genero": "masculino", "vagas": 1},
+            {"id": 2, "titulo": "Amistoso Feminino", "data": "2025-04-12", "horario": "15:00", "categoria": "adulto", "genero": "feminino", "vagas": 8},
+            {"id": 3, "titulo": "Torneio Masters", "data": "2025-05-20", "horario": "19:30", "categoria": "master", "genero": "masculino", "vagas": 0},
+            {"id": 4, "titulo": "Pelada Mista", "data": "2025-06-08", "horario": "20:00", "categoria": "livre", "genero": "misto", "vagas": 12},
+            {"id": 5, "titulo": "Treino Juvenil", "data": "2025-05-05", "horario": "16:00", "categoria": "juvenil", "genero": "masculino", "vagas": 10}
+        ],
+    },
+    "campo_central": {
+        "nome": "Arena Centro",
+        "imagem_capa": "/static/images/arena centro.png",
+        "partidas": [
+            {"id": 1, "titulo": "Campeonato Centro", "data": "2025-04-15", "horario": "20:00", "categoria": "adulto", "genero": "masculino", "vagas": 8},
+            {"id": 2, "titulo": "Pelada Semanal", "data": "2025-04-18", "horario": "19:00", "categoria": "livre", "genero": "misto", "vagas": 12},
+            {"id": 3, "titulo": "Torneio Feminino", "data": "2025-05-10", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 10},
+            {"id": 4, "titulo": "Escolinha de Futsal", "data": "2025-06-15", "horario": "09:00", "categoria": "infantil", "genero": "misto", "vagas": 15}
+        ],
+    },
+    "quadra_centro": {
+        "nome": "Campo Amparo Esporte Clube",
+        "imagem_capa": "/static/images/amparo.jpg",
+        "partidas": [
+            {"id": 1, "titulo": "Torneio de Inauguração", "data": "2025-05-01", "horario": "09:00", "categoria": "livre", "genero": "misto", "vagas": 20},
+            {"id": 2, "titulo": "Escolinha de Futsal", "data": "2025-05-03", "horario": "14:00", "categoria": "infantil", "genero": "misto", "vagas": 15},
+            {"id": 3, "titulo": "Liga Masculina", "data": "2025-06-10", "horario": "20:00", "categoria": "adulto", "genero": "masculino", "vagas": 10},
+            {"id": 4, "titulo": "Treino Feminino", "data": "2025-06-12", "horario": "19:00", "categoria": "adulto", "genero": "feminino", "vagas": 12}
+        ],
+    },
 
-        # Região São José
-        "campo_c": {
-            "nome": "Arena Itapeba",
-            "imagem_capa": "/static/images/arena_itapeba.jpeg",
-            "partidas": [],
-        },
-        "campo_saojose_1": {
-            "nome": "Arena São José",
-            "imagem_capa": "/static/images/arena_são josé.jpg",
-            "partidas": [],
-        },
-        "arena_jose": {
-            "nome": "Quadra Inoã",
-            "imagem_capa": "/static/images/quadra_inoã.jpg",
-            "partidas": [],
-        },
-        "quadra_saojose": {
-            "nome": "Quadra Poliesportiva Parque Nanci",
-            "imagem_capa": "/static/images/parque_nanci.jpg",
-            "partidas": [],
-        },
-    }
+    # Região São José
+    "campo_c": {
+        "nome": "Arena Itapeba",
+        "imagem_capa": "/static/images/arena_itapeba.jpeg",
+        "partidas": [
+            {"id": 1, "titulo": "Liga Itapeba", "data": "2025-04-22", "horario": "19:00", "categoria": "adulto", "genero": "masculino", "vagas": 7},
+            {"id": 2, "titulo": "Treino Feminino", "data": "2025-04-24", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 9},
+            {"id": 3, "titulo": "Torneio Misto", "data": "2025-05-15", "horario": "20:00", "categoria": "adulto", "genero": "misto", "vagas": 12},
+            {"id": 4, "titulo": "Escolinha de Futebol", "data": "2025-06-05", "horario": "14:00", "categoria": "infantil", "genero": "misto", "vagas": 18}
+        ],
+    },
+    "campo_saojose_1": {
+        "nome": "Arena São José",
+        "imagem_capa": "/static/images/arena_são josé.jpg",
+        "partidas": [
+            {"id": 1, "titulo": "Copa São José", "data": "2025-05-25", "horario": "20:00", "categoria": "adulto", "genero": "masculino", "vagas": 6},
+            {"id": 2, "titulo": "Pelada da Comunidade", "data": "2025-05-28", "horario": "19:00", "categoria": "livre", "genero": "misto", "vagas": 14},
+            {"id": 3, "titulo": "Torneio Feminino", "data": "2025-06-08", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 10},
+            {"id": 4, "titulo": "Torneio Master", "data": "2025-06-15", "horario": "19:30", "categoria": "master", "genero": "masculino", "vagas": 8}
+        ],
+    },
+    "arena_jose": {
+        "nome": "Quadra Inoã",
+        "imagem_capa": "/static/images/quadra_inoã.jpg",
+        "partidas": [
+            {"id": 1, "titulo": "Torneio de Inoã", "data": "2025-06-10", "horario": "18:30", "categoria": "adulto", "genero": "masculino", "vagas": 8},
+            {"id": 2, "titulo": "Aulão de Futsal", "data": "2025-06-12", "horario": "09:00", "categoria": "infantil", "genero": "misto", "vagas": 20},
+            {"id": 3, "titulo": "Liga Feminina", "data": "2025-06-18", "horario": "19:00", "categoria": "adulto", "genero": "feminino", "vagas": 10},
+            {"id": 4, "titulo": "Pelada Mista", "data": "2025-06-20", "horario": "20:00", "categoria": "livre", "genero": "misto", "vagas": 15}
+        ],
+    },
+    "quadra_saojose": {
+        "nome": "Quadra Poliesportiva Parque Nanci",
+        "imagem_capa": "/static/images/parque_nanci.jpg",
+        "partidas": [
+            {"id": 1, "titulo": "Festival Esportivo", "data": "2025-05-30", "horario": "08:00", "categoria": "livre", "genero": "misto", "vagas": 25},
+            {"id": 2, "titulo": "Torneio de Veteranos", "data": "2025-06-02", "horario": "19:00", "categoria": "master", "genero": "masculino", "vagas": 10},
+            {"id": 3, "titulo": "Escolinha de Futebol", "data": "2025-06-05", "horario": "14:00", "categoria": "infantil", "genero": "misto", "vagas": 18},
+            {"id": 4, "titulo": "Torneio Feminino", "data": "2025-06-10", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 12},
+            {"id": 5, "titulo": "Liga Masculina", "data": "2025-06-15", "horario": "20:00", "categoria": "adulto", "genero": "masculino", "vagas": 10}
+        ],
+    },
+}
 
     # Se a chave não existir, retorna 404 em vez de erro de template
     if nome_campo not in campos:
@@ -256,19 +309,33 @@ def fazer_relatorio(request):
     return render(request, "pages/relatorio.html", context)
 
 # views.py
+from django.shortcuts import render
+
 def participar_partida(request, partida_id):
-    # Aqui você buscaria os dados da partida no banco de dados
-    # Estou usando dados estáticos como exemplo
     context = {
-        'esporte': 'Futebol',  # Substitua por dados reais
-        'local': 'Arena Flamengo',  # Substitua por dados reais
+        'esporte': 'Futebol',
+        'local': 'Arena Flamengo',
         'jogadores': [
             {'nome': 'Jeff', 'posicao': 'Goleiro', 'presenca': 'Confirmado'},
             {'nome': 'Outro Jeff', 'posicao': 'Lateral', 'presenca': 'Confirmado'},
-            {'nome': 'Cauã', 'posicao': '', 'presenca': 'Não'}
+            {'nome': 'Cauã', 'posicao': '', 'presenca': 'Não'},
+            {'nome': 'Lucas', 'posicao': 'Zagueiro', 'presenca': 'Confirmado'},
+            {'nome': 'Mateus', 'posicao': '', 'presenca': 'Não'},
+            {'nome': 'Rafael', 'posicao': 'Meio-campo', 'presenca': 'Confirmado'},
+            {'nome': 'Pedro', 'posicao': '', 'presenca': 'Não'},
+            {'nome': 'Thiago', 'posicao': 'Atacante', 'presenca': 'Confirmado'},
+            {'nome': 'João', 'posicao': '', 'presenca': 'Não'},
+            {'nome': 'Felipe', 'posicao': 'Lateral', 'presenca': 'Confirmado'},
+            {'nome': 'Ana', 'posicao': 'Meio-campo', 'presenca': 'Confirmado'},
+            {'nome': 'Beatriz', 'posicao': '', 'presenca': 'Não'},
+            {'nome': 'Camila', 'posicao': 'Atacante', 'presenca': 'Confirmado'},
+            {'nome': 'Daniela', 'posicao': '', 'presenca': 'Não'},
+            {'nome': 'Fernanda', 'posicao': 'Zagueira', 'presenca': 'Confirmado'},
+            {'nome': 'Gabriela', 'posicao': '', 'presenca': 'Não'},
         ]
     }
     return render(request, 'pages/participar.html', context)
+
 
 def listacampos(request):
     query = DadosCampo.objects.all()
