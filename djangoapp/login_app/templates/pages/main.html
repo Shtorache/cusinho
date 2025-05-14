@@ -7,82 +7,155 @@
 <link rel="shortcut icon" href="{% static 'images/Goal_icon-icons.com_62267.ico' %}" type="image/x-icon">
 <style>
     .intro-section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 30px 20px;
-        background: linear-gradient(135deg, #1e0f0f, #000000);
-        color: white;
-        margin: 130px auto 20px;
-        border-radius: 12px;
-        max-width: 1400px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        text-align: center;
-    }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;  /* Adicionando alinhamento vertical */
+    padding: 40px 25px;       /* Aumentei um pouco o espaçamento interno */
+    background: linear-gradient(135deg, #1e0f0f, #000000);  /* Gradiente mais profundo */
+    color: white;
+    margin: 130px auto 20px;
+    border-radius: 15px;      /* Bordas arredondadas para um visual mais moderno */
+    max-width: 800px;        /* Mantido o tamanho máximo conforme solicitado */
+    width: 100%;              /* A largura se adapta ao tamanho da tela */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);  /* Sombra mais suave */
+    text-align: center;
+    overflow: hidden;         /* Impede que o conteúdo ultrapasse as bordas */
+    transition: all 0.3s ease; /* Adiciona transição suave para interações */
+}
 
-    .intro-section:hover {
-        box-shadow: 0 4px 16px rgba(255, 77, 77, 0.4);
-    }
+.intro-section:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);  /* Sombra ampliada no hover */
+    transform: scale(1.02);  /* Leve aumento ao passar o mouse */
+}
 
-    .intro-section h1,
-    .intro-section p {
-        margin-bottom: 20px;
-        line-height: 1.4;
+.intro-section h1 {
+    font-size: 40px;                     /* Tamanho maior para chamar atenção */
+    font-weight: 700;
+    letter-spacing: 2px;                 /* Aumentei o espaçamento entre as letras para mais destaque */
+    margin-bottom: 25px;
+    text-transform: uppercase;           /* Título em maiúsculas */
+    text-align: center;                  /* Centralizando o texto */
+    background: linear-gradient(45deg, #ff6f61, #ff6347);  /* Gradiente de cor para o título */
+    -webkit-background-clip: text;       /* Faz o gradiente aparecer no texto */
+    color: transparent;                  /* Tornar o texto transparente para que o gradiente apareça */
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 99, 71, 0.8); /* Sombra forte e brilho ao redor */
+    animation: bounceIn 1s ease-out;      /* Animação suave de entrada */
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
     }
+    60% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+.intro-section p {
+    font-size: 20px;                    /* Tamanho ajustado para maior legibilidade */
+    font-weight: 300;
+    letter-spacing: 1px;                 /* Aumento do espaçamento entre as letras */
+    color: transparent;                  /* Tornar o texto transparente para que o gradiente apareça */
+    background: linear-gradient(45deg, #ff6f61, #ff6347);  /* Gradiente de cor no texto */
+    -webkit-background-clip: text;       /* Faz o gradiente aparecer no texto */
+    text-align: center;                  /* Centralizando o texto */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 99, 71, 0.6); /* Sombra mais leve com brilho */
+    margin-top: 15px;
+    max-width: 800px;
+    animation: bounceIn 1.2s ease-out;    /* Animação suave de entrada */
+}
+
+/* Animação para o efeito de entrada */
+@keyframes bounceIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.6;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+
 
     .sport-icons {
-        display: flex;
-        justify-content: center;
-        gap: 35px;
-        flex-wrap: wrap;
-        width: 100%;
-        padding: 10px;
-    }
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 20px;
+    margin-top: 20px;
+}
 
-    .sport-icon {
-        text-align: center;
-        transition: transform 0.3s, box-shadow 0.3s;
-        cursor: pointer;
-        background-color: #1c1c1c;
-        padding: 10px;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    }
+.sport-icon {
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+    background-color: #212121; /* Tom mais escuro de fundo para dar destaque */
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    max-width: 120px; /* Limita a largura para um tamanho mais controlado */
+    width: 100%;
+    margin-bottom: 20px; /* Espaçamento entre os ícones */
+}
 
-    .sport-icon:hover {
-        transform: scale(1.1);
-        box-shadow: 0 4px 16px rgba(255, 77, 77, 0.4);
-    }
+.sport-icon:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(255, 77, 77, 0.5);
+    background-color: #1a1a1a; /* Escurece o fundo no hover para maior destaque */
+}
 
-    .sport-icon img {
-        width: 80px;
-        height: 80px;
-        object-fit: cover;
-        border-radius: 50%;
-        padding: 6px;
-        background-color: #222;
-        border: 2px solid #e60000;
-        transition: border-color 0.3s;
-    }
+.sport-icon img {
+    width: 90px; /* Aumenta um pouco o tamanho da imagem para mais destaque */
+    height: 90px;
+    object-fit: cover;
+    border-radius: 50%;
+    padding: 8px;
+    background-color: #222;
+    border: 3px solid #e60000;
+    transition: border-color 0.3s ease;
+}
 
-    .sport-icon:hover img {
-        border-color: #ff7373;
-    }
+.sport-icon:hover img {
+    border-color: #ff7373; /* Bordas suavemente mudando para uma cor mais vibrante */
+}
 
-    .sport-icon a {
-        text-decoration: none;
-        color: white;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 8px;
-        font-weight: 500;
-        transition: color 0.3s;
-    }
+.sport-icon a {
+    text-decoration: none;
+    color: #f1f1f1; /* Cor mais suave para o texto */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: capitalize; /* Faz os nomes ficarem com a primeira letra maiúscula */
+    transition: color 0.3s ease;
+}
 
-    .sport-icon a:hover {
-        color: #ff4d4d;
-    }
+.sport-icon a:hover {
+    color: #ff4d4d; /* Cor de destaque para o texto ao passar o mouse */
+}
+
+.sport-icon a:active {
+    color: #e60000; /* Cor mais intensa quando o ícone é clicado */
+}
+
 
     /* Animação de entrada */
     @keyframes fadeInUp {

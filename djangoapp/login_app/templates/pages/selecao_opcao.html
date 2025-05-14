@@ -11,60 +11,129 @@
     flex-direction: column;
     align-items: center;
     padding: 30px 20px;
-    background: linear-gradient(to bottom right, #1a0d0d, #000000);
+    background: linear-gradient(135deg, #1e0f0f, #000000);  /* Gradiente vibrante de cores quentes */
     color: white;
     margin: 130px auto 20px;
-    border-radius: 10px;
+    border-radius: 12px;              /* Bordas arredondadas para suavizar */
     max-width: 1200px;
     text-align: center;
-    transition: box-shadow 0.3s;
+    transition: box-shadow 0.3s, transform 0.3s; /* Suaviza transições para sombras e escalas */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7); /* Sombra forte para destacar */
 }
+
+.option-section:hover {
+    transform: scale(1.05);  /* Efeito de aumento suave ao passar o mouse */
+    box-shadow: 0 0 30px rgba(255, 99, 71, 0.8);  /* Efeito de brilho mais forte ao passar o mouse */
+}
+
+.option-section h1 {
+    font-size: 30px;
+    font-weight: 700;
+    color: #ffce00; /* Cor amarela para destacar o título */
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 99, 71, 0.8); /* Sombra e brilho */
+    animation: bounceIn 1s ease-out; /* Animação de entrada */
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 
 .option-section:hover {
     box-shadow: 0 4px 16px rgba(255, 77, 77, 0.4);
 }
 
 /* Título */
-.option-section h1 {
-    font-size: 36px;
-    font-weight: 600;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #ff4d4d;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+/* Destaque para o esporte escolhido */
+.esporte-destaque {
+    font-size: 22px;
+    font-weight: bold;
+    color: #f1f1f1;
+    text-transform: capitalize;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #0f2027, #353535, #2f3030);
+    padding: 10px 20px;
+    border-radius: 12px;
+    display: inline-block;
+    animation: pulseGlow 1.5s infinite;
 }
 
-/* Texto da descrição */
-.option-section p {
-    font-size: 19px; /* Aumentei um pouco o tamanho da fonte para tornar o texto mais legível */
-    line-height: 1.8; /* Aumentei a altura da linha para dar mais espaço entre as linhas */
-    margin-bottom: 25px; /* Aumentei a margem inferior para dar mais espaçamento entre os parágrafos */
-    color: #f1f1f1; /* Mantive o tom suave de branco */
-    font-weight: 300; /* Deixei o peso da fonte mais leve para um toque mais suave */
-    letter-spacing: 0.8px; /* Aumentei o espaçamento entre as letras para dar mais leveza */
-    text-align: center; /* Centralizei o texto para dar mais harmonia à seção */
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Adicionei uma sombra suave para dar profundidade ao texto */
+/* Animação suave para destaque */
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 0 10px #cc1212;
+    }
+    50% {
+        box-shadow: 0 0 20px #f50202, 0 0 30px #e90303;
+    }
+    100% {
+        box-shadow: 0 0 10px #f12a2a;
+    }
 }
+
 
 /* Para o caso de ter um título ou outra seção específica */
 .option-section h1 {
     font-size: 30px;
-    color: #ff5757; /* Uma cor mais vibrante e chamativa */
-    font-weight: 700;
-    letter-spacing: 1px;
-    margin-bottom: 20px;
-    text-transform: uppercase; /* Tornando o título em maiúsculas para destacar */
-    text-align: center;
+    color: #eeecec; /* Cor vibrante e clara */
+    font-weight: 700; /* Negrito para maior impacto */
+    letter-spacing: 1px; /* Leve espaçamento entre as letras para modernizar */
+    margin-bottom: 20px; /* Espaçamento inferior */
+    text-transform: uppercase; /* Maiúsculas para dar destaque */
+    text-align: center; /* Alinhar o título ao centro */
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 0, 150, 0.3); /* Sombra com efeito de brilho sutil */
+    font-family: 'Arial', sans-serif; /* Fonte moderna e limpa */
+    position: relative; /* Para posicionar o pseudo-elemento */
+    z-index: 1;
 }
+
+.option-section h1::after {
+    content: ''; /* Pseudo-elemento */
+    position: absolute;
+    bottom: -10px; /* Posiciona o efeito de linha abaixo do texto */
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #ff4d4d, #f71c1c); /* Gradiente vibrante para o efeito */
+    box-shadow: 0 0 10px rgba(255, 0, 150, 0.4);
+    z-index: -1; /* Coloca atrás do texto */
+}
+
 
 
 /* Texto de esportes selecionados */
 .option-section p span {
-    font-size: 18px;
-    font-weight: 600;
-    color: #ff7373;
+    font-size: 20px;                /* Aumentei um pouco o tamanho da fonte para melhorar a legibilidade */
+    font-weight: 700;               /* Peso da fonte mais forte para destacar */
+    color: #ff4d4d;                 /* Uma cor vermelha vibrante, mais chamativa */
+    background: linear-gradient(135deg, #ff6f6f, #ff4d4d); /* Gradiente de fundo em tons de vermelho */
+    padding: 5px 10px;              /* Adicionei um pouco de espaçamento ao redor do texto para dar destaque */
+    border-radius: 10px;            /* Bordas arredondadas para um visual mais moderno */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidade ao elemento */
+    transition: all 0.3s ease;      /* Transição suave para efeitos ao passar o mouse */
 }
+
+/* Efeito ao passar o mouse sobre o texto */
+.option-section p span:hover {
+    transform: scale(1.1);           /* Aumenta ligeiramente o texto ao passar o mouse */
+    background: linear-gradient(135deg, #ff4d4d, #ff6f6f); /* Inverte o gradiente para um efeito interativo */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Aumenta a sombra para dar mais destaque */
+}
+
 
 /* Ícones de ações */
 .action-icons {
@@ -210,9 +279,9 @@
 {% block content %}
 <div class="content">
     <div class="option-section">
-        <h1>O que deseja fazer?</h1>
+        <h1>Sua próxima jogada começa aqui!</h1>
         {% if esporte %}
-            <p>Você selecionou: {{ esporte }}</p>
+            <p class="esporte-destaque">Você selecionou: {{ esporte }}</p>
         {% endif %}
         <p>Escolha uma das opções abaixo</p>
 
