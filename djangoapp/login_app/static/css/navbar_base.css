@@ -53,9 +53,6 @@
         0 0 30px rgba(255, 100, 100, 0.4);
 }
 
-
-
-/* Container do menu para animação de slide */
 /* Base do menu */
 .navbar-menu {
     list-style: none;
@@ -63,22 +60,10 @@
     gap: 25px;
     margin: 0;
     padding: 0;
-    transition: max-height 0.4s ease-in-out;
-    overflow: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-/* Estados do menu (para mobile) */
-.navbar-menu.collapsed {
-    max-height: 0;
-    flex-direction: column;
-}
-
-.navbar-menu.expanded {
-    max-height: 500px;
-    flex-direction: column;
-}
-
-
+/* Links */
 .navbar-menu li {
     position: relative;
 }
@@ -90,6 +75,7 @@
     transition: color 0.3s ease;
     position: relative;
 }
+
 .navbar-menu a::after {
     content: '';
     position: absolute;
@@ -100,78 +86,111 @@
     background-color: #ec6464;
     transition: width 0.3s ease;
 }
+
 .navbar-menu a:hover::after {
     width: 100%;
 }
+
 .navbar-menu a:hover {
     color: #b3b4b1;
     text-shadow: 0 0 5px #8b8686;
 }
 
+/* Botão toggle hamburger */
 .menu-toggle {
     display: none;
     background: none;
     border: none;
-    color: #f1f1f1;
+    color: #fff; /* branco padrão */
     font-size: 24px;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
+
 .menu-toggle:hover {
-    color: #69ff69;
+    color: #eee9e9; /* vermelho vibrante no hover */
     transform: scale(1.1);
 }
 
-/* Animação do gradiente de fundo */
-@keyframes gradientFlow {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
 
 /* Responsividade */
-@media (max-width: 992px) {
-    .navbar { padding: 12px 20px; }
-    .navbar-menu { gap: 15px; }
-    .navbar-menu a { font-size: 16px; }
-}
-
 @media (max-width: 768px) {
-    .navbar { flex-wrap: wrap; padding: 10px 15px; }
-    .navbar-logo { font-size: 24px; order: 1; }
-    .menu-toggle { display: block; order: 2; }
+    .navbar {
+        flex-wrap: wrap;
+        padding: 10px 15px;
+    }
+    .navbar-logo {
+        font-size: 24px;
+        order: 1;
+    }
+    .menu-toggle {
+        display: block;
+        order: 2;
+    }
 
-    /* inicia menu colapsado */
-    .navbar-menu { display: flex; width: 100%; order: 3; padding: 0; gap: 10px; }
-    .navbar-menu.collapsed { max-height: 0; }
-    .navbar-menu.expanded { max-height: 500px; }
-    .navbar-menu li { padding: 8px 0; }
-    .navbar-menu a { font-size: 16px; padding: 8px 0; }
-    .navbar-menu a::after { bottom: 0; }
+    /* Menu inicia oculto */
+    .navbar-menu {
+        flex-direction: column;
+        width: 100%;
+        opacity: 0;
+        visibility: hidden;
+        max-height: 0;
+        overflow: hidden;
+        order: 3;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 0 0 16px 16px;
+        transition: max-height 0.35s ease, opacity 0.35s ease;
+    }
+
+    /* Quando ativo mostra o menu */
+    .navbar-menu.active {
+        opacity: 1;
+        visibility: visible;
+        max-height: 500px; /* permite a animação */
+        padding: 10px 0;
+    }
+
+    .navbar-menu li {
+        padding: 10px 20px;
+    }
+
+    .navbar-menu a {
+        font-size: 16px;
+        padding: 8px 0;
+        display: block;
+    }
+
+    .navbar-menu a::after {
+        bottom: 2px;
+    }
 }
 
 @media (max-width: 480px) {
-    .navbar-logo { font-size: 20px; }
-    .menu-toggle { font-size: 20px; }
-    .navbar-menu a { font-size: 15px; }
+    .navbar-logo {
+        font-size: 20px;
+    }
+    .menu-toggle {
+        font-size: 20px;
+    }
+    .navbar-menu a {
+        font-size: 15px;
+    }
 }
 
 /* Remove qualquer fundo dos links na navbar */
 .navbar-menu a,
 .navbar-menu a:link,
 .navbar-menu a:visited {
-  background-color: transparent !important;
+    background-color: transparent !important;
 }
-
 
 .navbar-menu .btn,
 .navbar-menu button {
-  background: transparent !important;
-  border: 1px solid #fff;     
-  color: #f1f1f1 !important;
+    background: transparent !important;
+    border: 1px solid #fff;
+    color: #f1f1f1 !important;
 }
 
-
 .navbar-menu a.active {
-  background-color: transparent !important;
+    background-color: transparent !important;
 }

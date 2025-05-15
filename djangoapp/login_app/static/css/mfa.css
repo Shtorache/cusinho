@@ -5,40 +5,66 @@
     box-sizing: border-box;
 }
 
+.page-title {
+    margin: 0 auto 40px auto; /* centraliza horizontalmente e dá margem inferior */
+    text-align: center;
+    width: fit-content; /* para o texto ocupar só o espaço necessário */
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1e2413, #1f801f);
+    background: linear-gradient(135deg, #000000, #a72020);
     color: #eaeaea;
     min-height: 100vh;
-    padding: 50px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     border: 2px solid #2e2e2e;
     gap: 30px; /* espaçamento entre os filhos diretos do body */
 }
 
+/* Container principal */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
 /* Títulos */
 h1 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     text-align: center;
-    margin-bottom: 30px;
-    color: #ffffff;
-    text-shadow: 2px 2px 5px #00000066;
-    border-bottom: 2px solid #1f801f;
-    padding-bottom: 10px;
+    margin-bottom: 40px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+
+    /* Gradiente quente: do tom “Crimson” para pêssego claro */
+    background: linear-gradient(90deg, #ff5f6d 0%, #ffc371 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* Sombra e borda para destacar */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    border-bottom: 3px solid #7f1a1a;
+    padding-bottom: 15px;
 }
+
 
 /* Texto padrão */
 p {
     font-size: 1rem;
-    color: #ccc;
+    color: #ddd;
     line-height: 1.6;
     margin-bottom: 30px;
-    padding: 15px;
-    border: 1px solid #333;
-    border-radius: 6px;
-    background-color: #1a1a1a;
+    padding: 18px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    background-color: rgba(30, 30, 30, 0.7);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    transition: background-color 0.3s ease;
+}
+
+p:hover {
+    background-color: rgba(30, 30, 30, 0.85);
 }
 
 /* Painéis */
@@ -50,10 +76,10 @@ p {
     padding: 30px;
     margin-bottom: 40px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    border: 2px solid #4dd0e1;
+    border: 2px solid #000;
 }
 
-/* Ações */
+/* Ações dentro dos painéis */
 .panel-actions {
     display: flex;
     justify-content: space-between;
@@ -64,62 +90,91 @@ p {
     padding-top: 20px;
 }
 
-/* Botões */
-button, .btn {
-    padding: 12px 24px;
-    border: 2px solid #ffffff44;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: #fff;
-    margin-top: 10px;
+/* Escopo específico para botões na página MFA */
+.mfa-page .mfa-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
 }
 
-button, .btn-primary {
+.mfa-page .mfa-actions button,
+.mfa-page .mfa-actions .btn {
+    min-width: 120px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(77, 208, 225, 0.3);
+    color: #fff;
+    border: none;
     background: linear-gradient(135deg, #4dd0e1, #1976d2);
 }
 
-button:hover, .btn-primary:hover {
-    background: linear-gradient(135deg, #1976d2, #4dd0e1);
+.mfa-page .mfa-actions button:hover,
+.mfa-page .mfa-actions .btn:hover {
     transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(25, 118, 210, 0.7);
 }
 
-button.danger {
+.mfa-page .mfa-actions button.danger {
     background-color: #ff4b4b;
-    border-color: #ff000055;
 }
 
-button.danger:hover {
+.mfa-page .mfa-actions button.danger:hover {
     background-color: #e04343;
 }
 
-button.secondary {
+.mfa-page .mfa-actions button.secondary,
+.mfa-page .mfa-actions .secondary.btn {
     background-color: #6c757d;
-    border-color: #555;
 }
 
-button.secondary:hover {
+.mfa-page .mfa-actions button.secondary:hover,
+.mfa-page .mfa-actions .secondary.btn:hover {
     background-color: #5a6268;
 }
 
-/* Links */
-a {
-    color: #4dd0e1;
+/* Links da MFA (ativar/app) */
+.mfa-page a {
+    display: block;
+    width: max-content;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+    background: rgba(77, 208, 225, 0.1);
+    box-shadow: 0 4px 8px rgba(77, 208, 225, 0.3);
+    color: #d6e7e9;
     text-decoration: none;
-    display: inline-block;
-    padding: 5px 10px;
-    margin-top: 20px;
-    border: 1px solid transparent;
-    transition: 0.3s ease;
 }
 
-a:hover {
-    color: #ffffff;
-    background-color: #4dd0e133;
-    border: 1px solid #4dd0e1;
-    border-radius: 5px;
+.mfa-page a:hover,
+.mfa-page a:focus {
+    color: #e2e4e6;
+    background: linear-gradient(135deg, #e00606, #e7eee7);
+    box-shadow: 0 6px 14px rgba(25, 118, 210, 0.7);
+    transform: scale(1.05);
+}
+
+/* Navbar links (escopo separado) */
+.navbar a {
+    /* mantenha aqui o estilo original da navbar, por exemplo: */
+    color: #eaeaea;
+    padding: 5px 10px;
+    text-decoration: none;
+}
+
+/* Remove marcadores de lista */
+ul, ol {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
 }
 
 /* Responsividade */

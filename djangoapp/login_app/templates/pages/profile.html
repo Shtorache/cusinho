@@ -3,59 +3,65 @@
 {% load i18n %}
 
 {% block extra_head %}
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="{% static 'css/styleprofile.css' %}">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="{% static 'css/styleprofile.css' %}">
 {% endblock extra_head %}
-    
+
 {% block content %}
-    {% if user_form.errors %}
-    <div class="alert alert-danger alert-dismissible" role="alert">
-        <div id="form_errors">
-            {% for key, value in user_form.errors.items %}
-                <strong>{{ value }}</strong>
-            {% endfor %}
+<div class="profile-page-wrapper container">
+  {% if user_form.errors %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {% for field, errors in user_form.errors.items %}
+        {% for error in errors %}
+          <div>{{ error }}</div>
+        {% endfor %}
+      {% endfor %}
+      <button type="button" class="close" data-dismiss="alert" aria-label="{% trans "Close" %}">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {% endif %}
+
+  <div class="profile-card row mx-auto">
+    <div class="col-md-4 text-center">
+      <div class="avatar-preview mb-3">
+        <img
+          <img src="{% static 'images/avatar_xbox.jpeg' %}" alt="Avatar padrão" class="avatar img-fluid rounded-circle" />
+
+          alt="{{ user.username }}"
+          class="avatar img-fluid rounded-circle"
+        >
+      </div>
+      <label class="btn btn-outline-light btn-sm w-100" for="id_img">
+        
+        
+      </label>
+    </div>
+
+    <div class="col-md-8">
+      <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="{{ user_form.username.id_for_label }}" class="small mb-1">{% trans "Username" %}</label>
+          {{ user_form.username }}
         </div>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    {% endif %}
 
-    <div class="form-content container d-flex justify-content-center align-items-center">
-        <form method="post" enctype="multipart/form-data" class="form-profile">
-            {% csrf_token %}
-            
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="username" class="small mb-1">Username:</label>
-                        {{ user_form.username }}
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email" class="small mb-1">Email:</label>
-                        {{ user_form.email }}
-                    </div>
-                    
-                    <div class="form-group">
-                        <a href="#">Change Password</a>
-                        <hr>
-                        
-                        <div class="avatar-preview mb-3">
-                            <img src="{{ user.profile.img.url }}" alt="Avatar" class="img-fluid rounded-circle">
-                        </div>
-                        
-                        <label class="small mb-1">Change Avatar:</label>
-                        {{ profile_form.img }}
-                    </div>
-                </div>
-            </div>
-            
-            <div class="form-actions d-flex justify-content-between mt-4">
-                <button type="submit" class="btn btn-dark btn-lg">Save Changes</button>
-                <button type="reset" class="btn btn-dark btn-lg">Reset</button>
-            </div>
-        </form>
-    </div>
+        <div class="form-group">
+          <label for="{{ user_form.email.id_for_label }}" class="small mb-1">{% trans "Email" %}</label>
+          {{ user_form.email }}
+        </div>
 
+        <div class="form-group">
+          <a href="{% url 'account_change_password' %}" class="btn btn-link p-0">{% trans "Change Password" %}</a>
+        </div>
+
+        <div class="form-actions d-flex justify-content-end mt-4">
+          <button type="reset" class="btn btn-secondary mr-2">{% trans "Resetar" %}</button>
+          <button type="submit" class="btn btn-primary">{% trans "Salvar" %}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock content %}
