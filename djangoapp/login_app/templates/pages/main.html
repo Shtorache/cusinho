@@ -5,159 +5,33 @@
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <link rel="shortcut icon" href="{% static 'images/Goal_icon-icons.com_62267.ico' %}" type="image/x-icon">
+
 <style>
-    .intro-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;  /* Adicionando alinhamento vertical */
-    padding: 40px 25px;       /* Aumentei um pouco o espaçamento interno */
-    background: linear-gradient(135deg, #1e0f0f, #000000);  /* Gradiente mais profundo */
-    color: white;
-    margin: 130px auto 20px;
-    border-radius: 15px;      /* Bordas arredondadas para um visual mais moderno */
-    max-width: 800px;        /* Mantido o tamanho máximo conforme solicitado */
-    width: 100%;              /* A largura se adapta ao tamanho da tela */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);  /* Sombra mais suave */
-    text-align: center;
-    overflow: hidden;         /* Impede que o conteúdo ultrapasse as bordas */
-    transition: all 0.3s ease; /* Adiciona transição suave para interações */
-}
-
-.intro-section:hover {
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);  /* Sombra ampliada no hover */
-    transform: scale(1.02);  /* Leve aumento ao passar o mouse */
-}
-
-.intro-section h1 {
-    font-size: 40px;                     /* Tamanho maior para chamar atenção */
-    font-weight: 700;
-    letter-spacing: 2px;                 /* Aumentei o espaçamento entre as letras para mais destaque */
-    margin-bottom: 25px;
-    text-transform: uppercase;           /* Título em maiúsculas */
-    text-align: center;                  /* Centralizando o texto */
-    background: linear-gradient(45deg, #ff6f61, #ff6347);  /* Gradiente de cor para o título */
-    -webkit-background-clip: text;       /* Faz o gradiente aparecer no texto */
-    color: transparent;                  /* Tornar o texto transparente para que o gradiente apareça */
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 99, 71, 0.8); /* Sombra forte e brilho ao redor */
-    animation: bounceIn 1s ease-out;      /* Animação suave de entrada */
-}
-
-@keyframes bounceIn {
-    0% {
-        transform: scale(0.5);
-        opacity: 0;
+    /* ===== Animações ===== */
+    @keyframes redGlow {
+        0%, 100% {
+            box-shadow: 0 0 10px #ff3c3c, 0 0 20px #ff3c3c;
+        }
+        50% {
+            box-shadow: 0 0 20px #ff3c3c, 0 0 30px #ff3c3c;
+        }
     }
-    60% {
-        transform: scale(1.1);
-        opacity: 1;
+
+    @keyframes bounceIn {
+        0% {
+            transform: scale(0);
+            opacity: 0;
+        }
+        50% {
+            transform: scale(1.05);
+            opacity: 0.6;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
     }
-    100% {
-        transform: scale(1);
-    }
-}
 
-
-.intro-section p {
-    font-size: 20px;                    /* Tamanho ajustado para maior legibilidade */
-    font-weight: 300;
-    letter-spacing: 1px;                 /* Aumento do espaçamento entre as letras */
-    color: transparent;                  /* Tornar o texto transparente para que o gradiente apareça */
-    background: linear-gradient(45deg, #ff6f61, #ff6347);  /* Gradiente de cor no texto */
-    -webkit-background-clip: text;       /* Faz o gradiente aparecer no texto */
-    text-align: center;                  /* Centralizando o texto */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 99, 71, 0.6); /* Sombra mais leve com brilho */
-    margin-top: 15px;
-    max-width: 800px;
-    animation: bounceIn 1.2s ease-out;    /* Animação suave de entrada */
-}
-
-/* Animação para o efeito de entrada */
-@keyframes bounceIn {
-    0% {
-        transform: scale(0);
-        opacity: 0;
-    }
-    50% {
-        transform: scale(1.05);
-        opacity: 0.6;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-
-
-
-    .sport-icons {
-    display: flex;
-    justify-content: center;
-    gap: 35px;
-    flex-wrap: wrap;
-    width: 100%;
-    padding: 20px;
-    margin-top: 20px;
-}
-
-.sport-icon {
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-    cursor: pointer;
-    background-color: #212121; /* Tom mais escuro de fundo para dar destaque */
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-    max-width: 120px; /* Limita a largura para um tamanho mais controlado */
-    width: 100%;
-    margin-bottom: 20px; /* Espaçamento entre os ícones */
-}
-
-.sport-icon:hover {
-    transform: scale(1.1);
-    box-shadow: 0 8px 20px rgba(255, 77, 77, 0.5);
-    background-color: #1a1a1a; /* Escurece o fundo no hover para maior destaque */
-}
-
-.sport-icon img {
-    width: 90px; /* Aumenta um pouco o tamanho da imagem para mais destaque */
-    height: 90px;
-    object-fit: cover;
-    border-radius: 50%;
-    padding: 8px;
-    background-color: #222;
-    border: 3px solid #e60000;
-    transition: border-color 0.3s ease;
-}
-
-.sport-icon:hover img {
-    border-color: #ff7373; /* Bordas suavemente mudando para uma cor mais vibrante */
-}
-
-.sport-icon a {
-    text-decoration: none;
-    color: #f1f1f1; /* Cor mais suave para o texto */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 12px;
-    font-weight: 600;
-    font-size: 14px;
-    text-transform: capitalize; /* Faz os nomes ficarem com a primeira letra maiúscula */
-    transition: color 0.3s ease;
-}
-
-.sport-icon a:hover {
-    color: #ff4d4d; /* Cor de destaque para o texto ao passar o mouse */
-}
-
-.sport-icon a:active {
-    color: #e60000; /* Cor mais intensa quando o ícone é clicado */
-}
-
-
-    /* Animação de entrada */
     @keyframes fadeInUp {
         0% {
             opacity: 0;
@@ -169,12 +43,133 @@
         }
     }
 
+    /* ===== Estilos da seção de introdução ===== */
+    .intro-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 25px;
+        background: linear-gradient(135deg, #1e0f0f, #000000);
+        color: white;
+        margin: 130px auto 20px;
+        border-radius: 15px;
+        max-width: 800px;
+        width: 100%;
+        text-align: center;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .intro-section:hover {
+        transform: scale(1.02);
+        border: 2px solid #ff3c3c;
+        animation: redGlow 1.5s infinite ease-in-out;
+    }
+
+    .intro-section h1 {
+        font-size: 40px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        background: linear-gradient(45deg, #ff6f61, #ff6347);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 99, 71, 0.8);
+        animation: bounceIn 1s ease-out forwards;
+    }
+
+    .intro-section p {
+        font-size: 20px;
+        font-weight: 300;
+        letter-spacing: 1px;
+        background: linear-gradient(45deg, #ff6f61, #ff6347);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 99, 71, 0.6);
+        margin-top: 15px;
+        max-width: 800px;
+        animation: bounceIn 1.2s ease-out forwards;
+    }
+
+    /* ===== Ícones esportivos ===== */
+    .sport-icons {
+        display: flex;
+        justify-content: center;
+        gap: 35px;
+        flex-wrap: wrap;
+        width: 100%;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .sport-icon {
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        cursor: pointer;
+        background-color: #212121;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        max-width: 120px;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .sport-icon:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 20px rgba(255, 77, 77, 0.5);
+        background-color: #1a1a1a;
+    }
+
+    .sport-icon img {
+        width: 90px;
+        height: 90px;
+        object-fit: cover;
+        border-radius: 50%;
+        padding: 8px;
+        background-color: #222;
+        border: 3px solid #e60000;
+        transition: border-color 0.3s ease;
+    }
+
+    .sport-icon:hover img {
+        border-color: #ff7373;
+    }
+
+    .sport-icon a {
+        text-decoration: none;
+        color: #f1f1f1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 12px;
+        font-weight: 600;
+        font-size: 14px;
+        text-transform: capitalize;
+        transition: color 0.3s ease;
+    }
+
+    .sport-icon a:hover {
+        color: #ff4d4d;
+    }
+
+    .sport-icon a:active {
+        color: #e60000;
+    }
+
+    /* ===== Animação fade-in para os ícones ===== */
     .fade-in-up {
         animation: fadeInUp 0.8s ease forwards;
         opacity: 0;
     }
 
-    /* Responsividade */
+    /* ===== Responsividade ===== */
     @media (max-width: 768px) {
         .intro-section {
             margin-top: 100px;
@@ -205,37 +200,64 @@
 {% endblock %}
 
 {% block content %}
+
 <div class="content">
-    <div class="intro-section">
+    <section class="intro-section" role="region" aria-label="{% trans 'Seção de boas-vindas' %}">
         <h1>Bem-vindo ao EsporteFY!</h1>
         <p>Encontre as melhores quadras esportivas da sua região</p>
 
-        <div class="sport-icons">
+        <nav class="sport-icons" aria-label="{% trans 'Seleção de esportes' %}">
             <div class="sport-icon fade-in-up" style="animation-delay: 0.1s">
-                <a href="{% url 'selecao_opcao' 'futebol' %}" title="Ver quadras de Futebol">
-                    <img src="{% static 'images/soccer-ball.png' %}" alt="Futebol">
-                    <span>Futebol</span>
+                <a href="{% url 'selecao_opcao' 'futebol' %}" title="{% trans 'Ver quadras de Futebol' %}">
+                    <img src="{% static 'images/soccer-ball.png' %}" alt="{% trans 'Ícone de futebol' %}">
+                    <span>{% trans 'Futebol' %}</span>
                 </a>
             </div>
             <div class="sport-icon fade-in-up" style="animation-delay: 0.2s">
-                <a href="{% url 'selecao_opcao' 'basquete' %}" title="Ver quadras de Basquete">
-                    <img src="{% static 'images/basketball.jpg' %}" alt="Basquete">
-                    <span>Basquete</span>
+                <a href="{% url 'selecao_opcao' 'basquete' %}" title="{% trans 'Ver quadras de Basquete' %}">
+                    <img src="{% static 'images/basketball.jpg' %}" alt="{% trans 'Ícone de basquete' %}">
+                    <span>{% trans 'Basquete' %}</span>
                 </a>
             </div>
             <div class="sport-icon fade-in-up" style="animation-delay: 0.3s">
-                <a href="{% url 'selecao_opcao' 'vôlei' %}" title="Ver quadras de Vôlei">
-                    <img src="{% static 'images/volleyball.jpg' %}" alt="Vôlei">
-                    <span>Vôlei</span>
+                <a href="{% url 'selecao_opcao' 'vôlei' %}" title="{% trans 'Ver quadras de Vôlei' %}">
+                    <img src="{% static 'images/volleyball.jpg' %}" alt="{% trans 'Ícone de vôlei' %}">
+                    <span>{% trans 'Vôlei' %}</span>
                 </a>
             </div>
             <div class="sport-icon fade-in-up" style="animation-delay: 0.4s">
-                <a href="{% url 'selecao_opcao' 'tênis' %}" title="Ver quadras de Tênis">
-                    <img src="{% static 'images/tennis.jpg' %}" alt="Tênis">
-                    <span>Tênis</span>
+                <a href="{% url 'selecao_opcao' 'tênis' %}" title="{% trans 'Ver quadras de Tênis' %}">
+                    <img src="{% static 'images/tennis.jpg' %}" alt="{% trans 'Ícone de tênis' %}">
+                    <span>{% trans 'Tênis' %}</span>
                 </a>
             </div>
-        </div>
-    </div>
+        </nav>
+    </section>
 </div>
+
+<script>
+  // Função que gera uma cor hex aleatória
+  function randomColor() {
+    return '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+  }
+
+  // Função que gera um ângulo aleatório para o gradiente
+  function randomAngle() {
+    return Math.floor(Math.random() * 360);
+  }
+
+  // Função que atualiza a variável CSS com novo gradiente no body
+  function updateBackground() {
+    const angle = randomAngle();
+    const color1 = randomColor();
+    const color2 = randomColor();
+    document.body.style.setProperty('--bg-gradient', `linear-gradient(${angle}deg, ${color1}, ${color2})`);
+  }
+
+  // Atualiza o fundo a cada 4 segundos
+  setInterval(updateBackground, 4000);
+
+  // Inicializa o fundo no carregamento
+  updateBackground();
+</script>
 {% endblock %}

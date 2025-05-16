@@ -220,6 +220,7 @@ def campo_detalhes(request, nome_campo):
 
 @login_required
 def participar_partida(request, partida_id):
+    
     return render(request, 'pages/participar.html', {'partida_id': partida_id})
 
 def participar_dois(request):

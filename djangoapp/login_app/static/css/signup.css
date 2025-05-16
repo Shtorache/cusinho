@@ -1,26 +1,178 @@
 /* === Base === */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1e2413, #1f801f);
+    background: linear-gradient(135deg, #6b1111, #3f0101);
+    background-size: 400% 400%;
+    animation: gradientShift 20s ease infinite;
     margin: 0;
     padding: 20px;
-    min-height: 100vh;
-    color: #eaeaea;
-    box-sizing: border-box;
+    color: #f8dede;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+/* Animação suave do gradiente vermelho */
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
+
+/* Bolhas flutuantes vermelhas */
+.background-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+  .bubble {
+    position: absolute;
+    bottom: -50px;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(240, 178, 178, 0.986);
+    border-radius: 50%;
+    animation: rise 5s infinite ease-in-out;
+  }
+
+.bubble:nth-child(2) {
+  left: 20%;
+  width: 20px;
+  height: 20px;
+  animation-duration: 10s;
+  animation-delay: 2s;
+}
+
+.bubble:nth-child(3) {
+  left: 40%;
+  width: 35px;
+  height: 35px;
+  animation-duration: 14s;
+  animation-delay: 4s;
+}
+
+.bubble:nth-child(4) {
+  left: 60%;
+  width: 25px;
+  height: 25px;
+  animation-duration: 11s;
+  animation-delay: 1s;
+}
+
+.bubble:nth-child(5) {
+  left: 80%;
+  width: 40px;
+  height: 40px;
+  animation-duration: 16s;
+  animation-delay: 3s;
+}
+
+@keyframes rise {
+  0% {
+    bottom: -100px;
+    opacity: 0;
+    transform: translateX(0);
+  }
+  50% {
+    opacity: 0.3;
+    transform: translateX(20px);
+  }
+  100% {
+    bottom: 110%;
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+}
+
 
 /* === Container === */
 .signup-container {
-    max-width: 380px;
-    margin: 60px auto;
-    padding: 25px;
-    background-color: #121212;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  max-width: 420px;
+  margin: 60px auto;
+  padding: 30px 25px;
+ background: #121212;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px);
+  color: #eaeaea;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border: 2px solid transparent;
+  transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.3s ease;
 }
+
+.signup-container:hover {
+  border-color: #a01e1e; /* tom de azul do botão submit */
+  box-shadow:
+    0 0 10px 3px rgba(223, 29, 29, 0.8),
+    0 0 30px 15px rgba(2, 2, 2, 0.4);
+  transform: translateY(-3px);
+}
+
+
+/* Título centralizado e com margem */
+.signup-container h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #f8dede;
+}
+
+/* Formulário em coluna */
+.signup-container form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Inputs com estilo */
+.signup-container form input[type="text"],
+.signup-container form input[type="email"],
+.signup-container form input[type="password"] {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #f8dede;
+  font-size: 14px;
+  outline: none;
+  margin-bottom: 15px;
+  transition: background 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.signup-container form input:focus {
+  background-color: rgba(253, 250, 250, 0.1);
+}
+
+
+/* Link "Já tem conta?" centralizado e sem ponto */
+.signup-container p {
+  margin-top: 20px;
+  color: #f8dede;
+  font-size: 17px;
+  text-align: center;
+}
+
+.signup-container p a {
+  color: #ff4d4d; /* vermelho mais vibrante */
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+  text-shadow: 0 0 5px rgba(255, 77, 77, 0.7);
+}
+
+.signup-container p a:hover {
+  text-decoration: underline;
+  color: #ff1a1a;
+  text-shadow: 0 0 8px rgba(255, 26, 26, 0.9);
+}
+
 
 /* === Títulos e Textos === */
 h1, h2 {
@@ -31,20 +183,34 @@ h1, h2 {
 }
 
 h1 {
-    font-size: 1.9rem;
+  font-size: 1.9rem;
+  color: #f8dede;           /* tom claro para contraste com fundo escuro */
+  font-weight: 700;         /* negrito para destaque */
+  margin-bottom: 25px;      /* espaçamento abaixo do título */
+  text-align: center;       /* centralizado para destaque */
+  text-shadow: 0 2px 6px rgba(123, 10, 10, 0.7); /* sombra sutil para profundidade */
 }
 
 h2 {
-    font-size: 1.4rem;
-    margin-top: 20px;
+  font-size: 1.4rem;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  color: #f8dede;           /* mesma cor do h1 para consistência */
+  font-weight: 600;         /* peso médio */
+  text-align: left;         /* alinhado à esquerda para subtítulos */
+  text-shadow: 0 1px 4px rgba(123, 10, 10, 0.6); /* sombra leve */
 }
 
+
 p {
-    text-align: center;
-    font-size: 1rem;
-    color: #cccccc;
-    margin-bottom: 10px;
+  text-align: center;
+  font-size: 1rem;
+  color: #cccccc;        /* cinza claro para bom contraste */
+  margin-bottom: 10px;
+  line-height: 1.5;      /* para facilitar a leitura */
+  font-weight: 400;
 }
+
 
 /* === Formulário === */
 form {
@@ -86,83 +252,49 @@ button {
     padding: 12px;
     font-size: 1rem;
     font-weight: bold;
-    background: linear-gradient(135deg, #64b5f6, #2196f3);
+    background: linear-gradient(20deg, #b80f0f, #0c0c0c);
     color: #ffffff;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.3s ease;
+    transition: background 0.5s ease, transform 0.4s ease;
+    box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
 }
 
 button:hover {
-    background: linear-gradient(135deg, #2196f3, #64b5f6);
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, #f44336, #b71c1c); /* tons de vermelho */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(244, 67, 54, 0.6);
 }
+
 
 /* === Link como botão === */
 a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-    text-decoration: none;
-    color: #4dd0e1;
-    background-color: #212121;
-    border-radius: 8px;
-    padding: 10px 0;
-    transition: background 0.3s ease, color 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  text-decoration: none;
+  color: #2e9aff;
+  background-color: #212121;
+  border-radius: 8px;
+  padding: 10px 0;
+  transition: background 0.3s ease, color 0.3s ease;
+  cursor: pointer; /* deixa o cursor com a mãozinha */
+  width: 100%; /* para ocupar toda a largura do container */
 }
 
 a:hover {
-    background-color: #333;
-    color: #fff;
+  background-color: #108b00;
+  color: #eee9e9;
 }
 
-/* === Navbar === */
-.navbar {
-    background-color: #1a1a1a;
-    padding: 12px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
-}
 
-.navbar-logo {
-    color: #ffffff;
-    font-size: 1.5rem;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.navbar-menu {
-    list-style: none;
-    display: flex;
-    gap: 15px;
-    padding: 0;
-    margin: 0;
-    flex-wrap: wrap;
-}
-
-.navbar-menu li a {
-    color: #4dd0e1;
-    text-decoration: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
-}
-
-.navbar-menu li a:hover {
-    background-color: #333;
-    color: #fff;
-}
 
 /* === Mensagens === */
 .messages {
     background-color: #1e1e1e;
-    border-left: 4px solid #4dd0e1;
+    border-left: 4px solid #e4eaeb;
     padding: 15px;
     margin-bottom: 20px;
     border-radius: 6px;
@@ -177,6 +309,22 @@ a:hover {
 .messages li {
     color: #eaeaea;
     font-size: 0.95rem;
+}
+
+.navbar {
+  width: 100vw; /* usa toda a largura da viewport */
+  max-width: 100%;
+  position: fixed; /* se quiser que fique fixa no topo */
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #121212; /* exemplo de fundo escuro */
+  z-index: 1000;
+  padding: 0 20px; /* padding horizontal para não grudar nas bordas */
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  height: 75px; /* altura fixa da navbar */
 }
 
 /* === Responsividade === */
@@ -203,26 +351,12 @@ a:hover {
         font-size: 0.95rem;
     }
 
-    .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
+    
+}
 
-    .navbar-menu {
-        flex-direction: column;
-        gap: 8px;
-        width: 100%;
-    }
-
-    .navbar-menu li {
-        width: 100%;
-    }
-
-    .navbar-menu li a {
-        width: 100%;
-        display: block;
-        text-align: left;
-        padding: 8px;
-    }
+.social-no-bullets ul,
+.social-no-bullets ol {
+    list-style: none !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
 }

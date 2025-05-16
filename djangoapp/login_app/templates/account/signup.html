@@ -11,6 +11,15 @@
 {% endblock extra_head %}
 
 {% block content %}
+
+<div class="background-animation">
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+</div>
+
 <div class="signup-container">
     {% element h1 %}
         {% trans "Sign Up" %}
@@ -23,7 +32,7 @@
         </a>
     {% endsetvar %}
     {% element p %}
-        {% blocktranslate %}Already have an account? Then please {{ link }}sign in{{ end_link }}.{% endblocktranslate %}
+        {% blocktranslate %}Ja possui uma conta? {{ link }}Login{{ end_link }}{% endblocktranslate %}
     {% endelement %}
 
     {% if not SOCIALACCOUNT_ONLY %}
@@ -36,7 +45,12 @@
     {% endif %}
 
     {% if SOCIALACCOUNT_ENABLED %}
+    <div class="social-no-bullets">
         {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
-    {% endif %}
+    </div>
+{% endif %}
+
+
+
 </div>
 {% endblock content %}

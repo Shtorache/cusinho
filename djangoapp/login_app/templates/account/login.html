@@ -10,93 +10,256 @@
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/login.css' %}">
 <style>
-    /* Esconde especificamente a mensagem de logout */
-    .alert-success[class*="logout"],
-    .alert-success[class*="saiu"] {
-        display: none !important;
-    }
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 98%;
+  z-index: 1000;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+
+body, .main, .container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #6b1111, #3f0101);
+    background-size: 400% 400%;
+    animation: gradientShift 20s ease infinite;
+    margin: 0;
+    padding: 20px;
+    color: #f8dede;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .background-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .bubble {
+    position: absolute;
+    bottom: -50px;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(240, 178, 178, 0.986);
+    border-radius: 50%;
+    animation: rise 5s infinite ease-in-out;
+  }
+
+  .bubble:nth-child(2) { left: 25%; animation-delay: 1s; }
+  .bubble:nth-child(3) { left: 50%; width: 30px; height: 30px; animation-delay: 2s; }
+  .bubble:nth-child(4) { left: 75%; animation-delay: 3s; }
+  .bubble:nth-child(5) { left: 90%; width: 25px; height: 25px; animation-delay: 1.5s; }
+
+  @keyframes rise {
+    0% { transform: translateY(0); opacity: 0; }
+    50% { opacity: 0.3; transform: translateY(-50vh); }
+    100% { transform: translateY(-100vh); opacity: 0; }
+  }
+
+ .login-container {
+  max-width: 400px;
+  margin: 90px auto 0 auto; /* <- distância do topo aumentada */
+  background: rgba(0, 0, 0, 0.4);
+  padding: 30px;
+  border-radius: 12px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+}
+
+  .login-container h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #ff4c4c; /* tom vermelho suave */
+  font-size: 28px;
+  letter-spacing: 1px;
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* espaçamento entre os campos */
+}
+
+.login-container form input[type="text"],
+.login-container form input[type="email"],
+.login-container form input[type="password"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #000000;
+  font-size: 14px;
+  outline: none;
+  transition: background 0.3s ease;
+}
+
+.login-container form input[type="text"]:focus,
+.login-container form input[type="email"]:focus,
+.login-container form input[type="password"]:focus {
+  background-color: rgba(253, 250, 250, 0.1);
+}
+
+
+.login-container form button {
+  padding: 12px;
+  background-color: #ff4c4c;
+  color: #fff;
+  font-weight: bold;
+   text-align: center; /* Centraliza o texto */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.login-container form button:hover {
+  background-color: #ff1f1f;
+}
+
+
+  .alert {
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }
+
+  .alert-success {
+    background-color: #225522;
+    color: #ddffdd;
+  }
+
+  /* Oculta mensagens de logout */
+  .alert-success[class*="logout"],
+  .alert-success[class*="saiu"] {
+    display: none !important;
+  }
+
+
+ .socialaccount_providers {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.socialaccount_providers li {
+  list-style: none;
+  margin: 10px 0;
+}
+
+
 </style>
 {% endblock extra_head %}
 
 {% block content %}
+<div class="background-animation">
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+</div>
+
 <div class="login-container">
-    {# Filtra mensagens para excluir a de logout #}
-    {% if messages %}
-        {% for message in messages %}
-            {% if "saiu" not in message|lower and "sign out" not in message|lower and "logout" not in message|lower %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
-                </div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
+  {% if messages %}
+      {% for message in messages %}
+          {% if "saiu" not in message|lower and "sign out" not in message|lower and "logout" not in message|lower %}
+              <div class="alert alert-{{ message.tags }}">
+                  {{ message }}
+              </div>
+          {% endif %}
+      {% endfor %}
+  {% endif %}
 
-    {% element h1 %}
-        {% trans "Sign In" %}
-    {% endelement %}
+  {% element h1 %}
+      {% trans "Sign In" %}
+  {% endelement %}
 
-    {% if not SOCIALACCOUNT_ONLY %}
-        {% setvar link %}
-            <a href="{{ signup_url }}">
-        {% endsetvar %}
-        {% setvar end_link %}
-            </a>
-        {% endsetvar %}
-        {% element p %}
-            {% blocktranslate %}If you have not created an account yet, then please {{ link }}sign up{{ end_link }} first.{% endblocktranslate %}
-        {% endelement %}
+  {% if not SOCIALACCOUNT_ONLY %}
+      {% setvar link %}<a href="{{ signup_url }}">{% endsetvar %}
+      {% setvar end_link %}</a>{% endsetvar %}
+      {% element p %}
+          {% blocktranslate %}Seja bem-vindo! Se ainda não tem conta, crie a sua para aproveitar todos os recursos. {{ link }}Criar conta{{ end_link }} {% endblocktranslate %}
+      {% endelement %}
 
-        <form method="post" action="{% url 'account_login' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            {% if redirect_field_value %}
-                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-            {% endif %}
-            <button type="submit">{% trans "Sign In" %}</button>
-        </form>
-    {% endif %}
+      <form method="post" action="{% url 'account_login' %}">
+          {% csrf_token %}
+          {{ form.as_p }}
+          {% if redirect_field_value %}
+              <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+          {% endif %}
+          <button type="submit">{% trans "Sign In" %}</button>
+      </form>
+  {% endif %}
 
-    {% if LOGIN_BY_CODE_ENABLED or PASSKEY_LOGIN_ENABLED %}
-        <hr>
-        <div class="login-alternatives">
-            {% if PASSKEY_LOGIN_ENABLED %}
-                <form id="mfa_login" method="post" action="{% url 'mfa_login' %}">
-                    {% csrf_token %}
-                    <button type="submit" id="passkey_login">
-                        {% trans "Sign in with a passkey" %}
-                    </button>
-                </form>
-            {% endif %}
-            {% if LOGIN_BY_CODE_ENABLED %}
-                <a href="{{ request_login_code_url }}">
-                    <button>{% trans "Mail me a sign-in code" %}</button>
-                </a>
-            {% endif %}
-        </div>
-    {% endif %}
+  {% if LOGIN_BY_CODE_ENABLED or PASSKEY_LOGIN_ENABLED %}
+      <hr>
+      <div class="login-alternatives">
+          {% if PASSKEY_LOGIN_ENABLED %}
+              <form id="mfa_login" method="post" action="{% url 'mfa_login' %}">
+                  {% csrf_token %}
+                  <button type="submit" id="passkey_login">
+                      {% trans "Sign in with a passkey" %}
+                  </button>
+              </form>
+          {% endif %}
+          {% if LOGIN_BY_CODE_ENABLED %}
+              <a href="{{ request_login_code_url }}">
+                  <button>{% trans "Mail me a sign-in code" %}</button>
+              </a>
+          {% endif %}
+      </div>
+  {% endif %}
 
-    {% if SOCIALACCOUNT_ENABLED %}
-        {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
-    {% endif %}
+  {% if SOCIALACCOUNT_ENABLED %}
+      {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+  {% endif %}
 </div>
 {% endblock %}
 
 {% block extra_body %}
-    {{ block.super }}
-    {% if PASSKEY_LOGIN_ENABLED %}
-        {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
-    {% endif %}
-    
-    <script>
-    // Garantia adicional para remover mensagens de logout
-    document.addEventListener('DOMContentLoaded', function() {
-        const alerts = document.querySelectorAll('.alert-success, .message');
-        alerts.forEach(alert => {
-            const text = alert.textContent.toLowerCase();
-            if (text.includes('saiu') || text.includes('sign out') || text.includes('logout')) {
-                alert.remove();
-            }
-        });
+{{ block.super }}
+{% if PASSKEY_LOGIN_ENABLED %}
+    {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
+{% endif %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const alerts = document.querySelectorAll('.alert-success, .message');
+    alerts.forEach(alert => {
+        const text = alert.textContent.toLowerCase();
+        if (text.includes('saiu') || text.includes('sign out') || text.includes('logout')) {
+            alert.remove();
+        }
     });
-    </script>
-{% endblock extra_body %}
+});
+</script>
+{% endblock %}

@@ -15,11 +15,71 @@
     height: 100%;
     /* width: 100%; */
 }
-body{
-    background: linear-gradient(135deg, #1e2413, #262c4e);
-    margin: 0;
-    padding: 0;
+
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #1e2413, #262c4e);
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
+
+body::before {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 800%;
+  height: 60px;
+  background: linear-gradient(90deg, #d94f4f, #a83232, #d94f4f);
+  background-size: 200% 100%;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  transform: translateX(100%);
+  animation:
+    slideIn 6s ease-in-out forwards,
+    barGradient 20s ease infinite;
+  z-index: 0;
+}
+
+@keyframes slideIn {
+  0%   { transform: translateX(100%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes barGradient {
+  0%   { background-position:   0% 50%; }
+  25%  { background-position:  50% 50%; }
+  50%  { background-position: 100% 50%; }
+  75%  { background-position:  50% 50%; }
+  100% { background-position:   0% 50%; }
+}
+
+
+
+
+
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 100%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
 /* Estilizando o layout para o dropdown e o formulário lado a lado */
 .container {
     display: flex;

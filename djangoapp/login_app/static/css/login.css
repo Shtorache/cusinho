@@ -1,10 +1,83 @@
 /* Fonte base moderna e background escuro com gradiente */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1e2413, #1f801f);
-    margin: 0;
-    padding: 20px;
-    color: #eaeaea;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #330000, #800000);
+  background-size: 400% 400%;
+  animation: gradientShift 20s ease infinite;
+  margin: 0;
+  padding: 20px;
+  color: #f8dede;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Animação do gradiente */
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Container de bolhas */
+.background-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -50px;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 80, 80, 0.2);
+  border-radius: 50%;
+  animation: rise 10s infinite ease-in-out;
+}
+
+.bubble:nth-child(2) {
+  left: 25%;
+  animation-duration: 12s;
+  animation-delay: 1s;
+}
+.bubble:nth-child(3) {
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  animation-duration: 14s;
+  animation-delay: 2s;
+}
+.bubble:nth-child(4) {
+  left: 75%;
+  animation-duration: 11s;
+  animation-delay: 3s;
+}
+.bubble:nth-child(5) {
+  left: 90%;
+  width: 25px;
+  height: 25px;
+  animation-duration: 13s;
+  animation-delay: 1.5s;
+}
+
+@keyframes rise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.3;
+    transform: translateY(-50vh) scale(1.2);
+  }
+  100% {
+    transform: translateY(-100vh) scale(1);
+    opacity: 0;
+  }
 }
 
 /* Container principal */
@@ -44,11 +117,12 @@ input[type="email"] {
     padding: 12px;
     border-radius: 8px;
     border: 1px solid #333;
-    background-color: #2b2b2b;
-    color: #eaeaea;
+    background-color: #f5f3f3;
+    color: #eaeaea; /* texto claro para contraste */
     font-size: 1rem;
     transition: border-color 0.3s ease;
 }
+
 
 input:focus {
     border-color: #4dd0e1;
