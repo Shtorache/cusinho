@@ -1,16 +1,54 @@
 /* === Base === */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #6b1111, #3f0101);
-    background-size: 400% 400%;
-    animation: gradientShift 20s ease infinite;
-    margin: 0;
-    padding: 20px;
-    color: #f8dede;
-    overflow-x: hidden;
-    position: relative;
-  }
+/* Adicione ou modifique estas regras no seu arquivo style.css */
 
+body {
+    /* Mantenha seus outros estilos de body (font-family, color, etc.) */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px; /* Ou o padding que você preferir para o conteúdo */
+    color: #f8dede; /* Cor do texto principal, ajuste se necessário para contraste */
+    overflow-x: hidden;
+    position: relative; /* Necessário para o posicionamento do ::before */
+    background-color: #3f0101; /* Cor de fundo de fallback caso a imagem não carregue ou enquanto carrega */
+    /* Remova o background-image e animation do gradiente daqui se for substituí-lo completamente */
+}
+
+body::before {
+    content: ""; /* Necessário para pseudo-elementos */
+    position: fixed; /* Cobre toda a tela e fica fixo no fundo */
+    top: 0;
+    left: 0;
+    width: 100vw; /* 100% da largura da viewport */
+    height: 100vh; /* 100% da altura da viewport */
+    z-index: -1; /* Coloca o pseudo-elemento atrás de todo o conteúdo do body */
+
+    /* Sua imagem de fundo */
+    background-image: url('https://maricaja.com.br/wp-content/uploads/2018/03/fotoelssoncampos-scaled.jpg');
+    background-size: cover; /* Para cobrir todo o espaço */
+    background-position: center center; /* Para centralizar a imagem */
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Opcional: mantém a imagem fixa durante o scroll */
+
+    /* Efeito de Blur */
+    filter: blur(8px); /* Ajuste o valor de '8px' para mais ou menos blur */
+
+    /* Opcional: Para escurecer um pouco a imagem e melhorar o contraste do texto sobre ela */
+    /* opacity: 0.8; */
+    /* ou um overlay de cor: */
+    /* background-color: rgba(0, 0, 0, 0.3); /* Overlay escuro semi-transparente sobre a imagem borrada */
+    /* Se usar background-color aqui, ele será aplicado ANTES do blur na imagem do background-image */
+}
+
+/*
+   Lembre-se:
+   - O conteúdo principal da sua página (ex: .navbar, .signup-container, etc.) 
+     deve ter um 'position: relative;' e um 'z-index' maior que 0 (ou simplesmente não ter z-index, 
+     desde que o 'body::before' tenha z-index: -1) para garantir que fiquem na frente 
+     deste fundo borrado.
+   - Se você tinha um 'background' ou 'background-image' diretamente no 'body',
+     você pode querer removê-lo ou ajustar para que não conflite com a imagem do '::before'.
+     A 'background-color' no body acima serve como fallback.
+*/
 /* Animação suave do gradiente vermelho */
 @keyframes gradientShift {
   0%   { background-position: 0% 50%; }

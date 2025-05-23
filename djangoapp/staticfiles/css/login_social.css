@@ -1,3 +1,8 @@
+body {
+  background: red !important;
+}
+
+
 /* Estiliza o container principal do conteúdo */
 body {
     font-family: Arial, sans-serif;
@@ -98,4 +103,15 @@ a{
     margin-right: 40px;
     display: flex;
    
+}
+
+/* Remover marcadores de lista de todos os <ul> e <li> usados pelo Allauth */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    list-style: none;
 }
