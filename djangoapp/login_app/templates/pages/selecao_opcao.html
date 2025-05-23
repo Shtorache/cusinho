@@ -6,230 +6,136 @@
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <link rel="shortcut icon" href="{% static 'images/Goal_icon-icons.com_62267.ico' %}" type="image/x-icon">
 <style>
+    /* Seu CSS permanece igual */
     .option-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 30px 20px;
-    background: linear-gradient(135deg, #1e0f0f, #000000);  /* Gradiente vibrante de cores quentes */
-    color: white;
-    margin: 130px auto 20px;
-    border-radius: 12px;              /* Bordas arredondadas para suavizar */
-    max-width: 1200px;
-    text-align: center;
-    transition: box-shadow 0.3s, transform 0.3s; /* Suaviza transições para sombras e escalas */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7); /* Sombra forte para destacar */
-}
-
-.option-section:hover {
-    transform: scale(1.05);  /* Efeito de aumento suave ao passar o mouse */
-    box-shadow: 0 0 30px rgba(255, 99, 71, 0.8);  /* Efeito de brilho mais forte ao passar o mouse */
-}
-
-.option-section h1 {
-    font-size: 30px;
-    font-weight: 700;
-    color: #ffce00; /* Cor amarela para destacar o título */
-    letter-spacing: 2px;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 99, 71, 0.8); /* Sombra e brilho */
-    animation: bounceIn 1s ease-out; /* Animação de entrada */
-}
-
-@keyframes bounceIn {
-    0% {
-        transform: scale(0.5);
-        opacity: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px 20px;
+        background: linear-gradient(135deg, #1e0f0f, #000000);
+        color: white;
+        margin: 130px auto 20px;
+        border-radius: 12px;
+        max-width: 1200px;
+        text-align: center;
+        transition: box-shadow 0.3s, transform 0.3s;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
     }
-    60% {
-        transform: scale(1.1);
-        opacity: 1;
+
+    .option-section:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 30px rgba(255, 99, 71, 0.8);
     }
-    100% {
-        transform: scale(1);
+
+    .option-section h1 {
+        font-size: 30px;
+        font-weight: 700;
+        color: #ffce00;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 99, 71, 0.8);
+        animation: bounceIn 1s ease-out;
     }
-}
 
-
-.option-section:hover {
-    box-shadow: 0 4px 16px rgba(255, 77, 77, 0.4);
-}
-
-/* Título */
-/* Destaque para o esporte escolhido */
-.esporte-destaque {
-    font-size: 22px;
-    font-weight: bold;
-    color: #f1f1f1;
-    text-transform: capitalize;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-    margin-bottom: 20px;
-    background: linear-gradient(90deg, #0f2027, #353535, #2f3030);
-    padding: 10px 20px;
-    border-radius: 12px;
-    display: inline-block;
-    animation: pulseGlow 1.5s infinite;
-}
-
-/* Animação suave para destaque */
-@keyframes pulseGlow {
-    0% {
-        box-shadow: 0 0 10px #cc1212;
+    @keyframes bounceIn {
+        0% {
+            transform: scale(0.5);
+            opacity: 0;
+        }
+        60% {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1);
+        }
     }
-    50% {
-        box-shadow: 0 0 20px #f50202, 0 0 30px #e90303;
+
+    .esporte-destaque {
+        font-size: 22px;
+        font-weight: bold;
+        color: #f1f1f1;
+        text-transform: capitalize;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        margin-bottom: 20px;
+        background: linear-gradient(90deg, #0f2027, #353535, #2f3030);
+        padding: 10px 20px;
+        border-radius: 12px;
+        display: inline-block;
+        animation: pulseGlow 1.5s infinite;
     }
-    100% {
-        box-shadow: 0 0 10px #f12a2a;
-    }
-}
 
-
-/* Para o caso de ter um título ou outra seção específica */
-.option-section h1 {
-    font-size: 30px;
-    color: #eeecec; /* Cor vibrante e clara */
-    font-weight: 700; /* Negrito para maior impacto */
-    letter-spacing: 1px; /* Leve espaçamento entre as letras para modernizar */
-    margin-bottom: 20px; /* Espaçamento inferior */
-    text-transform: uppercase; /* Maiúsculas para dar destaque */
-    text-align: center; /* Alinhar o título ao centro */
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 0, 150, 0.3); /* Sombra com efeito de brilho sutil */
-    font-family: 'Arial', sans-serif; /* Fonte moderna e limpa */
-    position: relative; /* Para posicionar o pseudo-elemento */
-    z-index: 1;
-}
-
-.option-section h1::after {
-    content: ''; /* Pseudo-elemento */
-    position: absolute;
-    bottom: -10px; /* Posiciona o efeito de linha abaixo do texto */
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, #ff4d4d, #f71c1c); /* Gradiente vibrante para o efeito */
-    box-shadow: 0 0 10px rgba(255, 0, 150, 0.4);
-    z-index: -1; /* Coloca atrás do texto */
-}
-
-
-
-/* Texto de esportes selecionados */
-.option-section p span {
-    font-size: 20px;                /* Aumentei um pouco o tamanho da fonte para melhorar a legibilidade */
-    font-weight: 700;               /* Peso da fonte mais forte para destacar */
-    color: #ff4d4d;                 /* Uma cor vermelha vibrante, mais chamativa */
-    background: linear-gradient(135deg, #ff6f6f, #ff4d4d); /* Gradiente de fundo em tons de vermelho */
-    padding: 5px 10px;              /* Adicionei um pouco de espaçamento ao redor do texto para dar destaque */
-    border-radius: 10px;            /* Bordas arredondadas para um visual mais moderno */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidade ao elemento */
-    transition: all 0.3s ease;      /* Transição suave para efeitos ao passar o mouse */
-}
-
-/* Efeito ao passar o mouse sobre o texto */
-.option-section p span:hover {
-    transform: scale(1.1);           /* Aumenta ligeiramente o texto ao passar o mouse */
-    background: linear-gradient(135deg, #ff4d4d, #ff6f6f); /* Inverte o gradiente para um efeito interativo */
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Aumenta a sombra para dar mais destaque */
-}
-
-
-/* Ícones de ações */
-.action-icons {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    margin: 20px 0;
-    flex-wrap: wrap;
-    width: 100%;
-    padding: 10px;
-}
-
-.action-icon {
-    text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: pointer;
-    background-color: #1c1c1c;
-    padding: 12px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-
-.action-icon:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 16px rgba(255, 77, 77, 0.4);
-}
-
-.action-icon img {
-    width: 85px;
-    height: 85px;
-    object-fit: cover;
-    border-radius: 50%;
-    padding: 6px;
-    background-color: #1e1e1e;
-    border: 2px solid #ff4d4d;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* Efeito de hover mais suave */
-.action-icon img:hover {
-    transform: scale(1.1);
-    border-color: #ff7373;
-    box-shadow: 0 4px 12px rgba(255, 77, 77, 0.6);
-}
-
-
-.action-icon a {
-    text-decoration: none;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 8px;
-    font-weight: 500;
-    transition: color 0.3s;
-}
-
-.action-icon a:hover {
-    color: #ff4d4d;
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-    .option-section {
-        margin-top: 100px;
-        padding: 20px;
+    @keyframes pulseGlow {
+        0% {
+            box-shadow: 0 0 10px #cc1212;
+        }
+        50% {
+            box-shadow: 0 0 20px #f50202, 0 0 30px #e90303;
+        }
+        100% {
+            box-shadow: 0 0 10px #f12a2a;
+        }
     }
 
     .action-icons {
-        gap: 25px;
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+        width: 100%;
+        padding: 10px;
+    }
+
+    .action-icon {
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+        background-color: #1c1c1c;
+        padding: 12px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .action-icon:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 16px rgba(255, 77, 77, 0.4);
     }
 
     .action-icon img {
-        width: 70px;
-        height: 70px;
+        width: 85px;
+        height: 85px;
+        object-fit: cover;
+        border-radius: 50%;
+        padding: 6px;
+        background-color: #1e1e1e;
+        border: 2px solid #ff4d4d;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     }
-}
 
-@media (max-width: 480px) {
-    .action-icon img {
-        width: 60px;
-        height: 60px;
+    .action-icon img:hover {
+        transform: scale(1.1);
+        border-color: #ff7373;
+        box-shadow: 0 4px 12px rgba(255, 77, 77, 0.6);
     }
 
     .action-icon a {
-        font-size: 14px;
+        text-decoration: none;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 8px;
+        font-weight: 500;
+        transition: color 0.3s;
     }
-}
-
 
     .action-icon a:hover {
         color: #ff4d4d;
     }
 
-    /* Animações suaves */
     @keyframes fadeInUp {
         0% {
             opacity: 0;
@@ -246,7 +152,6 @@
         opacity: 0;
     }
 
-    /* Responsividade */
     @media (max-width: 768px) {
         .option-section {
             margin-top: 100px;
@@ -277,7 +182,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="content">
+<div class="selecionar_futebol">
     <div class="option-section">
         <h1>Sua próxima jogada começa aqui!</h1>
         {% if esporte %}
@@ -286,18 +191,65 @@
         <p>Escolha uma das opções abaixo</p>
 
         <div class="action-icons">
-            <div class="action-icon fade-in-up" style="animation-delay: 0.1s">
-                <a href="{% url 'available_places' %}">
-                    <img src="{% static 'images/soccer-ball.png' %}" alt="Futebol">
-                    <span>Encontrar partida</span>
-                </a>
-            </div>
-            <div class="action-icon fade-in-up" style="animation-delay: 0.2s">
-                <a href="{% url 'reservar_espaco' %}">
-                    <img src="{% static 'images/soccer-ball.png' %}" alt="Futebol">
-                    <span>Criar partida</span>
-                </a>
-            </div>
+            {% if esporte|lower == 'basquete' %}
+                <div class="action-icon fade-in-up" style="animation-delay: 0.1s">
+                    <a href="{% url 'available_places' %}">
+                        <img src="{% static 'images/basquete1.png' %}" alt="Basquete">
+                        <span>Encontrar partida</span>
+                    </a>
+                </div>
+                <div class="action-icon fade-in-up" style="animation-delay: 0.2s">
+                    <a href="{% url 'reservar_espaco' %}">
+                        <img src="{% static 'images/basquete2.png' %}" alt="Basquete">
+                        <span>Criar partida</span>
+                    </a>
+                </div>
+
+            {% elif esporte|lower == 'futebol' %}
+                <div class="action-icon fade-in-up" style="animation-delay: 0.1s">
+                    <a href="{% url 'available_places' %}">
+                        <img src="{% static 'images/futebol1.png' %}" alt="Futebol">
+                        <span>Encontrar partida</span>
+                    </a>
+                </div>
+                <div class="action-icon fade-in-up" style="animation-delay: 0.2s">
+                    <a href="{% url 'reservar_espaco' %}">
+                        <img src="{% static 'images/futebol2.png' %}" alt="Futebol">
+                        <span>Criar partida</span>
+                    </a>
+                </div>
+
+            {% elif esporte|lower == 'tênis' %}
+                <div class="action-icon fade-in-up" style="animation-delay: 0.1s">
+                    <a href="{% url 'available_places' %}">
+                        <img src="{% static 'images/tenis1.png' %}" alt="Tênis">
+                        <span>Encontrar partida</span>
+                    </a>
+                </div>
+                <div class="action-icon fade-in-up" style="animation-delay: 0.2s">
+                    <a href="{% url 'reservar_espaco' %}">
+                        <img src="{% static 'images/tenis2.png' %}" alt="Tênis">
+                        <span>Criar partida</span>
+                    </a>
+                </div>
+
+            {% elif esporte|lower == 'vôlei' %}
+                <div class="action-icon fade-in-up" style="animation-delay: 0.1s">
+                    <a href="{% url 'available_places' %}">
+                        <img src="{% static 'images/volei1.png' %}" alt="Vôlei">
+                        <span>Encontrar partida</span>
+                    </a>
+                </div>
+                <div class="action-icon fade-in-up" style="animation-delay: 0.2s">
+                    <a href="{% url 'reservar_espaco' %}">
+                        <img src="{% static 'images/volei2.png' %}" alt="Vôlei">
+                        <span>Criar partida</span>
+                    </a>
+                </div>
+
+            {% else %}
+                <p>Esporte não disponível no momento.</p>
+            {% endif %}
         </div>
     </div>
 </div>
