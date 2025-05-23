@@ -7,6 +7,9 @@
 <link rel="shortcut icon" href="{% static 'images/Goal_icon-icons.com_62267.ico' %}" type="image/x-icon">
 
 <style>
+
+
+
     /* ===== Animações ===== */
     @keyframes redGlow {
         0%, 100% {
@@ -45,57 +48,58 @@
 
     /* ===== Estilos da seção de introdução ===== */
     .intro-section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 40px 25px;
-        background: linear-gradient(135deg, #1e0f0f, #000000);
-        color: white;
-        margin: 130px auto 20px;
-        border-radius: 15px;
-        max-width: 800px;
-        width: 100%;
-        text-align: center;
-        overflow: hidden;
-        transition: all 0.3s ease;
-        border: 2px solid transparent;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 30px;
+    background: rgba(0, 0, 0, 0.6); /* fundo semitransparente */
+    backdrop-filter: blur(10px); /* reforça o blur de fundo */
+    color: white;
+    margin: 130px auto 30px;
+    border-radius: 20px;
+    max-width: 850px;
+    width: 95%;
+    text-align: center;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
 
-    .intro-section:hover {
-        transform: scale(1.02);
-        border: 2px solid #ff3c3c;
-        animation: redGlow 1.5s infinite ease-in-out;
-    }
+.intro-section:hover {
+    transform: scale(1.025);
+    border: 2px solid #ff3c3c;
+    animation: redGlow 1.5s infinite ease-in-out;
+}
 
-    .intro-section h1 {
-        font-size: 40px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        margin-bottom: 25px;
-        text-transform: uppercase;
-        background: linear-gradient(45deg, #ff6f61, #ff6347);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        color: transparent;
-        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 99, 71, 0.8);
-        animation: bounceIn 1s ease-out forwards;
-    }
+.intro-section h1 {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    background: linear-gradient(45deg, #ff6f61, #ff6347);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 99, 71, 0.9);
+    animation: bounceIn 1s ease-out forwards;
+}
 
-    .intro-section p {
-        font-size: 20px;
-        font-weight: 300;
-        letter-spacing: 1px;
-        background: linear-gradient(45deg, #ff6f61, #ff6347);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        color: transparent;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 99, 71, 0.6);
-        margin-top: 15px;
-        max-width: 800px;
-        animation: bounceIn 1.2s ease-out forwards;
-    }
+.intro-section p {
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 1.2px;
+    line-height: 1.6;
+    background: linear-gradient(45deg, #ff6f61, #ff6347);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 99, 71, 0.6);
+    margin-top: 20px;
+    max-width: 750px;
+    animation: bounceIn 1.2s ease-out forwards;
+}
+
 
     /* ===== Ícones esportivos ===== */
     .sport-icons {
@@ -196,10 +200,18 @@
             font-size: 14px;
         }
     }
+
+
+    
+    
 </style>
 {% endblock %}
 
 {% block content %}
+
+
+
+
 
 <div class="content">
     <section class="intro-section" role="region" aria-label="{% trans 'Seção de boas-vindas' %}">
