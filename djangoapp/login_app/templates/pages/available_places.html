@@ -395,11 +395,27 @@
     padding-bottom: 15px;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    background: linear-gradient(135deg, #dfacac, #f34f4f);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    background: linear-gradient(270deg, #f82a2a, #fc2020, #f30c0c, #ffffff, #f34f4f);
+    background-size: 1000% 1000%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    animation: waveColors 8s ease infinite;
 }
+
+@keyframes waveColors {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 
 .titulo-quadras {
     position: relative;
@@ -437,11 +453,6 @@
 
 
 
-
-.titulo-quadras.futebol {
-    animation: destaqueFutebol 2s infinite alternate;
-    text-shadow: 2px 2px 8px rgba(229, 57, 53, 0.6);
-}
 
 @keyframes destaqueFutebol {
     0% {

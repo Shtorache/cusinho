@@ -29,8 +29,15 @@
     --shadow-card: rgba(0, 0, 0, 0.3);
 
     /* Variáveis de Fonte do seu template original (se aplicável, ajuste os nomes se forem diferentes) */
-    --font-heading: 'Poppins', sans-serif; /* Exemplo, ajuste se necessário */
-    --font-body: 'Montserrat', sans-serif; /* Exemplo, ajuste se necessário */
+    --font-heading: 'Poppins', sans-serif; 
+    --font-body: 'Montserrat', sans-serif; 
+
+    /* Variáveis de Espaçamento (adicionadas para consistência, se não existirem no seu CSS principal) */
+    --spacing-xs: 0.25rem; /* 4px */
+    --spacing-sm: 0.5rem;  /* 8px */
+    --spacing-md: 1rem;    /* 16px */
+    --spacing-lg: 1.5rem;  /* 24px */
+    --spacing-xl: 2rem;    /* 32px */
 }
 
 /* ===== Animações do Estilo Guardado ===== */
@@ -54,12 +61,37 @@
     }
 }
 
+@keyframes pulseRed { /* Animação para h1 e agora para o p de instrução */
+    0%, 100% {
+        text-shadow: 0 0 10px rgba(255, 0, 0, 0.6), 0 0 20px rgba(255, 0, 0, 0.4);
+        color: #ff4d4d; /* Cor do texto no estado normal da pulsação */
+    }
+    50% {
+        text-shadow: 0 0 25px rgba(255, 0, 0, 1), 0 0 35px rgba(255, 0, 0, 0.8);
+        color: #ff1a1a; /* Cor do texto no pico da pulsação */
+    }
+}
+
+@keyframes pulseRedGlowEffect { /* Animação para .esporte-destaque */
+    0%, 100% {
+        text-shadow: 
+            1px 1px 2px rgba(0, 0, 0, 0.5), 
+            0 0 6px rgba(255, 60, 60, 0.6); 
+    }
+    50% {
+        text-shadow: 
+            1px 1px 3px rgba(0, 0, 0, 0.6), 
+            0 0 18px rgba(255, 60, 60, 0.95), 
+            0 0 25px rgba(255, 60, 60, 0.7); 
+    }
+}
+
 /* ===== Estilos para .option-section e seus conteúdos textuais ===== */
 .option-section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 40px 20px; /* Padding superior/inferior aumentado */
+    padding: 40px 20px; 
     background: var(--dark-bg-container-transparent); 
     backdrop-filter: blur(var(--backdrop-blur-amount)); 
     color: var(--text-light);
@@ -80,49 +112,43 @@
     box-shadow: 0 0 15px var(--esportefy-red-primary), 0 10px 35px var(--shadow-dark); 
 }
 
-/* Estilo para o H1 dentro da .option-section */
 .option-section h1 {
     font-family: var(--font-heading, 'Poppins', sans-serif);
     font-size: 2.8rem;
     font-weight: 700;
-    color: var(--text-light);
+    /* color é definido pela animação pulseRed */
     margin-bottom: 15px;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+    /* text-shadow é definido pela animação pulseRed */
     letter-spacing: 1px;
-    text-transform: none;
-    animation: pulseRed 2s infinite;
-
+    text-transform: none; 
+    animation: pulseRed 2s infinite ease-in-out; /* Mantendo ease-in-out para suavidade */
 }
 
-@keyframes pulseRed {
-    0% {
-        text-shadow: 0 0 10px rgba(255, 0, 0, 0.6), 0 0 20px rgba(255, 0, 0, 0.4);
-        color: #ff4d4d;
-    }
-    50% {
-        text-shadow: 0 0 25px rgba(255, 0, 0, 1), 0 0 35px rgba(255, 0, 0, 0.8);
-        color: #ff1a1a;
-    }
-    100% {
-        text-shadow: 0 0 10px rgba(255, 0, 0, 0.6), 0 0 20px rgba(255, 0, 0, 0.4);
-        color: #ff4d4d;
-    }
-}
-
-
-
-/* Estilo para o parágrafo de destaque do esporte selecionado */
 .esporte-destaque {
     font-family: var(--font-body, 'Montserrat', sans-serif);
-    font-size: 1.5rem; /* Tamanho intermediário */
-    font-weight: 600; /* Semi-negrito */
-    color: var(--esportefy-red-primary); /* Cor de destaque vermelha */
-    margin-top: 10px; /* Espaço acima, após o h1 */
-    margin-bottom: 10px; /* Espaço abaixo */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+    font-size: 1.5rem; 
+    font-weight: 600;  
+    color: var(--esportefy-red-primary); 
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: var(--dark-bg-secondary, #1a1a1a); 
+    paint-order: stroke fill; 
+    margin-top: 15px; 
+    margin-bottom: 15px; 
+    animation: pulseRedGlowEffect 2s infinite ease-in-out;
 }
 
-/* Estilo para o parágrafo de instrução dentro da .option-section */
+/* Estilo para o parágrafo de instrução ("Escolha uma das opções abaixo") */
+.option-section p:not(.esporte-destaque) {
+    font-family: var(--font-body, 'Montserrat', sans-serif);
+    font-size: 1.1rem; 
+    font-weight: 500; 
+    /* Cor e text-shadow serão controladas pela animação 'pulseRed' */
+    margin-top: var(--spacing-xs, 0.25rem); 
+    margin-bottom: var(--spacing-lg, 1.5rem); 
+    animation: pulseRed 2s infinite ease-in-out; /* Aplicando a mesma animação do h1 */
+    /* Removida a caixa com borda */
+}
+
 
 /* ===== Ícones de Ação (action-icons) ===== */
 .action-icons {
@@ -170,7 +196,8 @@
     border-color: var(--esportefy-red-image-border-hover); 
     transform: rotate(5deg) scale(1.05); 
 }
-#oi
+
+
 .action-icon a {
     text-decoration: none;
     color: var(--text-on-icon); 
@@ -181,7 +208,7 @@
     font-weight: 600;
     font-size: 0.9rem; 
     text-transform: capitalize; 
-    font-family: var(--font-body, 'Montserrat', sans-serif); /* Adicionada fonte */
+    font-family: var(--font-body, 'Montserrat', sans-serif);
     transition: color 0.3s ease;
 }
 
@@ -200,23 +227,21 @@
         padding: 30px 15px;
         width: 95%;
     }
-    /* Ajustes de texto para telas menores */
     .option-section h1 {
-        font-size: 2.2rem; /* Reduz tamanho do título principal */
+        font-size: 2.2rem; 
     }
     .esporte-destaque {
-        font-size: 1.3rem; /* Reduz tamanho do destaque do esporte */
+        font-size: 1.3rem; 
         margin-top: 8px;
         margin-bottom: 8px;
     }
     
- .option-section p {
-    font-size: 1rem;
-    margin-bottom: 20px;
-    color: #ff4d4d;
-    animation: pulseRed 2s infinite;
-}
-
+    /* Removida a regra .option-section p daqui, pois agora temos uma regra mais geral acima */
+    /* Se precisar de ajustes específicos de tamanho ou margem para este 'p' em telas menores, adicione aqui: */
+    .option-section p:not(.esporte-destaque) {
+        font-size: 1rem; /* Exemplo de ajuste para telas menores */
+        margin-bottom: var(--spacing-md, 1rem); /* Exemplo de ajuste de margem */
+    }
 
     .action-icons {
         gap: 25px;
@@ -238,18 +263,19 @@
     .option-section {
         margin-top: 60px;
         border-radius: 10px;
-        padding: 25px 10px; /* Mais padding vertical, menos horizontal */
+        padding: 25px 10px; 
         backdrop-filter: blur(calc(var(--backdrop-blur-amount) - 1px)); 
     }
-     /* Ajustes de texto para telas muito pequenas */
     .option-section h1 {
         font-size: 1.9rem; 
     }
     .esporte-destaque {
         font-size: 1.1rem;
     }
-    .option-section p {
+    /* Ajuste para o p de instrução em telas muito pequenas */
+    .option-section p:not(.esporte-destaque) {
         font-size: 0.9rem;
+        margin-bottom: var(--spacing-sm, 0.5rem);
     }
 
     .action-icons {
