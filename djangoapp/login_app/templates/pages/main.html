@@ -4,93 +4,272 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
-<link rel="shortcut icon" href="{% static 'images\Goal_icon-icons.com_62267.ico' %}" type="image/x-icon">
+<link rel="shortcut icon" href="{% static 'images/Goal_icon-icons.com_62267.ico' %}" type="image/x-icon">
+
 <style>
-    .intro-section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px;
-        background: linear-gradient(to bottom right, #1e2413, #000000);
-        color: white;
-        margin: 30px auto 20px;
-        border-radius: 8px;
-        max-width: 1500px;
-        margin-top: 110px;
+
+
+
+    /* ===== Animações ===== */
+    @keyframes redGlow {
+        0%, 100% {
+            box-shadow: 0 0 10px #ff3c3c, 0 0 20px #ff3c3c;
+        }
+        50% {
+            box-shadow: 0 0 20px #ff3c3c, 0 0 30px #ff3c3c;
+        }
     }
 
+    @keyframes bounceIn {
+        0% {
+            transform: scale(0);
+            opacity: 0;
+        }
+        50% {
+            transform: scale(1.05);
+            opacity: 0.6;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ===== Estilos da seção de introdução ===== */
+    .intro-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 30px;
+    background: rgba(0, 0, 0, 0.6); /* fundo semitransparente */
+    backdrop-filter: blur(10px); /* reforça o blur de fundo */
+    color: white;
+    margin: 130px auto 30px;
+    border-radius: 20px;
+    max-width: 850px;
+    width: 95%;
+    text-align: center;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+.intro-section:hover {
+    transform: scale(1.025);
+    border: 2px solid #ff3c3c;
+    animation: redGlow 1.5s infinite ease-in-out;
+}
+
+.intro-section h1 {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    background: linear-gradient(45deg, #ff6f61, #ff6347);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 99, 71, 0.9);
+    animation: bounceIn 1s ease-out forwards;
+}
+
+.intro-section p {
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 1.2px;
+    line-height: 1.6;
+    background: linear-gradient(45deg, #ff6f61, #ff6347);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 99, 71, 0.6);
+    margin-top: 20px;
+    max-width: 750px;
+    animation: bounceIn 1.2s ease-out forwards;
+}
+
+
+    /* ===== Ícones esportivos ===== */
     .sport-icons {
         display: flex;
         justify-content: center;
-        gap: 30px;
-        margin: 20px 0;
+        gap: 35px;
         flex-wrap: wrap;
         width: 100%;
+        padding: 20px;
+        margin-top: 20px;
     }
-    
+
     .sport-icon {
         text-align: center;
-        transition: transform 0.3s;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
         cursor: pointer;
+        background-color: #212121;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        max-width: 120px;
+        width: 100%;
+        margin-bottom: 20px;
     }
-    
+
     .sport-icon:hover {
         transform: scale(1.1);
+        box-shadow: 0 8px 20px rgba(255, 77, 77, 0.5);
+        background-color: #1a1a1a;
     }
-    
+
     .sport-icon img {
-        width: 80px;
-        height: 80px;
+        width: 90px;
+        height: 90px;
         object-fit: cover;
         border-radius: 50%;
-        padding: 5px;
-        background-color: #333;
-        border: 2px solid #4CAF50;
+        padding: 8px;
+        background-color: #222;
+        border: 3px solid #e60000;
+        transition: border-color 0.3s ease;
+    }
+
+    .sport-icon:hover img {
+        border-color: #ff7373;
     }
 
     .sport-icon a {
         text-decoration: none;
-        color: white;
+        color: #f1f1f1;
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin-top: 12px;
+        font-weight: 600;
+        font-size: 14px;
+        text-transform: capitalize;
+        transition: color 0.3s ease;
     }
+
+    .sport-icon a:hover {
+        color: #ff4d4d;
+    }
+
+    .sport-icon a:active {
+        color: #e60000;
+    }
+
+    /* ===== Animação fade-in para os ícones ===== */
+    .fade-in-up {
+        animation: fadeInUp 0.8s ease forwards;
+        opacity: 0;
+    }
+
+    /* ===== Responsividade ===== */
+    @media (max-width: 768px) {
+        .intro-section {
+            margin-top: 100px;
+            padding: 20px;
+        }
+
+        .sport-icons {
+            gap: 20px;
+        }
+
+        .sport-icon img {
+            width: 70px;
+            height: 70px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .sport-icon img {
+            width: 60px;
+            height: 60px;
+        }
+
+        .sport-icon a {
+            font-size: 14px;
+        }
+    }
+
+
+    
+    
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="content">
-    <div class="intro-section">
-        <h1>Bem-vindo ao Esportefy!</h1>
-        <p>Encontre os melhores campos esportivos da sua região</p>
-        
-        <div class="sport-icons">
-            <div class="sport-icon">
-                <a href="{% url 'selecao_opcao' 'futebol' %}">
 
-                    <img src="{% static 'images/soccer-ball.png' %}" alt="Futebol">
-                    <span>Futebol</span>
+
+
+
+
+<div class="content">
+    <section class="intro-section" role="region" aria-label="{% trans 'Seção de boas-vindas' %}">
+        <h1>Bem-vindo ao EsporteFY!</h1>
+        <p>Encontre as melhores quadras esportivas da sua região</p>
+
+        <nav class="sport-icons" aria-label="{% trans 'Seleção de esportes' %}">
+            <div class="sport-icon fade-in-up" style="animation-delay: 0.1s">
+                <a href="{% url 'selecao_opcao' 'futebol' %}" title="{% trans 'Ver quadras de Futebol' %}">
+                    <img src="{% static 'images/soccer-ball.png' %}" alt="{% trans 'Ícone de futebol' %}">
+                    <span>{% trans 'Futebol' %}</span>
                 </a>
             </div>
-            <div class="sport-icon">
-                <a href="{% url 'selecao_opcao' 'basquete' %}">
-                    <img src="{% static 'images/basketball.jpg' %}" alt="Basquete">
-                    <span>Basquete</span>
+            <div class="sport-icon fade-in-up" style="animation-delay: 0.2s">
+                <a href="{% url 'selecao_opcao' 'basquete' %}" title="{% trans 'Ver quadras de Basquete' %}">
+                    <img src="{% static 'images/basketball.jpg' %}" alt="{% trans 'Ícone de basquete' %}">
+                    <span>{% trans 'Basquete' %}</span>
                 </a>
             </div>
-            <div class="sport-icon">
-                <a href="{% url 'selecao_opcao' 'vôlei' %}">
-                    <img src="{% static 'images/volleyball.jpg' %}" alt="Vôlei">
-                    <span>Vôlei</span>
+            <div class="sport-icon fade-in-up" style="animation-delay: 0.3s">
+                <a href="{% url 'selecao_opcao' 'vôlei' %}" title="{% trans 'Ver quadras de Vôlei' %}">
+                    <img src="{% static 'images/volleyball.jpg' %}" alt="{% trans 'Ícone de vôlei' %}">
+                    <span>{% trans 'Vôlei' %}</span>
                 </a>
             </div>
-            <div class="sport-icon">
-                <a href="{% url 'selecao_opcao' 'tênis' %}">
-                    <img src="{% static 'images/tennis.jpg' %}" alt="Tênis">
-                    <span>Tênis</span>
+            <div class="sport-icon fade-in-up" style="animation-delay: 0.4s">
+                <a href="{% url 'selecao_opcao' 'tênis' %}" title="{% trans 'Ver quadras de Tênis' %}">
+                    <img src="{% static 'images/tennis.jpg' %}" alt="{% trans 'Ícone de tênis' %}">
+                    <span>{% trans 'Tênis' %}</span>
                 </a>
             </div>
-        </div>
-    </div>
+        </nav>
+    </section>
 </div>
+
+<script>
+  // Função que gera uma cor hex aleatória
+  function randomColor() {
+    return '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+  }
+
+  // Função que gera um ângulo aleatório para o gradiente
+  function randomAngle() {
+    return Math.floor(Math.random() * 360);
+  }
+
+  // Função que atualiza a variável CSS com novo gradiente no body
+  function updateBackground() {
+    const angle = randomAngle();
+    const color1 = randomColor();
+    const color2 = randomColor();
+    document.body.style.setProperty('--bg-gradient', `linear-gradient(${angle}deg, ${color1}, ${color2})`);
+  }
+
+  // Atualiza o fundo a cada 4 segundos
+  setInterval(updateBackground, 4000);
+
+  // Inicializa o fundo no carregamento
+  updateBackground();
+</script>
 {% endblock %}

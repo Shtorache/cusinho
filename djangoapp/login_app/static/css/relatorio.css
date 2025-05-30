@@ -1,98 +1,345 @@
-/* Centralizar a tabela */
-#table-container {
-    width: 60%; /* Ajuste conforme necessário */
-    margin: 0 auto; /* Centraliza a tabela horizontalmente */
-    text-align: center;
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* Estilização da tabela */
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: Arial, sans-serif;
-    background-color: #7eb5e9;
-    
+/* Estilo global */
+body {
+    background: linear-gradient(135deg, #1e2413, #1f801f);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #eaeaea;
+    min-height: 100vh;
 }
 
-.table th, .table td {
-    padding: 9px;
-    border: 1px solid #ccc;
+/* Navbar escura moderna */
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.table th {
-    background-color: #4CAF50;
-    color: rgb(0, 0, 0);
+/* Estilo global */
+body {
+    background: linear-gradient(135deg, #1e2413, #1f801f);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #eaeaea;
+    min-height: 100vh;
 }
 
-.table tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.table tfoot td {
-    font-weight: bold;
-    background-color: #000000;
-    color: #ffffff;
-}
-#btn{
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    justify-content: center;
-}
+/* Navbar moderna com fundo animado e efeito glass */
 .navbar {
-    background-color: #333;
-    color: white;
-    padding: 10px 20px;
+    padding: 14px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: Arial, sans-serif;
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(270deg, #0f0f0f, #1a3c1a, #0f0f0f);
+    background-size: 600% 600%;
+    animation: gradientFlow 12s ease infinite;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(4px);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    border-radius: 0 0 16px 16px;
 }
 
+/* Logo estilizada */
 .navbar-logo {
-    font-size: 24px;
-    cursor: pointer;
+    font-size: 28px;
     font-weight: bold;
+    cursor: pointer;
+    color: #aaffaa;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.4);
+    transition: transform 0.3s ease;
 }
 
+.navbar-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Menu de navegação */
 .navbar-menu {
     list-style: none;
+    display: flex;
+    gap: 25px;
     margin: 0;
     padding: 0;
-    display: flex;
 }
 
+/* Itens do menu */
 .navbar-menu li {
-    margin: 0 15px;
+    position: relative;
 }
 
+/* Links com efeito neon no hover */
 .navbar-menu a {
-    color: white;
+    color: #f1f1f1;
     text-decoration: none;
     font-size: 18px;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.navbar-menu a::after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    left: 0;
+    bottom: -4px;
+    background-color: #69ff69;
+    transition: width 0.3s ease;
+}
+
+.navbar-menu a:hover::after {
+    width: 100%;
 }
 
 .navbar-menu a:hover {
-    text-decoration: underline;
+    color: #69ff69;
+    text-shadow: 0 0 5px #69ff69;
 }
 
-body{
-    background-color: rgb(65, 157, 41);
-    margin: 0;
-    padding: 0;
+/* Animação do gradiente de fundo */
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
+/* Título da página */
 #title {
     text-align: center;
-    margin: 20px 0;
-    font-size: 28px;
-    color: white;
-    text-shadow: 2px 2px 4px #000000;
+    margin: 30px 0;
+    font-size: 2.5rem;
+    color: #ffffff;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+/* Container da tabela */
+#table-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 25px;
+    border-radius: 12px;
+    background-color: #1e1e1e;
+    color: #eaeaea;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    overflow-x: auto;
+}
+
+/* Estilo da tabela */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.table th,
+.table td {
+    padding: 14px 16px;
+    text-align: center;
+    border-bottom: 1px solid #80927b;
+}
+
+.table th {
+    background-color: #d3d3d3;
+    color: #0a0a0a;
+    font-weight: 600;
+}
+
+.table tr:nth-child(even) {
+    background-color: #2a2a2a;
+}
+
+.table tr:hover {
+    background-color: #333;
+}
+
+.table tfoot td {
+    background-color: #111;
+    color: #fff;
+    font-weight: bold;
+    border-top: 2px solid #f3f6f7;
+}
+
+/* Botão moderno */
+#btn {
+    background-color: #f8f4f4;
+    color: #0a0a0a;
+    padding: 14px 32px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+#btn:hover {
+    background-color: #90ee90;
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+/* Centralização do botão */
+.btn-container {
+    text-align: center;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-menu {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .navbar-menu li {
+        margin: 10px 0;
+    }
+
+    .table {
+        font-size: 14px;
+    }
+
+    #btn {
+        width: 100%;
+    }
+
+    #table-container {
+        margin: 20px;
+        padding: 15px;
+    }
+}
+
+
+/* Título da página */
+#title {
+    text-align: center;
+    margin: 30px 0;
+    font-size: 2.5rem;
+    color: #ffffff;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+/* Container da tabela */
+#table-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 25px;
+    border-radius: 12px;
+    background-color: #1e1e1e;
+    color: #eaeaea;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    overflow-x: auto;
+}
+
+/* Estilo da tabela */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.table th,
+.table td {
+    padding: 14px 16px;
+    text-align: center;
+    border-bottom: 1px solid #80927b;
+}
+
+.table th {
+    background-color: #d3d3d3;
+    color: #0a0a0a;
+    font-weight: 600;
+}
+
+.table tr:nth-child(even) {
+    background-color: #2a2a2a;
+}
+
+.table tr:hover {
+    background-color: #333;
+}
+
+.table tfoot td {
+    background-color: #111;
+    color: #fff;
+    font-weight: bold;
+    border-top: 2px solid #f3f6f7;
+}
+
+/* Botão moderno */
+#btn {
+    background-color: #f8f4f4;
+    color: #0a0a0a;
+    padding: 14px 32px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+#btn:hover {
+    background-color: #349234;
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+/* Centralização do botão */
+.btn-container {
+    text-align: center;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-menu {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .navbar-menu li {
+        margin: 10px 0;
+    }
+
+    .table {
+        font-size: 14px;
+    }
+
+    #btn {
+        width: 100%;
+    }
+
+    #table-container {
+        margin: 20px;
+        padding: 15px;
+    }
 }

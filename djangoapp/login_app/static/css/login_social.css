@@ -1,101 +1,119 @@
-/* Estiliza o container principal do conteúdo */
+/* Fonte e fundo da página */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #68a942;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e2413, #1f801f); /* gradiente moderno escuro-verde */
     margin: 0;
     padding: 20px;
+    color: #fff;
 }
 
+/* Formulário centralizado e estilizado */
 form {
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(6px);
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* Estilo para os títulos principais (h1) e subtítulos (h2) */
+/* Títulos */
 h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: bold;
-    color: #0f0f0f;
+    color: #ffffff;
     text-align: center;
     margin-bottom: 20px;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 h2 {
-    font-size: 1.5rem;
-    color: #050404;
-    margin-top: 40px;
+    font-size: 1.6rem;
+    color: #f0f0f0;
+    margin-top: 30px;
     text-align: center;
 }
 
-/* Estilo para os parágrafos */
+/* Parágrafos */
 p {
     font-size: 1rem;
-    color: #161616;
+    color: #dddddd;
     text-align: center;
     margin-bottom: 20px;
 }
 
-/* Estiliza as opções de rádio */
+/* Estiliza os radio buttons */
 input[type="radio"] {
-    margin-right: 10px;
+    margin-right: 8px;
+    accent-color: #62d96b;
 }
 
+/* Rótulos */
 label {
     font-size: 1rem;
-    color: #333;
+    color: #e0e0e0;
     display: flex;
     align-items: center;
 }
 
-/* Estilo para o badge que mostra a marca */
-badge {
-    background-color: #007bff;
+/* Badge moderno (usar class="badge") */
+.badge {
+    background-color: #1faaff;
     color: #fff;
-    font-size: 0.8rem;
-    padding: 3px 6px;
-    border-radius: 4px;
-    margin-left: 10px;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-left: 8px;
+    font-weight: 600;
 }
 
-/* Estilo para os botões */
+/* Botões */
 button {
-    padding: 10px 10px;
+    padding: 12px 20px;
     font-size: 1rem;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    font-weight: 600;
 }
 
-/* Estilo específico para o botão de remoção */
+/* Botão principal (submit) */
 button[type="submit"] {
-    background-color: #5597cc;
+    background-color: #474545;
     color: #fff;
 }
 
 button[type="submit"]:hover {
-    background-color: #c82333;
+    background-color: #377a3d;
+    transform: scale(1.03);
 }
 
-/* Estilo para os containers de rádio */
+/* Container de radio buttons e outros grupos */
 div {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-a{
+/* Link estilizado */
+a {
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin-right: 40px;
+    margin-top: 20px;
+    color: #a5ffd6;
+    text-decoration: none;
+    font-weight: 600;
     display: flex;
-   
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #ffffff;
+    text-decoration: underline;
 }

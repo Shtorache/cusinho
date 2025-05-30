@@ -1,27 +1,57 @@
-/* Estilo geral do formulário */
-body{
-    background-color: #68a942;
+body {
+    background: linear-gradient(135deg, #1e2413, #1f801f);
     margin: 0;
     padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-p{
-    color: #000000;
-    line-height: 1.5;
-    font-size: 1.2rem;
-    margin-bottom: 20px;
+
+h1, h2 {
     text-align: center;
-    
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(90deg, #1e2413, #1f801f);
+    padding: 12px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeInDown 0.6s ease both;
 }
+
+/* Animação de entrada */
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+p {
+    color: #000;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin: 20px auto;
+    max-width: 600px;
+    padding: 10px;
+    background: #f1f1f1;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
 .email-info-text {
     font-size: 1.2rem;
     color: #333;
     text-align: center;
     margin-bottom: 20px;
-
 }
-h2{ color: #000000;
-    text-align: center;
-    margin-bottom: 20px;}
+
 form {
     background-color: #fff;
     border: 1px solid #ddd;
@@ -32,17 +62,11 @@ form {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Título da página */
-h1 {
-    font-size: 2rem;
-    color: #333;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-/* Campos de entrada de email */
-input[type="email"] {
-    width: 100%;
+/* Inputs */
+input[type="email"],
+input[type="text"],
+input[type="password"] {
+    width: 90%;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
@@ -50,7 +74,7 @@ input[type="email"] {
     font-size: 1rem;
 }
 
-/* Labels dos campos */
+/* Labels */
 label {
     font-weight: bold;
     color: #555;
@@ -58,106 +82,103 @@ label {
     display: block;
 }
 
-/* Estilo de ajuda e avisos */
-.help-text {
-    color: #888;
-    font-size: 0.9rem;
-    margin-top: 5px;
-}
-
 /* Botões */
 button {
-    background-color: #007bff;
+    width: 100%;
+    background: linear-gradient(135deg, #4dd0e1, #1f801f);
     border: none;
     color: white;
-    padding: 10px 20px;
+    padding: 12px;
     cursor: pointer;
     font-size: 1rem;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.3s;
     margin-top: 10px;
+    font-weight: bold;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background: linear-gradient(135deg, #1976d2, #279257);
+    transform: translateY(-2px);
 }
 
 button.secondary {
-    background-color: #6c757d;
+    background: #6c757d;
 }
 
 button.secondary:hover {
-    background-color: #5a6268;
+    background: #5a6268;
 }
 
 button.danger {
-    background-color: #dc3545;
+    background: #dc3545;
 }
 
 button.danger:hover {
-    background-color: #c82333;
+    background: #c82333;
 }
 
-/* Para o botão "Re-send Verification" */
 button.minor {
-    background-color: #17a2b8;
+    background: #17a2b8;
 }
 
 button.minor:hover {
-    background-color: #138496;
+    background: #138496;
 }
 
-/* Alinhamento e espaçamento dos botões */
+/* Form Actions */
 .form-actions {
     text-align: center;
     margin-top: 20px;
 }
 
-/* Aviso quando não há emails */
+/* Mensagens */
+.warning, .messages-success, .messages-error {
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    margin: 20px auto;
+    max-width: 500px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
 .warning {
     background-color: #f8d7da;
     color: #721c24;
-    padding: 10px;
     border: 1px solid #f5c6cb;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    text-align: center;
 }
 
-/* Erros dos campos */
+.messages-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.messages-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .errors {
     color: #dc3545;
     font-size: 0.9rem;
     margin-top: 5px;
 }
 
-.messages-success {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #f8d7da;
-    color: #369c07;
-    border: 1px solid #f5c6cb;
-    padding: 15px;
-    z-index: 9999; /* Sobrepõe os outros elementos */
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    opacity: 1;
-    transition: opacity 0.5s ease-in-out;
+/* Links */
+a {
+    color: #4dd0e1;
+    text-decoration: none;
+    margin-top: 15px;
+    display: inline-block;
+    transition: color 0.3s;
 }
-.messages-error {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-    padding: 15px;
-    z-index: 9999; /* Sobrepõe os outros elementos */
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    opacity: 1;
-    transition: opacity 0.5s ease-in-out; /* Para animação de desaparecimento */
+
+a:hover {
+    color: #1976d2;
+    text-decoration: none;
 }

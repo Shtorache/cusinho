@@ -1,0 +1,455 @@
+{% extends "pages/base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<style>
+    body {
+    background-color: #1a1a1a;
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.content-wrapper {
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    padding: 30px;
+    margin-top: 70px;
+    box-sizing: border-box;
+}
+
+/* MAPA */
+.map-container {
+    width: 100%;
+    height: 500px;
+    border: 2px solid #4CAF50;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+/* FORMULÁRIO */
+.form-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    background-color: #2a2a2a;
+    border-radius: 10px;
+    width: 100%;
+    
+    box-sizing: border-box;
+    margin: 0 auto; /* Centraliza horizontalmente */
+}
+
+
+.form-field {
+    flex: 1 1 200px;
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+}
+
+.form-field label {
+    margin-bottom: 8px;
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.form-field input,
+.form-field select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background-color: #333;
+    color: white;
+    box-sizing: border-box;
+}
+
+.form-container button.btn {
+    align-self: flex-end;
+    padding: 12px 25px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    min-width: 160px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-container button.btn:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* PARTIDAS */
+.partidas-criadas {
+    margin-top: 30px;
+    background-color: #2a2a2a;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.partida-item {
+    background-color: #333;
+    border-left: 4px solid #4CAF50;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    color: white;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s ease;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.partida-item:hover {
+    background-color: #3a3a3a;
+    transform: translateX(5px);
+}
+
+.partida-item strong {
+    color: #4CAF50;
+    font-size: 18px;
+}
+
+.partida-item small {
+    color: #aaa;
+    font-size: 14px;
+}
+
+/* ANIMAÇÃO */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* FILTRO DE REGIÕES */
+.region-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0 25px;
+    width: 100%;
+}
+
+.region-filters button {
+    padding: 10px 20px;
+    border: 2px solid #4CAF50;
+    border-radius: 25px;
+    cursor: pointer;
+    background-color: transparent;
+    color: white;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.region-filters button:hover {
+    background-color: #4CAF50;
+    transform: translateY(-2px);
+}
+
+.region-filters button.active {
+    background-color: #4CAF50;
+}
+
+/* TÍTULO DAS SEÇÕES */
+.section-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: white;
+    font-size: 28px;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+    .form-container {
+        flex-direction: column;
+    }
+
+    .form-field {
+        min-width: auto;
+        width: 100%;
+    }
+
+    .map-container {
+        height: 350px;
+    }
+
+    .content-wrapper {
+        padding: 15px;
+        margin-top: 60px;
+    }
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="content-wrapper">
+        <h1 class="section-title">Criar partida</h1>
+        
+        <!-- Filtros de Região -->
+        <div class="region-filters">
+            <button onclick="changeRegion('itaipuacu')">Itaipuaçu</button>
+            <button onclick="changeRegion('centro')">Centro</button>
+            <button onclick="changeRegion('sao_jose')">São José</button>
+            <button onclick="changeRegion('inoa')">Inoã</button>
+            <button onclick="changeRegion('itaocaia')">Itaocaia</button>
+            <button onclick="changeRegion('parque_nanci')">Parque Nanci</button>
+        </div>
+        
+        <!-- Mapa -->
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+        
+        <!-- Formulário horizontal abaixo do mapa -->
+        <form id="formPartida" class="form-container">
+            <div class="form-field">
+                <label for="esporte">Esporte</label>
+                <select id="esporte" name="esporte" required>
+                    <option value="">Escolha o esporte</option>
+                    <option value="futebol">Futebol</option>
+                    <option value="volei">Vôlei</option>
+                    <option value="basquete">Basquete</option>
+                    <option value="tenis">Tênis</option>
+                </select>
+            </div>
+            
+            
+            <div class="form-field">
+                <label for="local">Local</label>
+                <input type="text" id="local" name="local" required placeholder="Escolha no mapa">
+            </div>
+            
+            <div class="form-field">
+                <label for="data">Data</label>
+                <input type="date" id="data" name="data" required>
+            </div>
+            
+            <button type="submit" class="btn">Criar Partida</button>
+        </form>
+
+        <!-- Lista de partidas criadas -->
+        <div class="partidas-criadas" id="listaPartidas">
+            <h2>Partidas Criadas</h2>
+            <div id="itensPartidas"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Coordenadas das regiões
+        const regioes = {
+            itaipuacu: [-22.963530, -42.97589],
+            centro: [-22.9187, -42.8224],
+            sao_jose: [-22.93041, -42.883646],
+            inoa: [-22.914444, -42.931020],
+            itaocaia: [-22.929425, -42.967063],
+            parque_nanci: [-22.9287, -42.8124]
+        };
+
+        const campos = [
+            // Região: Itaipuaçu
+            { 
+                nome: "Campo A", 
+                regiao: "itaipuacu", 
+                esporte: "futebol", 
+                lat: -22.965, 
+                lng: -42.976
+            },
+            { 
+                nome: "Campo Itaipuaçu 1", 
+                regiao: "itaipuacu", 
+                esporte: "futebol society", 
+                lat: -22.962, 
+                lng: -42.980
+            },
+            { 
+                nome: "Arena Marquês", 
+                regiao: "itaipuacu", 
+                esporte: "futsal", 
+                lat: -22.968, 
+                lng: -42.970
+            },
+            { 
+                nome: "Campo das Palmeiras", 
+                regiao: "itaipuacu", 
+                esporte: "futebol", 
+                lat: -22.970, 
+                lng: -42.974
+            },
+
+            // Região: Centro
+            { 
+                nome: "Arena Flamengo", 
+                regiao: "centro", 
+                esporte: "futebol society", 
+                lat: -22.909, 
+                lng: -42.804,
+            },
+            { 
+                nome: "Campo Central", 
+                regiao: "centro", 
+                esporte: "futebol", 
+                lat: -22.921, 
+                lng: -42.827
+            },
+            { 
+                nome: "Quadra do Centro", 
+                regiao: "centro", 
+                esporte: "futsal", 
+                lat: -22.922, 
+                lng: -42.820
+            },
+
+            // Região: São José
+            { 
+                nome: "Campo C", 
+                regiao: "sao_jose", 
+                esporte: "futsal", 
+                lat: -22.931, 
+                lng: -42.884
+            },
+            { 
+                nome: "Campo São José 1", 
+                regiao: "sao_jose", 
+                esporte: "futebol", 
+                lat: -22.933, 
+                lng: -42.881
+            },
+            { 
+                nome: "Arena José Futebol", 
+                regiao: "sao_jose", 
+                esporte: "futebol society", 
+                lat: -22.928, 
+                lng: -42.887
+            },
+            { 
+                nome: "Quadra Esportiva São José", 
+                regiao: "sao_jose", 
+                esporte: "futsal", 
+                lat: -22.929, 
+                lng: -42.882
+            }
+        ];
+
+        // Criar mapa com região padrão (centro)
+        var map = L.map('map').setView(regioes.centro, 15);
+
+        // Adicionar camada do OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Adicionar marcadores da região padrão
+        campos.forEach(campo => {
+            if (campo.regiao === 'centro') {
+                const marker = L.marker([campo.lat, campo.lng])
+                    .addTo(map)
+                    .bindPopup(`<b>${campo.nome}</b><br>Esporte: ${campo.esporte}`)
+                    .on('click', function() {
+                        // Preenche o campo "local" quando um marcador é clicado
+                        document.getElementById('local').value = campo.nome;
+                    });
+            }
+        });
+
+        // Função para alterar a região do mapa ao clicar nos botões de filtro
+        function changeRegion(novaRegiao) {
+            if (novaRegiao in regioes) {
+                map.setView(regioes[novaRegiao], 15);
+                
+                // Remove todos os marcadores
+                map.eachLayer(layer => {
+                    if (!!layer.toGeoJSON) {
+                        map.removeLayer(layer);
+                    }
+                });
+
+                // Adiciona a camada do OpenStreetMap novamente
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                // Adicionar marcadores da nova região
+                campos.forEach(campo => {
+                    if (campo.regiao === novaRegiao) {
+                        const marker = L.marker([campo.lat, campo.lng])
+                            .addTo(map)
+                            .bindPopup(`<b>${campo.nome}</b><br>Esporte: ${campo.esporte}`)
+                            .on('click', function() {
+                                // Preenche o campo "local" quando um marcador é clicado
+                                document.getElementById('local').value = campo.nome;
+                            });
+                    }
+                });
+            }
+        }
+
+        // Tornar a função acessível globalmente
+        window.changeRegion = changeRegion;
+
+        // Formulário de criação de partida
+        const form = document.getElementById("formPartida");
+    const listaPartidas = document.getElementById("itensPartidas");
+
+    form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const esporte = document.getElementById("esporte").value;
+    const local = document.getElementById("local").value;
+    const data = document.getElementById("data").value;
+
+    // Formatar a data para exibição
+    const dataFormatada = new Date(data).toLocaleDateString('pt-BR');
+    
+    // Criar ID único para a partida (simulado)
+    const partidaId = Math.floor(Math.random() * 10000); // Isso seria substituído por um ID real do banco de dados
+    
+    const partidaItem = document.createElement("a");
+    partidaItem.classList.add("partida-item");
+    partidaItem.href = `/participardois`; // Usando a URL existente
+    partidaItem.innerHTML = `
+        <strong>${esporte}</strong> - ${local}<br>
+        <small>${dataFormatada}</small>
+    `;
+    
+    listaPartidas.appendChild(partidaItem);
+    form.reset();
+    
+    // Feedback visual
+    partidaItem.scrollIntoView({ behavior: 'smooth' });
+    partidaItem.style.animation = "fadeIn 0.5s ease-in";
+});
+});
+</script>
+{% endblock %}

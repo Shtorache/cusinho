@@ -11,8 +11,9 @@ from login_app.views import (
     campo_detalhes,
     participar_partida,
     selecao_opcao,
-    encontrar_partida,
-    criar_partida
+    reservar_espaco,
+    criar_partida,
+    participar_dois
 )
 
 urlpatterns = [
@@ -29,6 +30,8 @@ urlpatterns = [
     path("accounts/profile/feedback/<int:id>",feedPage,name="feedback"),
     path('campo/<int:id>/feedback/', feedPage, name='feedPage'),
     path('escolher-opcao/<str:esporte>/', selecao_opcao, name='selecao_opcao'),
-    path('encontrar-partida/', encontrar_partida, name='encontrar_partida'),
+    path('reservar-espaco/', reservar_espaco, name='reservar_espaco'),
+    path('participardois/', participar_dois, name='participar_dois'),
     path('criar-partida/', criar_partida, name='criar_partida')
+    
 ]

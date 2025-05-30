@@ -3,225 +3,539 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-    /* Tema Escuro Principal */
-    .modal-partidas {
-        position: fixed;
-        top: 0;
+    :root {
+        --primary-color: #e53935;
+        --primary-hover: #c62828;
+        --dark-bg: #000000;
+        --card-bg: #1e1e1e;
+        --card-border: #3b2d2d;
+        --text-primary: #f5f5f5;
+        --text-secondary: #bbbbbb;
+        --accent-yellow: #ffc107;
+        --modal-width: 450px;
+    }
+
+    body {
+        background-color: var(--dark-bg);
+        color: var(--text-primary);
+        font-family: 'Montserrat', sans-serif;
+        line-height: 1.6;
+    }
+
+  .main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #000000, #b93f3f);
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    color: #f0f0f0;
+    transition: all 0.3s ease-in-out;
+}
+
+    .campo-header {
+    position: relative;
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 1rem;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: zoomBackground 20s ease-in-out infinite alternate;
+}
+
+@keyframes zoomBackground {
+    0% {
+        background-size: 100%;
+    }
+    100% {
+        background-size: 110%;
+    }
+}
+
+
+.header-title {
+    position: absolute;
+    z-index: 2;
+    bottom: 20px;
+    left: 30px;
+    font-size: 2.25rem;
+    color: #f5f5f5;
+    font-weight: 700;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+    .campo-header-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
         right: 0;
-        width: 400px;
-        height: 100vh;
-        margin: 0;
-        transform: translateX(100%);
-        transition: transform 0.3s ease-out;
-        z-index: 1060;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+        padding: 2rem;
     }
-    
-    .modal-partidas.show {
-        transform: translateX(0);
+
+    .campo-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: linear-gradient(270deg, #e0e1e6, #b32222, #ffffff);
+    background-size: 600% 600%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    animation: gradienteTexto 8s ease-in-out infinite;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes gradienteTexto {
+    0% {
+        background-position: 0% 50%;
     }
-    
-    .modal-partidas .modal-content {
-        height: 100vh;
-        border-radius: 0;
-        border-left: 1px solid #4CAF50;
+    50% {
+        background-position: 100% 50%;
     }
-    
-    .modal-partidas .modal-header {
-        background-color: #4CAF50;
-        color: white;
+    100% {
+        background-position: 0% 50%;
     }
-    
-    .modal-partidas .modal-body {
-        overflow-y: auto;
-        padding: 0;
+}
+
+
+.filter-card {
+    background: radial-gradient(circle, #ff4848, #181818);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.filter-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
+}
+
+.filter-card h4 {
+    font-size: 1.7rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid var(--primary-color);
+    display: inline-block;
+    color: transparent;
+    background: linear-gradient(270deg, #ffffff, #cbc6d6, #fefeff);
+    background-size: 600% 600%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: gradienteTexto 8s ease-in-out infinite;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    text-align: center; /* Centraliza o texto */
+    width: 100%; /* Garante que o elemento ocupe a largura total */
+}
+
+
+@keyframes gradienteTexto {
+    0% {
+        background-position: 0% 50%;
     }
-    
-    .partida-item {
-        padding: 15px;
-        border-bottom: 1px solid #383838;
-        transition: background-color 0.2s;
+    50% {
+        background-position: 100% 50%;
     }
-    
-    .partida-item:hover {
-        background-color: #2e2e2e;
+    100% {
+        background-position: 0% 50%;
     }
-    
-    .partida-titulo {
+}
+
+
+
+
+    .form-control, .form-select {
+    background-color: #2a2a2a; /* Fundo escuro */
+    border: 1px solid #555; /* Borda suave */
+    color: var(--text-primary); /* Cor do texto */
+    border-radius: 8px; /* Bordas arredondadas */
+    padding: 0.75rem 1.25rem; /* Espaço dentro do campo */
+    font-size: 1rem; /* Tamanho moderado */
+    transition: 0.3s ease; /* Transição suave */
+    height: auto; /* Flexível */
+    margin-bottom: 1.25rem; /* Espaço entre campos */
+    background-image: linear-gradient(135deg, #2a2a2a, #3d3535); /* Gradiente suave */
+    width: 100%; /* Ocupa toda a largura disponível */
+    box-sizing: border-box; /* Inclui o padding na largura total */
+    font-family: 'Montserrat', sans-serif; /* Fonte moderna */
+    letter-spacing: 0.5px; /* Leve espaçamento */
+}
+
+/* Foco: Aumenta a visibilidade */
+.form-control:focus, .form-select:focus {
+    background-color: #333; /* Fundo mais escuro */
+    border-color: var(--primary-color); /* Cor de borda ao focar */
+    box-shadow: 0 0 0 0.2rem rgba(229, 57, 53, 0.4); /* Sombra suave */
+    color: white; /* Texto claro */
+    outline: none; /* Remove o outline */
+}
+
+/* Placeholder */
+.form-control::placeholder, .form-select::placeholder {
+    color: #888; /* Cor suave */
+    opacity: 1; /* Garante visibilidade do placeholder */
+}
+
+/* Tamanho do rótulo */
+.form-label {
+    color: var(--text-secondary); /* Cor do texto do rótulo */
+    font-weight: 500; /* Peso moderado */
+    margin-bottom: 0.5rem; /* Espaçamento inferior */
+    font-size: 0.95rem; /* Tamanho de fonte moderado */
+}
+
+/* Adicionando foco no campo ao passar o mouse */
+.form-control:hover, .form-select:hover {
+    border-color: var(--primary-color); /* Cor de borda ao passar o mouse */
+    background-color: #333; /* Fundo escuro ao hover */
+}
+
+/* Melhorando a visibilidade no foco e no hover */
+.form-control:focus, .form-select:focus {
+    background-color: #333; /* Fundo escuro */
+    border-color: var(--primary-color); /* Borda mais chamativa */
+    box-shadow: 0 0 10px rgba(229, 57, 53, 0.6); /* Sombra intensa */
+}
+
+
+    .btn {
+    border-radius: 10px; /* Bordas arredondadas */
+    padding: 0.75rem 1.5rem; /* Espaço confortável dentro do botão */
+    font-weight: 600; /* Peso da fonte */
+    text-transform: uppercase; /* Maiúsculas */
+    font-size: 0.9rem; /* Tamanho de fonte agradável */
+    transition: all 0.3s ease; /* Transição suave */
+    cursor: pointer; /* Cursor de interação */
+    display: inline-block; /* Alinhamento flexível */
+    text-align: center; /* Centralizar texto */
+    border: 1px solid transparent; /* Borda transparente inicialmente */
+}
+
+.btn-primary {
+    background-color: var(--primary-color); /* Cor de fundo do botão */
+    border: 1px solid var(--primary-color); /* Borda combinando */
+    color: white; /* Cor do texto */
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover); /* Cor do fundo ao passar o mouse */
+    border-color: var(--primary-hover); /* Borda ao passar o mouse */
+    transform: translateY(-4px); /* Efeito de elevação */
+    box-shadow: 0 4px 12px rgba(229, 57, 53, 0.4); /* Sombra suave */
+}
+
+.btn-outline-secondary {
+    background-color: transparent; /* Fundo transparente */
+    border: 2px solid #666; /* Borda suave */
+    color: #bbb; /* Cor do texto mais clara */
+    font-weight: 600; /* Peso da fonte mais forte */
+    text-transform: uppercase; /* Transformação para maiúsculas */
+    padding: 0.75rem 1.5rem; /* Espaçamento confortável */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Transições suaves */
+    border-radius: 8px; /* Bordas arredondadas */
+}
+
+.btn-outline-secondary:hover {
+    background-color: #444; /* Fundo mais suave e escuro ao passar o mouse */
+    border-color: #888; /* Borda mais clara */
+    color: white; /* Texto branco ao passar o mouse */
+}
+
+/* Foco do botão */
+.btn-outline-secondary:focus {
+    outline: none; /* Remove o outline padrão */
+    box-shadow: 0 0 10px rgba(229, 57, 53, 0.4); /* Sombra suave */
+}
+
+
+.btn:active {
+    transform: translateY(1px); /* Efeito de pressionar o botão */
+    box-shadow: none; /* Remove a sombra quando pressionado */
+}
+
+
+    #calendar {
+    background-color: var(--card-bg) !important;
+    border-radius: 16px !important;
+    padding: 2rem !important;
+    border: 1px solid var(--card-border) !important;
+    box-shadow: 0 8px 20px rgba(229, 57, 53, 0.2) !important;
+    transition: all 0.3s ease !important;
+}
+
+
+    .fc-toolbar-title {
+        color: white !important;
         font-weight: 600;
-        color: #4CAF50;
-        margin-bottom: 5px;
     }
-    
-    .partida-info {
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.9rem;
-        color: #bdbdbd;
+
+    .fc-col-header-cell-cushion,
+    .fc-daygrid-day-number {
+        color: var(--text-primary);
     }
-    
-    .partida-vagas {
-        color: #ffc107;
-        font-weight: 500;
+
+    .fc-daygrid-day.fc-day-today {
+        background-color: rgba(229, 57, 53, 0.15) !important;
     }
-    
+
     .backdrop-partidas {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0,0,0,0.5);
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        background-color: rgba(0, 0, 0, 0.7);
         z-index: 1050;
         display: none;
+        backdrop-filter: blur(5px);
     }
-    
+
     .backdrop-partidas.show {
         display: block;
     }
 
-    body {
-        background-color: #121212;
-        color: #e0e0e0;
-    }
-    
-    /* Container Principal */
-    .campo-container {
-        background-color: #1e1e1e;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        padding: 30px;
-        margin-top: 30px;
-        border: 1px solid #333;
-    }
-    
-    /* Filtros - Card Estilizado */
-    .filter-card {
-        background: #252525;
-        border-radius: 12px;
-        padding: 25px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        margin-bottom: 30px;
-        border: 1px solid #383838;
-    }
-    
-    .filter-card h4 {
-        color: #ffffff;
-        margin-bottom: 25px;
-        font-weight: 600;
-        border-bottom: 2px solid #4CAF50;
-        padding-bottom: 10px;
-        display: inline-block;
-    }
-    
-    /* Inputs e Selects */
-    .form-control, .form-select {
-        background-color: #333;
-        border: 1px solid #444;
-        color: #fff;
-        border-radius: 8px;
-        padding: 12px 15px;
-        transition: all 0.3s;
-    }
-    
-    .form-control:focus, .form-select:focus {
-        background-color: #3a3a3a;
-        border-color: #4CAF50;
-        box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
-        color: #fff;
-    }
-    
-    /* Labels */
-    .form-label {
-        color: #bdbdbd;
-        font-weight: 500;
-        margin-bottom: 8px;
-        display: block;
-    }
-    
-    /* Botões */
-    .btn-primary {
-        background-color: #4CAF50;
-        border: none;
-        padding: 12px 25px;
-        font-weight: 600;
-        border-radius: 8px;
-        transition: all 0.3s;
-    }
-    
-    .btn-primary:hover {
-        background-color: #3d8b40;
-        transform: translateY(-2px);
-    }
-    
-    .btn-outline-secondary {
-        border-color: #555;
-        color: #aaa;
-        padding: 12px 25px;
-        border-radius: 8px;
-        font-weight: 500;
-    }
-    
-    .btn-outline-secondary:hover {
-        background-color: #333;
-        color: #fff;
-        border-color: #666;
-    }
-    
-    /* Grupo de Filtros */
-    .filter-group {
-        margin-bottom: 20px;
-    }
-    
-    /* Layout dos Filtros */
-    .filters-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-        margin-bottom: 20px;
-    }
-    
-    /* Modal de Reserva */
-    .modal-content {
-        background-color: #252525;
-        border: 1px solid #383838;
-        border-radius: 12px;
-    }
-    
-    .modal-header {
-        border-bottom: 1px solid #383838;
-    }
-    
-    .modal-title {
-        color: #fff;
-    }
-    
+    .modal-partidas {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: var(--modal-width);
+    max-width: 100%;
+    height: 100vh;
+    background: var(--card-bg);
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-out;
+    z-index: 1060;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-partidas.show {
+    transform: translateX(0);
+}
+
+
+    .modal-partidas .modal-content {
+    height: 100vh;
+    border-left: 3px solid var(--primary-color);
+    background-color: var(--card-bg);
+    border-radius: 0;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-partidas .modal-header {
+    background: linear-gradient(90deg, var(--primary-color), #db1806);
+    color: #fff;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #f7f7f7;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+
+
+.modal-body {
+    overflow-y: auto;
+    padding: 1.5rem 2rem;
+    flex-grow: 1;
+}
+
+
     .btn-close {
-        filter: invert(1);
+    filter: invert(1);
+    opacity: 0.8;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.btn-close:hover {
+    opacity: 1;
+    transform: rotate(90deg);
+}
+
+.partida-item-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.partida-item-link:hover {
+    transform: translateX(8px);
+    color: var(--primary-color);
+}
+
+.partida-item {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--card-border);
+    background-color: var(--card-bg);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border-radius: 0.5rem;
+}
+
+.partida-item:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+    transform: scale(1.01);
+}
+
+
+.partida-titulo {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-size: 1.15rem;
+    background: linear-gradient(270deg, #ecedee, #bd4040, #aa1616);
+    background-size: 600% 600%;
+
+    /* Vendor prefixes para compatibilidade */
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    text-fill-color: transparent;
+
+    animation: gradientText 6s ease infinite;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+
+@keyframes gradientText {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+.partida-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #f0eeee;  
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    opacity: 0.95;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+}
+
+.partida-info:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+
+
+   /* Vagas disponíveis - verde */
+.partida-vagas-green {
+    background-color: rgba(40, 167, 69, 0.15); /* Verde suave */
+    color: #28a745; /* Verde forte */
+    font-weight: 600;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Sem vagas - vermelho */
+.partida-vagas-red {
+    background-color: rgba(220, 53, 69, 0.15); /* Vermelho suave */
+    color: #dc3545; /* Vermelho forte */
+    font-weight: 600;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Poucas vagas - amarelo piscante */
+.partida-vagas-yellow {
+    background-color: rgba(255, 193, 7, 0.15); /* Amarelo suave */
+    color: #ffc107; /* Amarelo forte */
+    font-weight: 600;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+    animation: blink 1s step-start infinite;
+}
+
+/* Animação de piscar */
+@keyframes blink {
+    50% {
+        opacity: 0.5;
     }
-    
-    /* Ajustes do Calendário para Tema Escuro */
-    #calendar {
-        background-color: #252525;
-        border-radius: 12px;
-        padding: 20px;
-        border: 1px solid #383838;
+}
+
+
+
+    @media (max-width: 992px) {
+        .campo-header {
+            height: 250px;
+        }
+        .campo-title {
+            font-size: 2rem;
+        }
+        .filter-card {
+            padding: 1.5rem;
+        }
     }
-    
-    .fc-toolbar-title {
-        color: #fff !important;
+
+    @media (max-width: 768px) {
+        :root {
+            --modal-width: 85%;
+        }
+        .main-container {
+            padding: 1rem;
+        }
+        .campo-header {
+            height: 200px;
+        }
+        .filter-card {
+            padding: 1.25rem;
+        }
+        .btn {
+            padding: 0.65rem 1.25rem;
+            font-size: 0.85rem;
+        }
     }
-    
-    .fc-col-header-cell-cushion {
-        color: #e0e0e0;
+
+    @media (max-width: 576px) {
+        .campo-header {
+            height: 180px;
+        }
+        .campo-title {
+            font-size: 1.75rem;
+        }
+        .filter-card h4 {
+            font-size: 1.25rem;
+        }
     }
 </style>
+
 {% endblock %}
 
 {% block content %}
-<div class="container my-4">
+<div class="main-container">
     <!-- Cabeçalho com imagem do campo -->
     <div class="campo-header" style="background-image: url('{{ imagem_capa }}')">
         <div class="campo-header-overlay">
@@ -231,44 +545,56 @@
 
     <!-- Filtros -->
     <div class="filter-card">
-        <h4 class="mb-4">Filtrar Partidas</h4>
-        <div class="row">
-            <div class="col-md-4 mb-3">
+        <div class="text-center mb-4">
+            <h4>Encontre Partidas</h4>
+            <p class="text-muted mb-0">Filtre por categoria, gênero ou data específica</p>
+        </div>
+        
+        <div class="row g-3">
+            <div class="col-md-4">
                 <label for="filtro-categoria" class="form-label">Categoria</label>
                 <select id="filtro-categoria" class="form-select">
-                    <option value="todas">Todas</option>
+                    <option value="todas">Todas as Categorias</option>
                     <option value="infantil">Infantil</option>
                     <option value="juvenil">Juvenil</option>
                     <option value="adulto">Adulto</option>
                 </select>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-4">
                 <label for="filtro-genero" class="form-label">Gênero</label>
                 <select id="filtro-genero" class="form-select">
-                    <option value="todos">Todos</option>
+                    <option value="todos">Todos os Gêneros</option>
                     <option value="masculino">Masculino</option>
                     <option value="feminino">Feminino</option>
                     <option value="misto">Misto</option>
                 </select>
             </div>
-            <div class="col-md-4 mb-3">
-                <label for="filtro-data" class="form-label">Data</label>
+            <div class="col-md-4">
+                <label for="filtro-data" class="form-label">Data Específica</label>
                 <input type="date" id="filtro-data" class="form-control">
             </div>
         </div>
-        <div class="text-end">
-            <button id="btn-filtrar" class="btn btn-primary">Encontrar Jogos</button>
-            <button id="btn-limpar" class="btn btn-outline-secondary ms-2">Limpar</button>
+        
+        <div class="d-flex justify-content-center mt-4 gap-3">
+            <button id="btn-filtrar" class="btn btn-primary px-4">
+                <i class="fas fa-search me-2"></i>Buscar Partidas
+            </button>
+            <button id="btn-limpar" class="btn btn-outline-secondary px-4">
+                <i class="fas fa-undo me-2"></i>Limpar
+            </button>
         </div>
     </div>
 
     <!-- Calendário Interativo -->
-    <div id="calendar"></div>
->
-
+    <div class="text-center mb-4">
+        <h4>Calendário de Partidas</h4>
+        <p class="text-muted">Selecione uma data para ver as partidas disponíveis</p>
     </div>
+    <div id="calendar"></div>
 </div>
 
+
+<!-- Modal de Partidas -->
 <div class="backdrop-partidas" id="backdropPartidas"></div>
 <div class="modal-partidas" id="modalPartidas">
     <div class="modal-content">
@@ -288,6 +614,8 @@
 <!-- Adicione jQuery antes do Bootstrap -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
 
 <script>
 // Verificação de carregamento seguro
@@ -334,31 +662,53 @@ whenReady(function() {
         const partidasBody = getElementOrFail('partidasFiltradasBody');
         
         // Funções do modal
-        const showPartidasModal = (filteredPartidas) => {
-            console.log('Exibindo modal com:', filteredPartidas);
-            
-            partidasBody.innerHTML = filteredPartidas.length === 0
-                ? '<div class="p-3 text-center">Nenhuma partida encontrada com esses filtros.</div>'
-                : filteredPartidas.map(partida => `
-                    <a href="/partida/${partida.id}/" class="partida-item-link" style="text-decoration: none; color: inherit;">
-                        <div class="partida-item" style="border: 1px solid #ccc; border-radius: 8px; padding: 15px; margin-bottom: 15px; transition: background 0.3s;">
-                            <div class="partida-titulo" style="font-size: 18px; font-weight: bold;">${partida.titulo || 'Sem título'}</div>
-                            <div class="partida-info">
-                                <span>${partida.data ? new Date(`${partida.data}T${partida.horario || '00:00'}`).toLocaleString() : 'Data não informada'}</span>
-                                <span class="partida-vagas" style="margin-left: 10px;">${partida.vagas || 0} vagas</span>
-                            </div>
-                            <div class="partida-info">
-                                <span>${partida.categoria || 'Sem categoria'} - ${partida.genero || 'Sem gênero'}</span>
-                            </div>
-                        </div>
-                    </a>
-                `).join('');
+       const showPartidasModal = (filteredPartidas) => {
+    console.log('Exibindo modal com:', filteredPartidas);
+    
+    partidasBody.innerHTML = filteredPartidas.length === 0
+        ? `<div class="text-center p-5">
+              <i class="fas fa-frown fa-3x mb-3" style="color: var(--accent-yellow);"></i>
+              <h5 class="mb-2">Nenhuma partida encontrada</h5>
+              <p class="text-muted">Tente ajustar seus filtros de busca</p>
+           </div>`
+        : filteredPartidas.map(partida => {
+            // Lógica para a cor das vagas
+            let vagasClass = '';
+            if (partida.vagas === 0) {
+                vagasClass = 'partida-vagas-red';  // Sem vagas
+            } else if (partida.vagas < 5) {
+                vagasClass = 'partida-vagas-yellow';  // Poucas vagas, piscando
+            } else {
+                vagasClass = 'partida-vagas-green';  // Vagas disponíveis
+            }
 
-            
-            modalPartidas.classList.add('show');
-            backdropPartidas.classList.add('show');
-            document.body.style.overflow = 'hidden';
-        };
+            return `
+                <a href="/partida/${partida.id}/" class="partida-item-link">
+                    <div class="partida-item">
+                        <div class="partida-titulo">${partida.titulo || 'Partida sem título'}</div>
+                        <div class="partida-info">
+                            <span><i class="far fa-calendar-alt me-1"></i> ${partida.data ? new Date(partida.data).toLocaleDateString('pt-BR') : 'Data não informada'}</span>
+                            <span><i class="far fa-clock me-1"></i> ${partida.horario || 'Horário não informado'}</span>
+                        </div>
+                        <div class="partida-info">
+                            <span><i class="fas fa-tag me-1"></i> ${partida.categoria || 'Sem categoria'}</span>
+                            <span><i class="fas fa-venus-mars me-1"></i> ${partida.genero || 'Sem gênero'}</span>
+                        </div>
+                        <div class="partida-info">
+                            <span class="partida-vagas ${vagasClass}">
+                                <i class="fas fa-users me-1"></i> ${partida.vagas || 0} vagas disponíveis
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }).join('');
+
+    modalPartidas.classList.add('show');
+    backdropPartidas.classList.add('show');
+    document.body.style.overflow = 'hidden';
+};
+
         
         const hidePartidasModal = () => {
             modalPartidas.classList.remove('show');
@@ -368,15 +718,13 @@ whenReady(function() {
         
         // Event listeners com prevenção de duplicação
         function setupEventListeners() {
-    // Adiciona eventos diretamente (sem clonar botões)
-            document.getElementById('btn-filtrar').addEventListener('click', handleFiltrarClick);
-            document.getElementById('btn-limpar').addEventListener('click', handleLimparClick);
-            document.getElementById('closeModalPartidas').addEventListener('click', hidePartidasModal);
-            document.getElementById('backdropPartidas').addEventListener('click', hidePartidasModal);
+            btnFiltrar.addEventListener('click', handleFiltrarClick);
+            btnLimpar.addEventListener('click', handleLimparClick);
+            closeModalBtn.addEventListener('click', hidePartidasModal);
+            backdropPartidas.addEventListener('click', hidePartidasModal);
 
             console.log('Event listeners configurados com sucesso');
         }
-
         
         // Handlers de eventos
         function handleFiltrarClick() {
@@ -415,10 +763,6 @@ whenReady(function() {
         // Inicialização
         setupEventListeners();
         console.log('Configuração completa concluída');
-        
-        // Teste programático - remover após verificação
-        console.log('Realizando teste automático...');
-
         
     } catch (error) {
         console.error('Erro durante a inicialização:', error);

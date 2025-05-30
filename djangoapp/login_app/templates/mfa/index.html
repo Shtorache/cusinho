@@ -2,125 +2,138 @@
 {% load allauth %}
 {% load i18n %}
 {% load static %}
+
 {% block head_title %}
-    
     {% trans "Two-Factor Authentication" %}
 {% endblock head_title %}
-{%block extra_head%}
 
-<link rel="stylesheet" href="{% static 'css/mfa.css' %}">
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/mfa.css' %}">
+{% endblock extra_head %}
 
-{%endblock extra_head%}
 {% block content %}
+<main class="main-content mfa-page" style="display: flex; flex-direction: column; align-items: center;">
+
+    {# Título centralizado #}
     {% element h1 tags="mfa,index" class="page-title" %}
         {% trans "Two-Factor Authentication" %}
     {% endelement %}
 
+    {# Authenticator App #}
     {% if "totp" in MFA_SUPPORTED_TYPES %}
         {% element panel class="authenticator-app panel" %}
             {% slot title class="panel-title" %}
-                {% translate "Authenticator App" %}
+                {% trans "Authenticator App" %}
             {% endslot %}
             {% slot body class="panel-body" %}
                 {% if authenticators.totp %}
                     {% element p %}
-                        {% translate "Authentication using an authenticator app is active." %}
+                        {% trans "Authentication using an authenticator app is active." %}
                     {% endelement %}
                 {% else %}
                     {% element p %}
-                        {% translate "An authenticator app is not active." %}
+                        {% trans "An authenticator app is not active." %}
                     {% endelement %}
                 {% endif %}
             {% endslot %}
-            {% slot actions class="panel-actions" %}
+            {% slot actions class="panel-actions mfa-actions" %}
                 {% url 'mfa_deactivate_totp' as deactivate_url %}
                 {% url 'mfa_activate_totp' as activate_url %}
                 {% if authenticators.totp %}
                     {% element button href=deactivate_url tags="danger,delete,panel" class="danger" %}
-                        {% translate "Deactivate" %}
+                        {% trans "Deactivate" %}
                     {% endelement %}
                 {% else %}
                     {% element button href=activate_url tags="panel" %}
-                        {% translate "Activate" %}
+                        {% trans "Activate" %}
                     {% endelement %}
                 {% endif %}
             {% endslot %}
         {% endelement %}
     {% endif %}
 
+    {# Security Keys #}
     {% if "webauthn" in MFA_SUPPORTED_TYPES %}
         {% element panel class="security-keys panel" %}
             {% slot title class="panel-title" %}
-                {% translate "Security Keys" %}
+                {% trans "Security Keys" %}
             {% endslot %}
             {% slot body class="panel-body" %}
                 {% if authenticators.webauthn|length %}
                     <p>
-                        {% blocktranslate count count=authenticators.webauthn|length %}You have added {{ count }} security key.{% plural %}You have added {{ count }} security keys.{% endblocktranslate %}
+                        {% blocktrans count count=authenticators.webauthn|length %}
+                            You have added {{ count }} security key.
+                        {% plural %}
+                            You have added {{ count }} security keys.
+                        {% endblocktrans %}
                     </p>
                 {% else %}
-                    <p>{% translate "No security keys have been added." %}</p>
+                    <p>{% trans "No security keys have been added." %}</p>
                 {% endif %}
             {% endslot %}
-            {% slot actions class="panel-actions" %}
+            {% slot actions class="panel-actions mfa-actions" %}
                 {% if authenticators.webauthn|length %}
                     {% url 'mfa_list_webauthn' as webauthn_list_url %}
                     {% element button href=webauthn_list_url class="btn" %}
-                        {% translate "Manage" %}
+                        {% trans "Manage" %}
                     {% endelement %}
                 {% else %}
                     {% url 'mfa_add_webauthn' as webauthn_add_url %}
                     {% element button href=webauthn_add_url class="btn" %}
-                        {% translate "Add" %}
+                        {% trans "Add" %}
                     {% endelement %}
                 {% endif %}
             {% endslot %}
         {% endelement %}
     {% endif %}
 
+    {# Recovery Codes #}
     {% if "recovery_codes" in MFA_SUPPORTED_TYPES %}
         {% with total_count=authenticators.recovery_codes.generate_codes|length unused_count=authenticators.recovery_codes.get_unused_codes|length %}
             {% element panel class="recovery-codes panel" %}
                 {% slot title class="panel-title" %}
-                    {% translate "Recovery Codes" %}
+                    {% trans "Recovery Codes" %}
                 {% endslot %}
                 {% slot body class="panel-body" %}
                     {% if authenticators.recovery_codes %}
                         {% element p %}
-                            {% blocktranslate count unused_count=unused_count %}There is {{ unused_count }} out of {{ total_count }} recovery codes available.{% plural %}There are {{ unused_count }} out of {{ total_count }} recovery codes available.{% endblocktranslate %}
+                            {% blocktrans count unused_count=unused_count %}
+                                There is {{ unused_count }} out of {{ total_count }} recovery codes available.
+                            {% plural %}
+                                There are {{ unused_count }} out of {{ total_count }} recovery codes available.
+                            {% endblocktrans %}
                         {% endelement %}
                     {% else %}
                         {% element p %}
-                            {% translate "No recovery codes set up." %}
+                            {% trans "No recovery codes set up." %}
                         {% endelement %}
                     {% endif %}
                 {% endslot %}
                 {% if is_mfa_enabled %}
-                    {% if authenticators.recovery_codes %}
-                        {% if unused_count > 0 %}
-                            {% slot actions class="panel-actions" %}
-                                {% url 'mfa_view_recovery_codes' as view_url %}
-                                {% element button href=view_url class="btn" %}
-                                    {% translate "View" %}
-                                {% endelement %}
-                            {% endslot %}
-                            {% slot actions class="panel-actions" %}
-                                {% url 'mfa_download_recovery_codes' as download_url %}
-                                {% element button href=download_url class="secondary btn" %}
-                                    {% translate "Download" %}
-                                {% endelement %}
-                            {% endslot %}
-                        {% endif %}
+                    {% if authenticators.recovery_codes and unused_count > 0 %}
+                        {% slot actions class="panel-actions mfa-actions" %}
+                            {% url 'mfa_view_recovery_codes' as view_url %}
+                            {% element button href=view_url class="btn" %}
+                                {% trans "View" %}
+                            {% endelement %}
+                        {% endslot %}
+                        {% slot actions class="panel-actions mfa-actions" %}
+                            {% url 'mfa_download_recovery_codes' as download_url %}
+                            {% element button href=download_url class="secondary btn" %}
+                                {% trans "Download" %}
+                            {% endelement %}
+                        {% endslot %}
                     {% endif %}
-                    {% slot actions class="panel-actions" %}
+                    {% slot actions class="panel-actions mfa-actions" %}
                         {% url 'mfa_generate_recovery_codes' as generate_url %}
                         {% element button href=generate_url class="secondary btn" %}
-                            {% translate "Generate" %}
+                            {% trans "Generate" %}
                         {% endelement %}
                     {% endslot %}
                 {% endif %}
             {% endelement %}
         {% endwith %}
     {% endif %}
-{% endblock content %}
 
+</main>
+{% endblock content %}

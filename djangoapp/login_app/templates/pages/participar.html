@@ -1,75 +1,343 @@
 {% extends 'pages/base.html' %}
+{% load static %}
+
 
 {% block extra_head %}
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #eef1f5;
-    }
+ * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    .container {
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 20px;
-        background: #f8f9fa;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
 
-    h2 {
-        text-align: center;
-        margin-bottom: 20px;
-    }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
 
-    th, td {
-        padding: 12px;
-        border: 1px solid #ddd;
-        text-align: center;
-    }
+/* Espaço para a navbar fixa */
+body {
+  margin: 0;
+  /* Tipografia e suavização */
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  color: #e0e0e0;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
-    thead {
-        background-color: #007bff;
-        color: white;
-    }
+  /* Fundo com gradiente animado em tons de vermelho */
+  background: linear-gradient(135deg, #330000, #660000, #990000, #cc0000);
+  background-size: 400% 400%;
+  animation: gradientShift 20s ease infinite;
+}
 
-    select {
-        padding: 4px;
-    }
+/* Animação suave do gradiente vermelho */
+@keyframes gradientShift {
+  0%   { background-position:   0% 50%; }
+  25%  { background-position: 100% 50%; }
+  50%  { background-position: 100% 100%; }
+  75%  { background-position:   0% 100%; }
+  100% { background-position:   0% 50%; }
+}
 
-    button {
-        padding: 6px 10px;
-        margin: 2px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
+/* Container centralizado */
+.container {
+  width: 95%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
 
-    .confirmar {
-        background-color: #28a745;
-        color: white;
-    }
+/* Links em destaque vermelho */
+a {
+  color: #ff5252;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+a:hover {
+  color: #ff8a80;
+}
 
-    .remover {
-        background-color: #dc3545;
-        color: white;
-    }
+/* Suaviza transições gerais */
+* {
+  transition: all 0.3s ease;
+}
 
-    td.actions {
-        display: flex;
-        justify-content: center;
-        gap: 5px;
-    }
+
+/* Container principal */
+.container {
+  width: 95%;
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 25px;
+  background: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* Título */
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  color: #ebebeb;
+  position: relative;
+  padding-bottom: 10px;
+  transition: all 0.3s ease; /* Transição suave para todos os efeitos */
+}
+
+h2::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #ff5252;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease;
+}
+
+h2:hover {
+  color: #d32f2f;
+  transform: translateY(-5px); /* Efeito de elevação no hover */
+}
+
+h2:hover::before {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+h2:focus {
+  outline: none; /* Remove o contorno padrão do foco */
+  box-shadow: 0 0 10px rgba(255, 82, 82, 0.6); /* Sombra suave no foco */
+}
+
+h2:hover,
+h2:focus {
+  color: #c02525; /* Mudança de cor no hover/focus */
+  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra suave no texto */
+}
+
+h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, #ff5252, transparent);
+}
+
+/* Tabela responsiva */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  background: #252525;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+thead {
+  background: linear-gradient(135deg, #d32f2f, #b71c1c);
+}
+
+th, td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #333;
+}
+
+th {
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+tbody tr {
+  transition: all 0.3s ease;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #2a2a2a;
+}
+
+tbody tr:hover {
+  background-color: #333;
+  transform: translateY(-1px);
+}
+
+/* Ações */
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Selects e inputs */
+select, input[type="date"] {
+  width: 100%;
+  max-width: 180px;
+  padding: 10px 12px;
+  background: #333;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+select:focus, input[type="date"]:focus {
+  border-color: #ff5252;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 82, 82, 0.2);
+}
+
+/* Botões */
+button {
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button img {
+  margin-right: 8px;
+}
+
+.confirmar {
+  background-color: #4caf50;
+  color: white;
+}
+
+.confirmar:hover {
+  background-color: #388e3c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+}
+
+.remover {
+  background-color: #f44336;
+  color: white;
+}
+
+.remover:hover {
+  background-color: #d32f2f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
+}
+
+/* Botão WhatsApp */
+.whatsapp-btn {
+  background-color: #25d366;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 25px auto;
+  max-width: 300px;
+  transition: all 0.3s ease;
+}
+
+.whatsapp-btn:hover {
+  background-color: #128c7e;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(37, 211, 102, 0.3);
+}
+
+/* Responsividade */
+@media (max-width: 992px) {
+  .container {
+    padding: 20px;
+  }
+  
+  th, td {
+    padding: 12px 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 70px;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  .container {
+    width: 98%;
+    padding: 15px;
+  }
+  
+  .whatsapp-btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  h2 {
+    font-size: 1.3rem;
+  }
+  
+  table {
+    min-width: 100%;
+  }
+  
+  th, td {
+    padding: 10px 8px;
+    font-size: 0.85rem;
+  }
+  
+  .actions {
+    flex-direction: column;
+    gap: 8px;
+  align-items: center;
+  }
+  
+  button {
+    width: 100%;
+    max-width: 150px;
+    padding: 8px 12px;
+  }
+  
+  select, input[type="date"] {
+    max-width: 140px;
+    padding: 8px 10px;
+  }
+}
 </style>
 {% endblock extra_head %}
 
+
+
+
 {% block content %}
 <div class="container">
-    <h2>Organização da Partida - Arena Flamengo (Futsal)</h2>
+    <h2>Organização da Partida - {{ local }} ({{ esporte }})</h2>
     
     <table>
         <thead>
@@ -82,19 +350,49 @@
         </thead>
         <tbody>
             <tr>
-                <td>Jeff</td>
+                <td>Iãn</td>
                 <td>Goleiro</td>
                 <td>Confirmado</td>
                 <td>-</td>
             </tr>
             <tr>
-                <td>Outro Jeff</td>
+                <td>Natãn</td>
                 <td>Lateral</td>
                 <td>Confirmado</td>
                 <td>-</td>
             </tr>
+            <tr>
+                <td>Kauãn</td>
+                <td>Meio-campo</td>
+                <td>Confirmado</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>Gabrieu</td>
+                <td>Zagueiro</td>
+                <td>Não</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>Jão</td>
+                <td>Atacante</td>
+                <td>Confirmado</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>Uéslei</td>
+                <td>Lateral</td>
+                <td>Não</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>Rafinha</td>
+                <td>Atacante</td>
+                <td>Confirmado</td>
+                <td>-</td>
+            </tr>
             <tr id="linha-caua">
-                <td>Cauã</td>
+                <td>Catapimbas da silva</td>
                 <td>
                     <select id="posicao-caua">
                         <option value="">Selecione</option>
@@ -114,21 +412,56 @@
         </tbody>
     </table>
 </div>
+<div style="text-align: center; margin-top: 20px;">
+    <button onclick="window.open('https://chat.whatsapp.com/GOPVN5VlnEz1l7t4KvcHMO', '_blank')" 
+            style="background: #25D366; 
+                   color: white; 
+                   border: none; 
+                   padding: 10px 20px; 
+                   border-radius: 5px; 
+                   cursor: pointer;
+                   font-size: 16px;">
+        <img src="{% static 'images/pngtree-whatsapp-icon-png-image_6315990.png' %}" 
+             alt="WhatsApp" 
+             style="width: 20px; vertical-align: middle; margin-right: 8px;">
+        Ir para grupo de WhatsApp
+    </button>
+</div>
 {% endblock content %}
 
+
 {% block extra_js %}
+
+
+
 <script>
-    function confirmarCaua() {
-        const presenca = document.getElementById("presenca-caua");
-        const select = document.getElementById("posicao-caua");
-        const selectedPosicao = select.value;
-
-        if (selectedPosicao === "") {
-            alert("Por favor, selecione uma posição antes de confirmar.");
-            return;
-        }
-
-        presenca.textContent = "Confirmado";
+document.addEventListener("DOMContentLoaded", () => {
+  // Função que trata o clique em “Confirmar” (já existente)
+  window.confirmarCaua = function() {
+    const presenca = document.getElementById("presenca-caua");
+    const select   = document.getElementById("posicao-caua");
+    if (!select.value) {
+      alert("Por favor, selecione uma posição antes de confirmar.");
+      return;
     }
+    presenca.textContent = "Confirmado";
+  };
+
+  // Agora o “Remover” só volta a presença para “Não”
+  document.querySelectorAll(".remover").forEach(btn => {
+    btn.addEventListener("click", () => {
+      // Encontra a célula de presença dentro da mesma linha
+      const tr  = btn.closest("tr");
+      const td  = tr.querySelector("td[id^='presenca']");
+      if (td) {
+        td.textContent = "Não";
+      }
+      // Opcional: também limpar a seleção de posição
+      const sel = tr.querySelector("select");
+      if (sel) sel.value = "";
+    });
+  });
+});
 </script>
+
 {% endblock %}

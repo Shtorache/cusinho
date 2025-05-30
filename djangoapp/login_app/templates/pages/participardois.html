@@ -1,0 +1,367 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #202b20;
+    }
+
+    .container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background: linear-gradient(145deg, #1c2b24, #2a3b32);
+    border: 2px solid #3a4d42;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(6px);
+    color: #e1ffe1;
+}
+
+.container:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 30px rgba(0, 255, 128, 0.15);
+}
+
+/* Removendo aparência de grade e melhorando UX */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px; /* espaçamento entre as "linhas invisíveis" */
+    color: #e0fbe0;
+}
+
+th, td {
+    background-color: rgba(44, 61, 52, 0.7);
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Inputs com aparência fosca e contorno leve */
+input[type="text"], select {
+    background-color: #1e2a24;
+    color: #d6fdd6;
+    border: 1px solid #3c4d44;
+    border-radius: 8px;
+    padding: 8px 12px;
+    outline: none;
+    transition: 0.3s;
+}
+
+input[type="text"]:focus, select:focus {
+    border-color: #72ff72;
+    box-shadow: 0 0 5px rgba(0, 255, 128, 0.3);
+}
+
+/* Botões refinados */
+button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s ease;
+}
+
+button.confirmar {
+    background-color: #2ecc71;
+}
+
+button.confirmar:hover {
+    background-color: #28b861;
+    box-shadow: 0 0 8px rgba(40, 255, 153, 0.3);
+}
+
+button.remover {
+    background-color: #e74c3c;
+}
+
+button.remover:hover {
+    background-color: #c0392b;
+    box-shadow: 0 0 8px rgba(255, 85, 85, 0.3);
+}
+
+
+
+
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    thead {
+        background-color: #202b20;
+        color: white;
+    }
+
+    select {
+        padding: 4px;
+    }
+
+    button {
+        padding: 10px 15px;
+        margin: 5px;
+        border: 2px solid transparent;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .confirmar {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .confirmar:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .remover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .remover:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    td.actions {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .header-info {
+        background-color: #2a2a2a;
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .lista-presenca {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+
+    .lista-presenca ul {    
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .lista-presenca li {
+    padding: 8px;
+    background-color: #2e3d34; /* fundo escuro que harmoniza com o tema */
+    color: #d1ffd1; /* verde claro legível */
+    margin-bottom: 5px;
+    border-radius: 4px;
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4); /* sombreamento para legibilidade */
+}
+
+
+    .lista-presenca h3 {
+    color: #030303;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+</style>
+{% endblock extra_head %}
+
+{% block content %}
+<div class="container">
+    <h2>Presença</h2>
+
+    <!-- Campo para selecionar o esporte -->
+    <label for="esporte-participante">selecione para mudar o esporte :</label>
+    <select id="esporte-participante" onchange="atualizarPosicoes()">
+        <option value="futebol">Futebol</option>
+        <option value="basquete">Basquete</option>
+        <option value="volei">Vôlei</option>
+        <option value="tenis">Tênis</option>
+    </select>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Posição</th>
+                <th>Presença</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="linha-participante">
+                <td>
+                    <input type="text" id="nome-participante" placeholder="Digite seu nome">
+                </td>
+                <td>
+                    <select id="posicao-participante">
+                        <option value="">Selecione</option>
+                    </select>
+                </td>
+                <td id="presenca-status">Não</td>
+                <td class="actions">
+                    <button class="confirmar" onclick="confirmarPresenca()">Confirmar</button>
+                    <button class="remover" onclick="removerPresenca()">Remover</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Exibição da lista de presença -->
+    <div class="lista-presenca">
+        <h3>Participantes Presentes:</h3>
+        <ul id="lista-participantes">
+        </ul>
+    </div>
+</div>
+
+<div style="text-align: center; margin-top: 20px;">
+    <button onclick="window.open('https://chat.whatsapp.com/GOPVN5VlnEz1l7t4KvcHMO', '_blank')" 
+            style="background: #25D366; 
+                   color: white; 
+                   border: none; 
+                   padding: 10px 20px; 
+                   border-radius: 5px; 
+                   cursor: pointer;
+                   font-size: 16px;">
+        <img src="{% static 'images/pngtree-whatsapp-icon-png-image_6315990.png' %}" 
+             alt="WhatsApp" 
+             style="width: 20px; vertical-align: middle; margin-right: 8px;">
+        Ir para grupo de WhatsApp
+    </button>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+    // Dicionário de posições por esporte
+    const posicoesPorEsporte = {
+        futebol: ["Goleiro", "Zagueiro", "Lateral", "Meio-campo", "Atacante"],
+        basquete: ["Armador", "Ala", "Pivô"],
+        volei: ["Levantador", "Líbero", "Ponteiro", "Oposto", "Central"],
+        tenis: ["Simples", "Dupla"]
+    };
+
+    // Array para armazenar os participantes presentes com nome e posição
+    let participantesPresentes = [];
+
+    // Função para carregar as posições com base no esporte escolhido
+    function carregarPosicoes(esporteAtual) {
+        const select = document.getElementById("posicao-participante");
+        select.innerHTML = '<option value="">Selecione</option>'; // Limpa as opções anteriores
+
+        // Normaliza o nome do esporte (retirando acentos e colocando em minúsculas)
+        const esporteNormalizado = esporteAtual.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+        const posicoes = posicoesPorEsporte[esporteNormalizado];
+
+        if (posicoes && posicoes.length > 0) {
+            posicoes.forEach(function(posicao) {
+                const option = document.createElement("option");
+                option.value = posicao;
+                option.textContent = posicao;
+                select.appendChild(option);
+            });
+        } else {
+            console.warn("Nenhuma posição encontrada para o esporte:", esporteNormalizado);
+        }
+    }
+
+    // Função chamada quando o esporte é selecionado
+    function atualizarPosicoes() {
+        const esporteSelecionado = document.getElementById("esporte-participante").value;
+        carregarPosicoes(esporteSelecionado);
+    }
+
+    // Ao carregar a página, já define o esporte e suas posições
+    document.addEventListener("DOMContentLoaded", function() {
+        const esporteSelecionado = document.getElementById("esporte-participante").value;
+        carregarPosicoes(esporteSelecionado);
+    });
+
+    // Função para confirmar presença e adicionar à lista
+    function confirmarPresenca() {
+        const nomeInput = document.getElementById("nome-participante");
+        const posicaoSelect = document.getElementById("posicao-participante");
+        const presencaStatus = document.getElementById("presenca-status");
+
+        if (nomeInput.value.trim() === "") {
+            alert("Por favor, digite seu nome.");
+            return;
+        }
+
+        if (posicaoSelect.value === "") {
+            alert("Por favor, selecione uma posição.");
+            return;
+        }
+
+        presencaStatus.textContent = "Confirmado";
+        nomeInput.readOnly = true;
+        posicaoSelect.disabled = true;
+
+        
+        const nome = nomeInput.value;
+        const posicao = posicaoSelect.value;
+        participantesPresentes.push({ nome, posicao });
+        atualizarListaParticipantes();
+    }
+
+
+    function removerPresenca() {
+    const nomeInput = document.getElementById("nome-participante");
+    const posicaoSelect = document.getElementById("posicao-participante");
+    const presencaStatus = document.getElementById("presenca-status");
+    const nome = nomeInput.value;
+    presencaStatus.textContent = "Não";
+    nomeInput.readOnly = false;
+    posicaoSelect.disabled = false;
+    nomeInput.value = "";
+    posicaoSelect.value = "";
+    participantesPresentes = participantesPresentes.filter(participante => participante.nome !== nome);
+    atualizarListaParticipantes();
+}
+
+
+    // Função para atualizar a lista de participantes
+    function atualizarListaParticipantes() {
+        const listaElement = document.getElementById("lista-participantes");
+        listaElement.innerHTML = ""; // Limpa a lista antes de adicionar
+
+        participantesPresentes.forEach(function(participante) {
+            const li = document.createElement("li");
+            li.textContent = `${participante.nome} - ${participante.posicao}`;
+            listaElement.appendChild(li);
+        });
+    }
+</script>
+{% endblock %}

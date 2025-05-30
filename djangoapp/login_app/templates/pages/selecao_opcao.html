@@ -57,36 +57,75 @@
     }
 </style>
 {% endblock %}
-
 {% block content %}
-<div class="content">
+<div class="selecionar_futebol">
     <div class="option-section">
-        <h1>O que deseja fazer?</h1>
+        <h1>Sua próxima jogada começa aqui!</h1>
         {% if esporte %}
-            <p>Você selecionou: {{ esporte }}</p>
+            <p class="esporte-destaque">Você selecionou: {{ esporte }}</p>
         {% endif %}
-
         <p>Escolha uma das opções abaixo</p>
 
         <div class="action-icons">
-            <div class="action-icon">
-                <a href="{% url 'encontrar_partida' %}">
-                    <img src="{% static 'images/soccer-ball.png' %}" alt="Futebol">
-                    <span>Encontrar partida</span>
-                </a>
-            </div>
-            <div class="action-icon">
-                <a href="{% url 'criar_partida' %}">
-                    <img src="{% static 'images/soccer-ball.png' %}" alt="Futebol">
-                    <span>Criar partida</span>
-                </a>
-            </div>
-            <div class="action-icon">
-                <a href="{% url 'available_places' %}">
-                    <img src="{% static 'images/soccer-ball.png' %}" alt="Futebol">
-                    <span>Reservar espaço</span>
-                </a>
-            </div>
+            {% if esporte|lower == 'basquete' %}
+                <div class="action-icon fade-in-up" style="animation-delay: 0.1s">
+                    <a href="{% url 'available_places' %}">
+                        <img src="{% static 'images/basquete1.png' %}" alt="Basquete">
+                        <span>Encontrar partida</span>
+                    </a>
+                </div>
+                <div class="action-icon fade-in-up" style="animation-delay: 0.2s">
+                    <a href="{% url 'reservar_espaco' %}">
+                        <img src="{% static 'images/basquete2.png' %}" alt="Basquete">
+                        <span>Criar partida</span>
+                    </a>
+                </div>
+
+            {% elif esporte|lower == 'futebol' %}
+                <div class="action-icon fade-in-up" style="animation-delay: 0.1s">
+                    <a href="{% url 'available_places' %}">
+                        <img src="{% static 'images/futebol1.png' %}" alt="Futebol">
+                        <span>Encontrar partida</span>
+                    </a>
+                </div>
+                <div class="action-icon fade-in-up" style="animation-delay: 0.2s">
+                    <a href="{% url 'reservar_espaco' %}">
+                        <img src="{% static 'images/futebol2.png' %}" alt="Futebol">
+                        <span>Criar partida</span>
+                    </a>
+                </div>
+
+            {% elif esporte|lower == 'tênis' %}
+                <div class="action-icon fade-in-up" style="animation-delay: 0.1s">
+                    <a href="{% url 'available_places' %}">
+                        <img src="{% static 'images/tenis1.png' %}" alt="Tênis">
+                        <span>Encontrar partida</span>
+                    </a>
+                </div>
+                <div class="action-icon fade-in-up" style="animation-delay: 0.2s">
+                    <a href="{% url 'reservar_espaco' %}">
+                        <img src="{% static 'images/tenis2.png' %}" alt="Tênis">
+                        <span>Criar partida</span>
+                    </a>
+                </div>
+
+            {% elif esporte|lower == 'vôlei' %}
+                <div class="action-icon fade-in-up" style="animation-delay: 0.1s">
+                    <a href="{% url 'available_places' %}">
+                        <img src="{% static 'images/volei1.png' %}" alt="Vôlei">
+                        <span>Encontrar partida</span>
+                    </a>
+                </div>
+                <div class="action-icon fade-in-up" style="animation-delay: 0.2s">
+                    <a href="{% url 'reservar_espaco' %}">
+                        <img src="{% static 'images/volei2.png' %}" alt="Vôlei">
+                        <span>Criar partida</span>
+                    </a>
+                </div>
+
+            {% else %}
+                <p>Esporte não disponível no momento.</p>
+            {% endif %}
         </div>
     </div>
 </div>

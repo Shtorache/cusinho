@@ -8,60 +8,157 @@
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <style>
     .map-container {
-        width: 90%;
-        height: 500px;
-        margin: 20px auto;
-        border: 3px solid #4CAF50;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-    
+    width: 100%;
+    height: 450px;
+    margin: -10px auto 20px; /* subiu 10px */
+    border: 2px solid #E53935;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(229, 57, 53, 0.3);
+    transition: all 0.3s ease-in-out;
+    background-color: rgba(0, 0, 0, 0.2); /* fundo sutil escuro */
+    backdrop-filter: blur(6px);
+}
+
+
+/* Efeito Glow ao passar o mouse */
+.map-container:hover {
+    box-shadow: 0 0 30px rgba(229, 57, 53, 0.6), 0 0 10px rgba(229, 57, 53, 0.8);
+    border-color: #ff6f61; /* tom mais claro no hover */
+    transform: scale(1.01); /* leve ampliação */
+}
+
+
     .voltar-btn {
-        display: block;
-        margin: 20px auto;
-        padding: 10px 20px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        text-align: center;
-        font-weight: bold;
-    }
+    display: block;
+    margin: 20px auto 20px auto; /* reduzido de 100px para 70px */
+    padding: 10px 20px;
+    background-color: #E53935;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+}
 
-    /* Filtros de região - Estilo melhorado */
     .region-filters {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-        margin: 20px auto;
-        max-width: 800px;
-        padding: 10px;
-        background-color: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    margin: 30px auto;
+    max-width: 950px;
+    padding: 25px 30px;
+
+    background: rgba(25, 25, 25, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 25px;
+
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    transition: all 0.4s ease-in-out;
+}
+
+.region-filters button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #3a3a3a, #2c2c2c);
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    min-width: 130px;
+    text-align: center;
+
+    box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.3),
+        0 0 8px rgba(255, 255, 255, 0.05),
+        inset 0 1px 3px rgba(255, 255, 255, 0.1);
+    
+    transition: transform 0.25s ease, box-shadow 0.3s ease, background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.region-filters button::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(229, 57, 53, 0.35), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 0;
+    animation: glow-pulse 3s infinite;
+}
+
+.region-filters button:hover::before {
+    opacity: 1;
+}
+
+.region-filters button:hover {
+    background: linear-gradient(135deg, #c62828, #8e0000);
+    transform: scale(1.08);
+    box-shadow:
+        0 12px 24px rgba(0, 0, 0, 0.6),
+        0 0 20px rgba(229, 57, 53, 0.8),
+        0 0 30px rgba(229, 57, 53, 0.6),
+        inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.region-filters button.active {
+    background: linear-gradient(135deg, #e53935, #b71c1c);
+    color: #fff;
+    transform: scale(1.1);
+    box-shadow:
+        0 0 10px rgba(229, 57, 53, 0.6),
+        0 0 25px rgba(229, 57, 53, 0.9),
+        0 0 35px rgba(229, 57, 53, 0.8),
+        inset 0 0 8px rgba(255, 255, 255, 0.15);
+    z-index: 1;
+}
+
+/* Animação de glow pulsante */
+@keyframes glow-pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.6;
+    }
+}
+
+
+
+    @media (max-width: 768px) {
+        .region-filters {
+            padding: 10px;
+            gap: 10px;
+        }
+
+        .region-filters button {
+            flex: 1 1 45%;
+            font-size: 14px;
+            padding: 10px;
+            min-width: unset;
+        }
     }
 
-    .region-filters button {
-        margin: 0;
-        padding: 8px 15px;
-        border: 2px solid #4CAF50;
-        border-radius: 20px;
-        cursor: pointer;
-        background-color: transparent;
-        color: white;
-        font-weight: bold;
-        transition: all 0.3s ease;
-    }
-
-    .region-filters button:hover {
-        background-color: #4CAF50;
-        transform: translateY(-2px);
-    }
-
-    .region-filters button.active {
-        background-color: #4CAF50;
+    @media (max-width: 480px) {
+        .region-filters button {
+            flex: 1 1 100%;
+            font-size: 14px;
+            padding: 10px 12px;
+        }
     }
 
     #map {
@@ -69,107 +166,308 @@
         height: 100%;
     }
 
-    /* Modal styles */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,0.8);
+   .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Estilo base do conteúdo */
+.modal-content {
+    background: linear-gradient(145deg, #000000, #868686);
+    color: white;
+    margin: 5% auto;
+    padding: 25px;
+    border-radius: 16px;
+    width: 80%;
+    max-width: 700px;
+    box-shadow:
+      0 0 20px rgba(229, 57, 53, 0.3),
+      0 8px 24px rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(229, 57, 53, 0.6);
+    backdrop-filter: blur(10px);
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    animation: pulseBorder 4s ease-in-out infinite;
+}
+
+/* Hover intensifica borda e sombra */
+.modal-content:hover {
+    box-shadow:
+      0 0 30px rgba(229, 57, 53, 0.6),
+      0 12px 36px rgba(0, 0, 0, 0.7);
+    border-color: rgba(255, 115, 115, 0.8);
+    animation: pulseBorder 2s ease-in-out infinite;
+}
+
+/* Pulsação na borda */
+@keyframes pulseBorder {
+    0%, 100% {
+        border-color: rgba(229, 57, 53, 0.6);
+        box-shadow:
+          0 0 20px rgba(229, 57, 53, 0.3),
+          0 8px 24px rgba(0, 0, 0, 0.5);
     }
+    50% {
+        border-color: rgba(255, 115, 115, 0.9);
+        box-shadow:
+          0 0 40px rgba(255, 115, 115, 0.7),
+          0 16px 48px rgba(0, 0, 0, 0.6);
+    }
+}
+
+
+/* Estilo aprimorado do título dentro do modal */
+/* Ajuste para centralizar */
+#modalTitle {
+    display: block;           /* de inline-block para bloco */
+    margin: 0 auto 20px auto; /* centraliza horizontalmente */
+    text-align: center;       /* garante que o texto interno fique centrado */
+    font-size: 2.4rem;
+    font-weight: 800;
+    /* gradiente animado */
+    background: linear-gradient(90deg, #ff6f61, #f44336, #ff6f61);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    /* borda neon e padding */
+    padding: 4px 12px;
+    border: 2px solid rgba(229, 57, 53, 0.6);
+    border-radius: 12px;
+    /* sombra e animações */
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+    animation: glowText 3s ease-in-out infinite, pulseBorder 4s ease-in-out infinite;
+}
+
+
+/* Brilho no texto */
+@keyframes glowText {
+    0%, 100% {
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 0 5px rgba(255, 111, 97, 0.6);
+    }
+    50% {
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 111, 97, 0.9);
+    }
+}
+
+/* Pulsação na borda */
+@keyframes pulseBorder {
+    0%, 100% {
+        border-color: rgba(229, 57, 53, 0.6);
+        box-shadow: 0 0 10px rgba(229, 57, 53, 0.5);
+    }
+    50% {
+        border-color: rgba(255, 115, 115, 0.8);
+        box-shadow: 0 0 25px rgba(255, 115, 115, 0.8);
+    }
+}
+
+
 
     .modal-content {
-        background-color: #fefefe;
-        margin: 5% auto;
-        padding: 20px;
-        border-radius: 10px;
-        width: 80%;
-        max-width: 700px;
-    }
+    position: relative; /* adiciona esta linha, sem remover nada */
+}
 
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-    }
+/* Atualize apenas o .close: */
+.close {
+    position: absolute; /* antes era float */
+    top: 30px;
+    right: 4px;
+    /* mantém o restante das suas regras: */
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px rgba(245, 245, 245, 0.3);
+    background: transparent; /* opcional para garantir fundo limpo */
+}
 
-    .close:hover {
-        color: black;
-    }
+.close:hover {
+    color: #fd0606;
+    transform: scale(1.2);
+    text-shadow: 0 0 10px rgba(229, 57, 53, 0.7);
+}
 
-    /* Carousel styles */
     .carousel {
-        position: relative;
-        width: 100%;
-        height: 300px;
-        overflow: hidden;
-        margin-bottom: 20px;
-    }
+    position: relative;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
 
-    .carousel-inner {
-        display: flex;
-        transition: transform 0.5s ease;
-    }
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
 
-    .carousel-item {
-        min-width: 100%;
-        height: 300px;
-    }
+.carousel-item {
+    min-width: 100%;
+    height: 300px;
+}
 
-    .carousel-item img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+    transition: transform 0.5s ease;
+}
 
-    .carousel-control {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background-color: rgba(0,0,0,0.5);
+.carousel-item img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 18px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.carousel-control:hover {
+    background-color: #E53935;
+    box-shadow: 0 0 15px rgba(229, 57, 53, 0.7), 0 6px 20px rgba(0, 0, 0, 0.5);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-control.prev {
+    left: 15px;
+}
+
+.carousel-control.next {
+    right: 15px;
+}
+
+
+   .play-btn {
+    display: block;
+    width: 300px; /* largura fixa para facilitar centralização */
+    margin: 20px auto; /* centraliza horizontalmente */
+    padding: 12px 20px;
+    background-color: #E53935;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3),
+                0 0 8px rgba(229, 57, 53, 0.3);
+}
+
+.play-btn:hover {
+    background-color: #c62828;
+    transform: scale(1.03);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5),
+                0 0 15px rgba(229, 57, 53, 0.7);
+}
+
+
+
+.titulo-quadras {
+    position: relative;
+    text-align: center;
+    font-size: 2.6em;
+    font-weight: 600;
+    margin-top: 30px;
+    padding-bottom: 15px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #dfacac, #f34f4f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.titulo-quadras {
+    position: relative;
+    text-align: center;
+    font-size: 2.6em;
+    font-weight: 600;
+    margin-top: 30px;
+    padding-bottom: 20px;
+    color: #ffe6e6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.titulo-quadras::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    height: 4px;
+    background: linear-gradient(90deg, #e62b2b, #ffe6e6);
+    border-radius: 2px;
+    width: 0;
+    transform: translateX(-50%);
+    animation: underlineGrow 1s ease-out forwards;
+}
+
+@keyframes underlineGrow {
+    to {
+        width: 60%;
+    }
+}
+
+
+
+
+
+
+.titulo-quadras.futebol {
+    animation: destaqueFutebol 2s infinite alternate;
+    text-shadow: 2px 2px 8px rgba(229, 57, 53, 0.6);
+}
+
+@keyframes destaqueFutebol {
+    0% {
         color: white;
-        border: none;
-        padding: 10px;
-        cursor: pointer;
-        z-index: 10;
+        text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.4);
     }
+    100% {
+        color: #ff6666; /* vermelho mais claro */
+        text-shadow: 2px 2px 12px rgba(255, 102, 102, 0.6);
+    }
+}
 
-    .carousel-control.prev {
-        left: 10px;
-    }
 
-    .carousel-control.next {
-        right: 10px;
-    }
 
-    .play-btn {
-        display: block;
-        width: 100%;
-        padding: 10px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        text-align: center;
-        text-decoration: none;
-    }
-
-    .play-btn:hover {
-        background-color: #45a049;
-    }
 </style>
+
 {% endblock %}
+
+
 
 {% block content %}
 <div class="content">
-    <h1 style="text-align: center; color: white;">Campos disponíveis para {{ esporte|title }}</h1>
+    <h1 class="titulo-quadras {% if esporte == 'futebol' %}futebol{% endif %}">
+    Quadras disponíveis para {{ esporte|title }}
+</h1>
+
     
     <!-- Filtros de Região -->
     <div class="region-filters">
@@ -185,7 +483,7 @@
         <div id="map"></div>
     </div>
     
-    <button class="voltar-btn" onclick="window.history.back()">Voltar</button>
+    
 </div>
 
 <!-- Modal -->
@@ -221,52 +519,52 @@
         const campos = [
     // Região: Itaipuaçu
     { 
-            nome: "Campo A", 
+            nome: "Arena itaipuaçu", 
             regiao: "itaipuacu", 
             esporte: "futebol", 
-            lat: -22.965, 
-            lng: -42.976,
+            lat: -22.963, 
+            lng: -42.991,
             imagens: [
-                "{% static 'images/arena_flamengo1.jpg' %}",
-                "{% static 'images/arena_flamengo2.jpg' %}",
-                "{% static 'images/arena_flamengo3.jpeg' %}"
+                "{% static 'images/arena_itaipuaçu.jpg' %}",
+                "{% static 'images/arena_itaipuaçu2.jpg' %}",
+                "{% static 'images/arena_itaipuaçu3.jpeg' %}"
             ],
             url: "{% url 'campo_detalhes' 'campo_a' %}"
         },
         { 
-            nome: "Campo Itaipuaçu 1", 
+            nome: "Arena barroco", 
             regiao: "itaipuacu", 
             esporte: "futebol society", 
             lat: -22.962, 
             lng: -42.980,
             imagens: [
-                "/static/images/itaipuacu1.jpg",
-                "/static/images/itaipuacu1b.jpg",
-                "/static/images/itaipuacu1c.jpg"
+                "/static/images/arena_barroco.jpg",
+                "/static/images/arena_itaipuaçu2.jpg",
+                "/static/images/arena_itaipeaçu3.jpg"
             ],
             url: "{% url 'campo_detalhes' 'campo_itaipuacu_1' %}"
         },
         { 
-            nome: "Arena Marquês", 
+            nome: "Campo Divino Esporte e Lazer", 
             regiao: "itaipuacu", 
             esporte: "futsal", 
-            lat: -22.968, 
-            lng: -42.970,
+            lat: -22.965, 
+            lng: -42.932,
             imagens: [
-                "/static/images/itaipuacu2.jpg",
+                "/static/images/campo_divino.jpg",
                 "/static/images/itaipuacu2b.jpg",
                 "/static/images/itaipuacu2c.jpg"
             ],
             url: "{% url 'campo_detalhes' 'arena_marques' %}"
         },
         { 
-            nome: "Campo das Palmeiras", 
+            nome: "Campo inter academy", 
             regiao: "itaipuacu", 
             esporte: "futebol", 
-            lat: -22.970, 
-            lng: -42.974,
+            lat: -22.948, 
+            lng: -42.962,
             imagens: [
-                "/static/images/itaipuacu3.jpg",
+                "/static/images/campo_inter_academy.jpg",
                 "/static/images/itaipuacu3b.jpg",
                 "/static/images/itaipuacu3c.jpg"
             ],
@@ -278,8 +576,8 @@
             nome: "Arena Flamengo", 
             regiao: "centro", 
             esporte: "futebol society", 
-            lat: -22.919, 
-            lng: -42.823,
+            lat: -22.909, 
+            lng: -42.804,
             imagens: [
                 "/static/images/arena_flamengo1.jpg",
                 "/static/images/arena_flamengo2.jpg",
@@ -288,26 +586,26 @@
             url: "{% url 'campo_detalhes' 'arena_flamengo' %}"
         },
         { 
-            nome: "Campo Central", 
+            nome: "Arena Centro", 
             regiao: "centro", 
             esporte: "futebol", 
-            lat: -22.921, 
-            lng: -42.827,
+            lat: -22.917, 
+            lng: -42.820,
             imagens: [
-                "/static/images/centro1.jpg",
+                "/static/images/arena centro.png",
                 "/static/images/centro1b.jpg",
                 "/static/images/centro1c.jpg"
             ],
             url: "{% url 'campo_detalhes' 'campo_central' %}"
         },
         { 
-            nome: "Quadra do Centro", 
+            nome: "Campo Amparo Esporte Clube", 
             regiao: "centro", 
             esporte: "futsal", 
-            lat: -22.922, 
-            lng: -42.820,
+            lat: -22.915, 
+            lng: -42.837,
             imagens: [
-                "/static/images/centro2.jpg",
+                "/static/images/amparo.jpg",
                 "/static/images/centro2b.jpg",
                 "/static/images/centro2c.jpg"
             ],
@@ -318,52 +616,52 @@
 
         // Região: São José
         { 
-            nome: "Campo C", 
-            regiao: "sao_jose", 
+            nome: "Arena Itapeba", 
+            regiao: "centro", 
             esporte: "futsal", 
-            lat: -22.931, 
-            lng: -42.884,
+            lat: -22.904, 
+            lng: -42.835,
             imagens: [
-                "{% static 'images/arena1.jpg' %}",
+                "{% static 'images/arena_itapeba.jpeg' %}",
                 "{% static 'images/arena2.jpg' %}",
                 "{% static 'images/arena3.jpg' %}"
             ],
             url: "{% url 'campo_detalhes' 'campo_c' %}"
         },
         { 
-            nome: "Campo São José 1", 
+            nome: "Arena São José", 
             regiao: "sao_jose", 
             esporte: "futebol", 
-            lat: -22.933, 
-            lng: -42.881,
+            lat: -22.937, 
+            lng: -42.891,
             imagens: [
-                "/static/images/saojose1.jpg",
+                "/static/images/arena_são josé.jpg",
                 "/static/images/saojose1b.jpg",
                 "/static/images/saojose1c.jpg"
             ],
             url: "{% url 'campo_detalhes' 'campo_saojose_1' %}"
         },
         { 
-            nome: "Arena José Futebol", 
-            regiao: "sao_jose", 
+            nome: "Quadra inoã", 
+            regiao: "inoa", 
             esporte: "futebol society", 
-            lat: -22.928, 
-            lng: -42.887,
+            lat: -22.898, 
+            lng: -42.936,
             imagens: [
-                "/static/images/saojose2.jpg",
+                "/static/images/quadra_inoã.jpg",
                 "/static/images/saojose2b.jpg",
                 "/static/images/saojose2c.jpg"
             ],
             url: "{% url 'campo_detalhes' 'arena_jose' %}"
         },
         { 
-            nome: "Quadra Esportiva São José", 
-            regiao: "sao_jose", 
+            nome: "Quadra Poliesportiva Parque Nanci", 
+            regiao: "parque_nanci", 
             esporte: "futsal", 
-            lat: -22.929, 
-            lng: -42.882,
+            lat: -22.922, 
+            lng: -42.847,
             imagens: [
-                "/static/images/saojose3.jpg",
+                "/static/images/parque_nanci.jpg",
                 "/static/images/saojose3b.jpg",
                 "/static/images/saojose3c.jpg"
             ],
@@ -375,7 +673,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             let regiao = urlParams.get('regiao') || "centro"; // Define região padrão
             let esporte = urlParams.get('esporte') || "futebol"; 
-
+            
             // Criar mapa
             var map = L.map('map').setView(regioes[regiao], 15);
 

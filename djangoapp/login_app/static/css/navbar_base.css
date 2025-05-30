@@ -1,54 +1,197 @@
+/* Navbar moderna com fundo animado, efeito glass e responsividade aprimorada */
 .navbar {
-    /* background-color: #333; */
-    color: white;
-    padding: 10px 20px;
+    padding: 14px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: Arial, sans-serif;
-    animation: nav-animation 7.5s infinite alternate;
-    
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(-45deg, #fc6163, #f83434, #f50004);
+    background-size: 400% 400%;
+    animation: gradientFlow 15s ease infinite;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(4px);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    border-radius: 0 0 16px 16px;
+}
+
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .navbar-logo {
-    font-size: 24px;
+    font-size: 30px;
+    font-weight: 600;
     cursor: pointer;
-    font-weight: bold;
-
+    color: #fff;
+    text-shadow:
+        0 0 5px rgba(255, 0, 0, 0.3),
+        0 0 10px rgba(255, 0, 0, 0.3),
+        0 0 15px rgba(255, 0, 0, 0.2);
+    transition: all 0.4s ease-in-out;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
 }
 
+.navbar-logo:hover {
+    transform: scale(1.08);
+    color: #b1b1b1;
+    text-shadow:
+        0 0 10px rgba(49, 49, 49, 0.6),
+        0 0 20px rgba(128, 127, 127, 0.5),
+        0 0 30px rgba(14, 2, 2, 0.4);
+}
+
+/* Base do menu */
 .navbar-menu {
     list-style: none;
+    display: flex;
+    gap: 25px;
     margin: 0;
     padding: 0;
-    display: flex;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
+/* Links */
 .navbar-menu li {
-    margin: 0 15px;
-    
+    position: relative;
 }
 
 .navbar-menu a {
-    color: white;
+    color: #f1f1f1;
     text-decoration: none;
     font-size: 18px;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.navbar-menu a::after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    left: 0;
+    bottom: -4px;
+    background-color: #000000;
+    transition: width 0.3s ease;
+}
+
+.navbar-menu a:hover::after {
+    width: 100%;
 }
 
 .navbar-menu a:hover {
-    text-decoration: underline;
-
+    color: #e0e0e0;
+    text-shadow: 0 0 5px #bbb;
 }
 
 
+/* Botão toggle hamburger */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff; /* branco padrão */
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.menu-toggle:hover {
+    color: #eee9e9; /* vermelho vibrante no hover */
+    transform: scale(1.1);
+}
 
 
-@keyframes nav-animation {
-    from{
-        background-color: #020202;
+/* Responsividade */
+@media (max-width: 768px) {
+    .navbar {
+        flex-wrap: wrap;
+        padding: 10px 15px;
+    }
+    .navbar-logo {
+        font-size: 24px;
+        order: 1;
+    }
+    .menu-toggle {
+        display: block;
+        order: 2;
     }
 
-    to{
-        background-color: #070707;
+    /* Menu inicia oculto */
+    .navbar-menu {
+        flex-direction: column;
+        width: 100%;
+        opacity: 0;
+        visibility: hidden;
+        max-height: 0;
+        overflow: hidden;
+        order: 3;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 0 0 16px 16px;
+        transition: max-height 0.35s ease, opacity 0.35s ease;
     }
+
+    /* Quando ativo mostra o menu */
+    .navbar-menu.active {
+        opacity: 1;
+        visibility: visible;
+        max-height: 500px; /* permite a animação */
+        padding: 10px 0;
+    }
+
+    .navbar-menu li {
+        padding: 10px 20px;
+    }
+
+    .navbar-menu a {
+        font-size: 16px;
+        padding: 8px 0;
+        display: block;
+    }
+
+    .navbar-menu a::after {
+        bottom: 2px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-logo {
+        font-size: 20px;
+    }
+    .menu-toggle {
+        font-size: 20px;
+    }
+    .navbar-menu a {
+        font-size: 15px;
+    }
+}
+
+/* Remove qualquer fundo dos links na navbar */
+.navbar-menu a,
+.navbar-menu a:link,
+.navbar-menu a:visited {
+    background-color: transparent !important;
+}
+
+.navbar-menu .btn,
+.navbar-menu button {
+    background: transparent !important;
+    border: 1px solid #fff;
+    color: #f1f1f1 !important;
+}
+
+.navbar-menu a.active {
+    background-color: transparent !important;
 }

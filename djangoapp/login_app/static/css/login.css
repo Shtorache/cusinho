@@ -1,90 +1,208 @@
-/* Estiliza o container principal do conteúdo */
+/* Fonte base moderna e background escuro com gradiente */
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom right, #1e2413, #000000);
-    margin: 0;
-    padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #330000, #800000);
+  background-size: 400% 400%;
+  animation: gradientShift 20s ease infinite;
+  margin: 0;
+  padding: 20px;
+  color: #f8dede;
+  overflow-x: hidden;
+  position: relative;
 }
 
+/* Animação do gradiente */
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Container de bolhas */
+.background-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -50px;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 80, 80, 0.2);
+  border-radius: 50%;
+  animation: rise 10s infinite ease-in-out;
+}
+
+.bubble:nth-child(2) {
+  left: 25%;
+  animation-duration: 12s;
+  animation-delay: 1s;
+}
+.bubble:nth-child(3) {
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  animation-duration: 14s;
+  animation-delay: 2s;
+}
+.bubble:nth-child(4) {
+  left: 75%;
+  animation-duration: 11s;
+  animation-delay: 3s;
+}
+.bubble:nth-child(5) {
+  left: 90%;
+  width: 25px;
+  height: 25px;
+  animation-duration: 13s;
+  animation-delay: 1.5s;
+}
+
+@keyframes rise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.3;
+    transform: translateY(-50vh) scale(1.2);
+  }
+  100% {
+    transform: translateY(-100vh) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Container principal */
 .login-container {
-    max-width: 400px;
+    max-width: 420px;
     margin: 60px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px 25px;
+    background: #121212;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
 }
 
-
+/* Formulário */
 form {
-    max-width: 350px;
-    margin: 0 auto;
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilo para os títulos principais (h1) e subtítulos (h2) */
-h1 {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #0f0f0f;
+/* Campos de input agrupados */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Inputs estilizados */
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background-color: #f5f3f3;
+    color: #eaeaea; /* texto claro para contraste */
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+
+input:focus {
+    border-color: #4dd0e1;
+    outline: none;
+}
+
+/* Títulos */
+h1, h2 {
     text-align: center;
     margin-bottom: 20px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+h1 {
+    font-size: 2rem;
 }
 
 h2 {
-    font-size: 1.5rem;
-    color: #050404;
-    margin-top: 40px;
-    text-align: center;
+    font-size: 1.4rem;
+    margin-top: 30px;
 }
 
 p {
-    font-size: 1rem;
-    color: #161616;
     text-align: center;
+    font-size: 1rem;
+    color: #cccccc;
     margin-bottom: 10px;
 }
 
-/* Estiliza as opções de rádio */
+/* Inputs de rádio */
 input[type="radio"] {
-    margin-right: 10px;
+    margin-right: 8px;
+    transform: scale(1.1);
+    accent-color: #4dd0e1;
 }
 
-
-/* Estilo para os botões */
+/* Botões */
 button {
-    padding: 10px 10px;
+    padding: 12px;
     font-size: 1rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, #4dd0e1, #1976d2);
+    color: #ffffff;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-/* Estilo específico para o botão de remoção */
+button:hover {
+    background: linear-gradient(135deg, #1976d2, #4dd0e1);
+    transform: translateY(-2px);
+}
+
+/* Botão específico para envio */
 button[type="submit"] {
-    background-color: #5597cc;
-    color: #fff;
+    background: linear-gradient(135deg, #64b5f6, #2196f3);
 }
 
 button[type="submit"]:hover {
-    background-color: black;
+    background: linear-gradient(135deg, #2196f3, #64b5f6);
 }
 
-a{
+/* Links estilizados como botões */
+a {
+    text-align: center;
+    display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
-   
-    margin-right: 10px;
-    display: flex;
-    
-    border-radius: 4px;
-    padding: 10px 10px;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #4dd0e1;
+    background-color: #212121;
+    border-radius: 8px;
+    padding: 10px 0;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+a:hover {
+    background-color: #333;
+    color: #fff;
 }

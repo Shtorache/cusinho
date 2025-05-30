@@ -9,61 +9,382 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/login.css' %}">
+<style>
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 98%; /* Ajuste para 100% se quiser que ocupe toda a largura e controle o padding interno */
+  z-index: 1000;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  /* Considere adicionar um background à navbar se o conteúdo rolar por baixo dela */
+  /* background-color: rgba(18, 18, 18, 0.85); */ /* Exemplo do seu tema anterior */
+  /* backdrop-filter: blur(8px); */
+}
+
+
+body, .main, .container { /* Esta regra pode ser muito agressiva com !important */
+    margin-top: 0 !important; 
+    padding-top: 0 !important;
+}
+
+  body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  /* padding: 20px;  O padding aqui pode interferir com a imagem de fundo full-screen */
+  color: #f8dede;
+  overflow-x: hidden;
+  position: relative;
+  z-index: 0; /* z-index no body pode não ser necessário ou causar problemas de empilhamento com fixed elements */
+  background-color: #1a0808; /* Cor de fallback */
+  min-height: 100vh; /* Garante que o body ocupe a tela toda */
+}
+
+.background-blur { /* Este é o elemento que carrega a imagem e o blur */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('https://maricaja.com.br/wp-content/uploads/2018/03/fotoelssoncampos-scaled.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed; /* Imagem fixa */
+  filter: blur(8px);
+  z-index: -2; /* Mais ao fundo */
+  pointer-events: none; 
+}
+
+/* Se quiser um overlay de cor sobre a imagem borrada (opcional) */
+/* body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.3); /* Overlay escuro sutil 
+  z-index: -1; 
+  pointer-events: none;
+} */
+
+.login-container { /* Ou use .signup-container se for essa a classe do seu box de login */
+    max-width: 420px;
+    margin: 80px auto 40px auto; 
+    padding: 35px 30px; 
+    background-color: #121212; /* COR SÓLIDA: Um cinza bem escuro, quase preto */
+    border-radius: 15px; 
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); 
+    color: #eaeaea;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border: 1px solid rgba(255, 77, 77, 0.3); /* Borda vermelha sutil */
+    transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.3s ease;
+    position: relative; 
+    z-index: 1; 
+    /* backdrop-filter: blur(10px); /* Removido, pois não tem efeito visível com fundo opaco */
+}
+.login-container:hover { /* Ou .signup-container:hover */
+    border-color: #ff4d4d; 
+    box-shadow:
+        0 0 15px 4px rgba(255, 77, 77, 0.6), 
+        0 12px 40px rgba(0, 0, 0, 0.65);
+    transform: translateY(-5px); 
+}
+
+/* Keyframes e animações de bolhas mantidas como você definiu */
+  @keyframes gradientShift { /* Não está sendo usado atualmente no body */
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .background-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0; /* Acima do background-blur, abaixo do login-container */
+    overflow: hidden;
+  }
+
+  .bubble {
+    position: absolute;
+    bottom: -100px;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(240, 178, 178, 0.7); /* Cor das bolhas */
+    border-radius: 50%;
+    animation: rise 10s infinite ease-in-out alternate; /* Adicionado alternate e ajustado tempo */
+    opacity: 0;
+}
+
+.bubble:nth-child(1) { left: 10%; width: 20px; height: 20px; animation-duration: 12s; animation-delay: 0s; }
+.bubble:nth-child(2) { left: 25%; animation-delay: 1s; width: 25px; height: 25px; animation-duration: 9s; }
+.bubble:nth-child(3) { left: 50%; width: 30px; height: 30px; animation-delay: 2s; animation-duration: 13s; }
+.bubble:nth-child(4) { left: 75%; animation-delay: 3s; width: 15px; height: 15px; animation-duration: 8s; }
+.bubble:nth-child(5) { left: 90%; width: 25px; height: 25px; animation-delay: 1.5s; animation-duration: 11s; }
+
+
+@keyframes rise {
+    0% { bottom: -100px; opacity: 0; transform: translateX(0px) scale(0.5); }
+    20% { opacity: 0.4; } /* Aparece mais cedo e um pouco mais opaco */
+    90% { opacity: 0.1; transform: scale(1.1); }
+    100% { bottom: 105vh; opacity: 0; transform: translateX(20px) scale(1); } /* Movimento lateral suave */
+}
+
+  /* Removida a segunda definição redundante de .login-container CSS */
+
+  .login-container h1 {
+  text-align: center;
+  margin-top: 0; /* Se for o primeiro elemento do card */
+  margin-bottom: 25px;
+  color: #ff4c4c; 
+  font-size: 28px;
+  letter-spacing: 1px;
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; 
+}
+
+/* ***** INÍCIO DAS MUDANÇAS NOS INPUTS ***** */
+.login-container form input[type="text"],
+.login-container form input[type="email"],
+.login-container form input[type="password"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 15px; /* Padding ajustado */
+  border: 1px solid #555; /* Borda inicial sutil e escura */
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.08); /* Fundo um pouco mais visível */
+  color: #f0f0f0; /* TEXTO CLARO para contraste */
+  font-size: 15px; /* Tamanho da fonte aumentado */
+  outline: none;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; /* Adicionada transição para border-color e box-shadow */
+}
+
+.login-container form input[type="text"]:hover,
+.login-container form input[type="email"]:hover,
+.login-container form input[type="password"]:hover {
+  border-color: #ff4c4c; /* Borda vermelha no hover */
+}
+
+.login-container form input[type="text"]:focus,
+.login-container form input[type="email"]:focus,
+.login-container form input[type="password"]:focus {
+  background-color: rgba(253, 250, 250, 0.15); /* Fundo no foco um pouco mais claro */
+  border-color: #ff1f1f; /* Borda vermelha mais intensa no foco */
+  box-shadow: 0 0 8px rgba(255, 31, 31, 0.5); /* Sombra vermelha sutil no foco */
+}
+/* ***** FIM DAS MUDANÇAS NOS INPUTS ***** */
+
+
+.login-container form button {
+  padding: 12px;
+  background-color: #ff4c4c;
+  color: #fff;
+  font-weight: bold;
+  text-align: center; 
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Ajustada transição */
+}
+
+.login-container form button:hover {
+  background-color: #ff1f1f; /* Vermelho mais intenso */
+  transform: translateY(-2px); /* Leve elevação */
+}
+
+
+  .alert {
+    padding: 10px 15px; /* Padding ajustado */
+    border-radius: 6px;
+    margin-bottom: 15px; /* Margem aumentada */
+    font-size: 0.9rem;
+    color: #fff; /* Cor de texto padrão para alertas */
+  }
+
+  .alert-success {
+    background-color: rgba(34, 85, 34, 0.7); /* Verde com transparência */
+    border: 1px solid #225522;
+    color: #ddffdd;
+  }
+  .alert-error, .alert.errorlist { /* Adicionada a classe errorlist do allauth */
+      background-color: rgba(170, 34, 34, 0.7); /* Vermelho com transparência */
+      border: 1px solid #aa2222;
+      color: #fddddd;
+  }
+
+
+  /* Oculta mensagens de logout */
+  .alert-success[class*="logout"],
+  .alert-success[class*="saiu"] {
+    display: none !important;
+  }
+
+
+/* Removida a duplicação de .socialaccount_providers */
+.socialaccount_providers ul, /* django-allauth usa <ul> para os providers */
+.socialaccount_providers li {
+  list-style: none !important; /* Removido list-style-type */
+  padding: 0 !important; /* Removido padding-left */
+  margin: 0 !important; /* Removido margin-left */
+}
+
+.socialaccount_providers li {
+  margin-bottom: 10px !important; /* Adiciona espaço entre os botões sociais */
+}
+
+/* Estilo para os links/botões de login social do allauth */
+.socialaccount_provider a, 
+.socialaccount_provider form button { /* O Google pode usar um form com button */
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 10px; /* Espaço entre eles, se houver mais de um */
+    text-align: center;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #f0f0f0;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid #666;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.socialaccount_provider a:hover,
+.socialaccount_provider form button:hover {
+    background-color: rgba(255, 77, 77, 0.2);
+    border-color: #ff4c4c;
+    color: #ffffff;
+}
+
+/* Para o form do Google não ter margens extras */
+.socialaccount_provider form {
+    margin: 0;
+    padding: 0;
+    gap: 0; /* Remove o gap do form geral se não desejado aqui */
+}
+
+
+</style>
+
 {% endblock extra_head %}
 
 {% block content %}
-<div class="login-container">
-    {% element h1 %}
-        {% trans "Sign In" %}
-    {% endelement %}
+<div class="background-animation">
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  {# Adicione mais divs .bubble aqui se quiser mais bolhas #}
+  <div class="bubble" style="left: 5%; animation-duration: 13s; animation-delay: 0.5s; width: 22px; height: 22px;"></div>
+  <div class="bubble" style="left: 15%; animation-duration: 8s; animation-delay: 3.5s; width: 18px; height: 18px;"></div>
+  <div class="bubble" style="left: 35%; animation-duration: 15s; animation-delay: 1s; width: 30px; height: 30px;"></div>
+  <div class="bubble" style="left: 55%; animation-duration: 10s; animation-delay: 4.5s; width: 20px; height: 20px;"></div>
+  <div class="bubble" style="left: 80%; animation-duration: 12s; animation-delay: 2.5s; width: 28px; height: 28px;"></div>
+</div>
+<div class="background-blur"></div>
 
-    {% if not SOCIALACCOUNT_ONLY %}
-        {% setvar link %}
-            <a href="{{ signup_url }}">
-        {% endsetvar %}
-        {% setvar end_link %}
-            </a>
-        {% endsetvar %}
-        {% element p %}
-            {% blocktranslate %}If you have not created an account yet, then please {{ link }}sign up{{ end_link }} first.{% endblocktranslate %}
-        {% endelement %}
 
-        <form method="post" action="{% url 'account_login' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            {{ redirect_field }}
-            <button type="submit">{% trans "Sign In" %}</button>
-        </form>
-    {% endif %}
+<div class="login-container"> {# Mantido apenas um container de login #}
+  {% if messages %}
+      {% for message in messages %}
+          {% if "saiu" not in message.message|lower and "sign out" not in message.message|lower and "logout" not in message.message|lower %}
+              <div class="alert alert-{{ message.tags }}">
+                  {{ message }}
+              </div>
+          {% endif %}
+      {% endfor %}
+  {% endif %}
 
-    {% if LOGIN_BY_CODE_ENABLED or PASSKEY_LOGIN_ENABLED %}
-        <hr>
-        <div class="login-alternatives">
-            {% if PASSKEY_LOGIN_ENABLED %}
-                <form id="mfa_login" method="post" action="{% url 'mfa_login' %}">
-                    {% csrf_token %}
-                    <button type="submit" id="passkey_login">
-                        {% trans "Sign in with a passkey" %}
-                    </button>
-                </form>
-            {% endif %}
-            {% if LOGIN_BY_CODE_ENABLED %}
-                <a href="{{ request_login_code_url }}">
-                    <button>{% trans "Mail me a sign-in code" %}</button>
-                </a>
-            {% endif %}
-        </div>
-    {% endif %}
+  {% element h1 %}
+      {% trans "Sign In" %}
+  {% endelement %}
 
-    {% if SOCIALACCOUNT_ENABLED %}
-        {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
-    {% endif %}
+  {% if not SOCIALACCOUNT_ONLY %}
+      {% setvar link %}<a href="{{ signup_url }}">{% endsetvar %}
+      {% setvar end_link %}</a>{% endsetvar %}
+      {% element p %}
+          {% blocktranslate %}Seja bem-vindo! Se ainda não tem conta, crie a sua para aproveitar todos os recursos. {{ link }}Criar conta{{ end_link }} {% endblocktranslate %}
+      {% endelement %}
+
+      <form method="post" action="{% url 'account_login' %}" class="login">
+          {% csrf_token %}
+          {{ form.as_p }}
+          {% if redirect_field_value %}
+              <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+          {% endif %}
+          <button type="submit">{% trans "Sign In" %}</button>
+      </form>
+  {% endif %}
+
+  {% if LOGIN_BY_CODE_ENABLED or PASSKEY_LOGIN_ENABLED %}
+      <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
+      <div class="login-alternatives">
+          {% if PASSKEY_LOGIN_ENABLED %}
+              <form id="mfa_login" method="post" action="{% url 'mfa_login' %}">
+                  {% csrf_token %}
+                  <button type="submit" id="passkey_login">
+                      {% trans "Sign in with a passkey" %}
+                  </button>
+              </form>
+          {% endif %}
+          {% if LOGIN_BY_CODE_ENABLED %}
+              <a href="{{ request_login_code_url }}" class="styled-link-button"> {# Adicionada classe para estilizar como botão #}
+                  {% trans "Mail me a sign-in code" %}
+              </a>
+          {% endif %}
+      </div>
+  {% endif %}
+
+  {% if SOCIALACCOUNT_ENABLED %}
+      {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+  {% endif %}
 </div>
 {% endblock %}
 
 {% block extra_body %}
-    {{ block.super }}
-    {% if PASSKEY_LOGIN_ENABLED %}
-        {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
-    {% endif %}
+{{ block.super }}
+{% if PASSKEY_LOGIN_ENABLED %}
+    {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
+{% endif %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const alerts = document.querySelectorAll('.alert-success, .alert'); // Adicionado .alert para pegar todos os tipos
+    alerts.forEach(alert => {
+        // Verifica se message.message existe, caso contrário usa textContent
+        const messageText = alert.message ? alert.message.toLowerCase() : alert.textContent.toLowerCase();
+        if (messageText.includes('saiu') || messageText.includes('sign out') || messageText.includes('logout')) {
+            // Em vez de remover, podemos apenas ocultar para não quebrar a estrutura se houver outras mensagens
+             alert.style.display = 'none';
+        }
+    });
+
+    // Adiciona var(--i) para animação de bolhas para movimento lateral variado
+    const bubbles = document.querySelectorAll('.background-animation .bubble');
+    bubbles.forEach((bubble, index) => {
+        // Define uma propriedade customizada '--i' para cada bolha
+        // Isso pode ser usado na animação @keyframes rise para variar o transform: translateX()
+        // No entanto, para um efeito mais simples e direto, pode-se randomizar o left e animation-delay/duration
+        // A animação @keyframes rise atual já tem um leve translateX, vamos variar a posição inicial left
+        // e animation-delay/duration que já está feito com :nth-child.
+        // Se quiser variar o translateX na animação, o CSS no @keyframes rise teria que usar var(--i).
+        // Por ora, o CSS :nth-child já faz uma boa variação.
+    });
+});
+</script>
 {% endblock %}
