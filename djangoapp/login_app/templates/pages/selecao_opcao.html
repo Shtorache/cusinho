@@ -6,56 +6,272 @@
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <link rel="shortcut icon" href="{% static 'images/Goal_icon-icons.com_62267.ico' %}" type="image/x-icon">
 <style>
+:root {
+    /* Paleta "Esportefy Vermelho" adaptada do estilo guardado */
+    --esportefy-red-primary: #ff3c3c; /* Vermelho principal para brilhos, bordas ativas */
+    --esportefy-red-image-border: #e60000; /* Vermelho para bordas de imagem */
+    --esportefy-red-image-border-hover: #ff7373; /* Hover da borda da imagem */
+    --esportefy-red-link-hover: #ff4d4d; /* Hover de links */
+
+    /* Fundos escuros */
+    --dark-bg-container-transparent: rgba(0, 0, 0, 0.65); /* Fundo semitransparente para seções */
+    --backdrop-blur-amount: 8px; /* Ajuste o valor do blur conforme preferir */
+
+    --dark-bg-secondary: #212121; /* Fundo para os cards dos ícones */
+    --dark-bg-tertiary: #333;     /* Fundo para o contêiner da imagem do ícone */
+    
+    --text-light: #f1f1f1; /* Texto claro */
+    --text-on-icon: #ffffff; /* Texto do link do ícone */
+
+    --border-light-transparent: rgba(255, 255, 255, 0.1); /* Borda sutil inicial */
+    --shadow-dark: rgba(0, 0, 0, 0.5);
+    --shadow-red-glow: rgba(255, 60, 60, 0.5); 
+    --shadow-card: rgba(0, 0, 0, 0.3);
+
+    /* Variáveis de Fonte do seu template original (se aplicável, ajuste os nomes se forem diferentes) */
+    --font-heading: 'Poppins', sans-serif; /* Exemplo, ajuste se necessário */
+    --font-body: 'Montserrat', sans-serif; /* Exemplo, ajuste se necessário */
+}
+
+/* ===== Animações do Estilo Guardado ===== */
+@keyframes redGlow {
+    0%, 100% {
+        box-shadow: 0 0 10px var(--esportefy-red-primary), 0 0 20px var(--esportefy-red-primary), 0 15px 40px var(--shadow-dark);
+    }
+    50% {
+        box-shadow: 0 0 20px var(--esportefy-red-primary), 0 0 30px var(--esportefy-red-primary), 0 15px 45px var(--shadow-dark);
+    }
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== Estilos para .option-section e seus conteúdos textuais ===== */
+.option-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px; /* Padding superior/inferior aumentado */
+    background: var(--dark-bg-container-transparent); 
+    backdrop-filter: blur(var(--backdrop-blur-amount)); 
+    color: var(--text-light);
+    margin: 110px auto 30px; 
+    border-radius: 12px; 
+    max-width: 1200px;
+    width: 90%; 
+    text-align: center;
+    border: 1px solid var(--border-light-transparent); 
+    box-shadow: 0 10px 30px var(--shadow-dark); 
+    transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    animation: fadeInUp 0.8s ease-out forwards; 
+}
+
+.option-section:hover {
+    transform: scale(1.02); 
+    border-color: var(--esportefy-red-primary);
+    box-shadow: 0 0 15px var(--esportefy-red-primary), 0 10px 35px var(--shadow-dark); 
+}
+
+/* Estilo para o H1 dentro da .option-section */
+.option-section h1 {
+    font-family: var(--font-heading, 'Poppins', sans-serif);
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+    letter-spacing: 1px;
+    text-transform: none;
+    animation: pulseRed 2s infinite;
+
+}
+
+@keyframes pulseRed {
+    0% {
+        text-shadow: 0 0 10px rgba(255, 0, 0, 0.6), 0 0 20px rgba(255, 0, 0, 0.4);
+        color: #ff4d4d;
+    }
+    50% {
+        text-shadow: 0 0 25px rgba(255, 0, 0, 1), 0 0 35px rgba(255, 0, 0, 0.8);
+        color: #ff1a1a;
+    }
+    100% {
+        text-shadow: 0 0 10px rgba(255, 0, 0, 0.6), 0 0 20px rgba(255, 0, 0, 0.4);
+        color: #ff4d4d;
+    }
+}
+
+
+
+/* Estilo para o parágrafo de destaque do esporte selecionado */
+.esporte-destaque {
+    font-family: var(--font-body, 'Montserrat', sans-serif);
+    font-size: 1.5rem; /* Tamanho intermediário */
+    font-weight: 600; /* Semi-negrito */
+    color: var(--esportefy-red-primary); /* Cor de destaque vermelha */
+    margin-top: 10px; /* Espaço acima, após o h1 */
+    margin-bottom: 10px; /* Espaço abaixo */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Estilo para o parágrafo de instrução dentro da .option-section */
+
+/* ===== Ícones de Ação (action-icons) ===== */
+.action-icons {
+    display: flex;
+    justify-content: center;
+    gap: 35px; 
+    margin: 25px 0; 
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.action-icon {
+    text-align: center;
+    cursor: pointer;
+    background-color: var(--dark-bg-secondary);
+    padding: 20px; 
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow-card);
+    max-width: 130px; 
+    width: 100%; 
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    opacity: 0; 
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.action-icon:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px var(--shadow-red-glow); 
+    background-color: #2c2c2c; 
+}
+
+.action-icon img {
+    width: 80px;  
+    height: 80px; 
+    object-fit: cover;
+    border-radius: 50%;
+    padding: 6px; 
+    background-color: var(--dark-bg-tertiary);
+    border: 3px solid var(--esportefy-red-image-border); 
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.action-icon:hover img {
+    border-color: var(--esportefy-red-image-border-hover); 
+    transform: rotate(5deg) scale(1.05); 
+}
+
+.action-icon a {
+    text-decoration: none;
+    color: var(--text-on-icon); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 12px;
+    font-weight: 600;
+    font-size: 0.9rem; 
+    text-transform: capitalize; 
+    font-family: var(--font-body, 'Montserrat', sans-serif); /* Adicionada fonte */
+    transition: color 0.3s ease;
+}
+
+.action-icon a:hover {
+    color: var(--esportefy-red-link-hover); 
+}
+
+.action-icon a:active { 
+    color: var(--esportefy-red-image-border); 
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 768px) {
     .option-section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px;
-        background-color: #1a1a1a;
-        color: white;
-        margin: 30px auto 20px;
-        border-radius: 8px;
-        max-width: 1200px;
-        margin-top: 110px;
+        margin-top: 80px; 
+        padding: 30px 15px;
+        width: 95%;
+    }
+    /* Ajustes de texto para telas menores */
+    .option-section h1 {
+        font-size: 2.2rem; /* Reduz tamanho do título principal */
+    }
+    .esporte-destaque {
+        font-size: 1.3rem; /* Reduz tamanho do destaque do esporte */
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+    
+ .option-section p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: #ff4d4d;
+    animation: pulseRed 2s infinite;
+}
+
+
+    .action-icons {
+        gap: 25px;
+    }
+    .action-icon {
+        max-width: 110px; 
+        padding: 15px;
+    }
+    .action-icon img {
+        width: 70px;
+        height: 70px;
+    }
+    .action-icon a {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .option-section {
+        margin-top: 60px;
+        border-radius: 10px;
+        padding: 25px 10px; /* Mais padding vertical, menos horizontal */
+        backdrop-filter: blur(calc(var(--backdrop-blur-amount) - 1px)); 
+    }
+     /* Ajustes de texto para telas muito pequenas */
+    .option-section h1 {
+        font-size: 1.9rem; 
+    }
+    .esporte-destaque {
+        font-size: 1.1rem;
+    }
+    .option-section p {
+        font-size: 0.9rem;
     }
 
     .action-icons {
-        display: flex;
-        justify-content: center;
-        gap: 40px;
-        margin: 20px 0;
-        flex-wrap: wrap;
-        width: 100%;
+        gap: 15px;
     }
-
     .action-icon {
-        text-align: center;
-        transition: transform 0.3s;
-        cursor: pointer;
+        max-width: 100px; 
+         padding: 12px;
     }
-
-    .action-icon:hover {
-        transform: scale(1.1);
-    }
-
     .action-icon img {
-        width: 80px;
-        height: 80px;
-        object-fit: cover;
-        border-radius: 50%;
-        padding: 5px;
-        background-color: #333;
-        border: 2px solid #4CAF50;
+        width: 60px;
+        height: 60px;
+        padding: 4px;
+        border-width: 2px;
     }
-
-    .action-icon a {
-        text-decoration: none;
-        color: white;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+     .action-icon a {
+        font-size: 0.8rem;
+        margin-top: 8px;
     }
+}
 </style>
+
 {% endblock %}
 {% block content %}
 <div class="selecionar_futebol">
