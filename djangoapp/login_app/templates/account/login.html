@@ -187,6 +187,20 @@ body, .main, .container { /* Esta regra pode ser muito agressiva com !important 
 /* ***** FIM DAS MUDANÇAS NOS INPUTS ***** */
 
 
+.login-container ul {
+  list-style: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.login-container li {
+  list-style: none;
+}
+
+.login-container ul > li::marker {
+  display: none;
+}
+
 .login-container form button {
   padding: 12px;
   background-color: #ff4c4c;
