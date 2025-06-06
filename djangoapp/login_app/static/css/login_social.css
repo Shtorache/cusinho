@@ -1,7 +1,7 @@
 /* Fonte e fundo da página */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1e2413, #1f801f); /* gradiente moderno escuro-verde */
+    background: linear-gradient(135deg, #241313, #801f1f); /* gradiente moderno escuro-vermelho */
     margin: 0;
     padding: 20px;
     color: #fff;
@@ -49,7 +49,7 @@ p {
 /* Estiliza os radio buttons */
 input[type="radio"] {
     margin-right: 8px;
-    accent-color: #62d96b;
+    accent-color: #d96262; /* Tom de vermelho para o radio button */
 }
 
 /* Rótulos */
@@ -62,7 +62,7 @@ label {
 
 /* Badge moderno (usar class="badge") */
 .badge {
-    background-color: #1faaff;
+    background-color: #ff5757; /* Tom de vermelho para o badge */
     color: #fff;
     font-size: 0.75rem;
     padding: 4px 10px;
@@ -89,7 +89,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #377a3d;
+    background-color: #7a3737; /* Tom de vermelho mais escuro no hover */
     transform: scale(1.03);
 }
 
@@ -106,7 +106,7 @@ a {
     align-items: center;
     text-align: center;
     margin-top: 20px;
-    color: #a5ffd6;
+    color: #ffd6d6; /* Tom de vermelho claro para o link */
     text-decoration: none;
     font-weight: 600;
     display: flex;

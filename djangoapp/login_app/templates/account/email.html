@@ -1,104 +1,240 @@
-{% extends "account/base_manage_email.html" %}
-{% load allauth i18n %}
-{% load static %}
-{% block head_title %}
-    {% trans "Email Addresses" %}
-{% endblock head_title %}
+{% extends "pages/base.html" %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Gerenciar E-mail" %}{% endblock head_title %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/email_change.css'%}">
+<style>
+    body {
+        background: #121212;
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .email-page-wrapper {
+        display: flex;
+        justify-content: center;
+        padding: 60px 20px;
+        min-height: 80vh;
+    }
+
+    .email-management-card {
+        width: 100%;
+        max-width: 700px;
+        background: #1a1a1a;
+        border: 1px solid #2c2c2c;
+        border-radius: 16px;
+        padding: 40px;
+        color: #f5f5f5;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .email-management-card h1,
+    .email-management-card h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: 700;
+        color: #ff4c4c;
+        text-shadow: 0 0 6px rgba(255, 76, 76, 0.3);
+    }
+
+    .email-management-card p.instructions {
+        color: #ccc;
+        margin-bottom: 25px;
+        text-align: center;
+        font-size: 0.95em;
+    }
+
+    .email-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 20px;
+        border: 1px solid #333;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        background: #1e1e1e;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .email-item:hover {
+        background: #292020;
+        transform: translateY(-2px);
+    }
+
+    .email-label {
+        font-weight: 500;
+        color: #f0f0f0;
+        word-break: break-all;
+    }
+
+    .badge-custom {
+        font-size: 0.75em;
+        font-weight: bold;
+        padding: 4px 10px;
+        border-radius: 6px;
+        margin-left: 10px;
+        color: white;
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .badge-success {
+        background-color: #28a745;
+    }
+
+    .badge-warning {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+    .form-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 30px;
+        border-top: 1px solid #2c2c2c;
+        padding-top: 25px;
+        justify-content: center;
+    }
+
+    .btn-custom {
+        padding: 12px 28px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 0.95em;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .btn-secondary-custom {
+        background-color: #444;
+        color: white;
+    }
+
+    .btn-secondary-custom:hover {
+        background-color: #555;
+    }
+
+    .btn-danger-custom {
+        background-color: #e53935;
+        color: white;
+    }
+
+    .btn-danger-custom:hover {
+        background-color: #c62828;
+        transform: scale(1.05);
+    }
+
+    .btn-primary-custom {
+        background-color: #ff5252;
+        color: white;
+    }
+
+    .btn-primary-custom:hover {
+        background-color: #e53935;
+        transform: scale(1.05);
+    }
+
+    .add-email-form input[type="email"],
+    .add-email-form input[type="text"] {
+        width: 100%;
+        padding: 14px 18px;
+        border-radius: 10px;
+        border: 1px solid #333;
+        background: #2c2c2c;
+        color: #fff;
+        font-size: 16px;
+        margin-bottom: 15px;
+        transition: border 0.2s;
+    }
+
+    .add-email-form input[type="email"]:focus,
+    .add-email-form input[type="text"]:focus {
+        outline: none;
+        border-color: #ff4c4c;
+        box-shadow: 0 0 6px rgba(255, 76, 76, 0.5);
+    }
+
+    .add-email-form button {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    hr {
+        border-color: #2c2c2c;
+        margin: 40px 0;
+    }
+</style>
+
 {% endblock extra_head %}
 
 {% block content %}
-    {% element h1 class="page-title" %}
-        {% trans "Email Addresses" %}
-    {% endelement %}
+<div class="email-page-wrapper">
+    <div class="email-management-card">
+        <h1>{% trans "Gerenciar E-mail" %}</h1>
 
-    {% if emailaddresses %}
-      {% element p class="email-info-text" %}  <!-- Classe adicionada aqui -->
-            {% trans 'The following email addresses are associated with your account:' %}
-        {% endelement %}
-   
-        {% url 'account_email' as email_url %}
-        {% element form form=form action=email_url method="post" tags="email,list" class="email-form" %}
-            {% slot body %}
+        {% if emailaddresses %}
+            <p class="instructions">{% trans 'O seguinte endereço de e-mail está associado à sua conta:' %}</p>
+        
+            <form action="{% url 'account_email' %}" class="email_list" method="post">
                 {% csrf_token %}
-                {% for radio in emailaddress_radios %}
-                    {% with emailaddress=radio.emailaddress %}
-                        {% element field type="radio" checked=radio.checked name="email" value=emailaddress.email id=radio.id class="email-radio" %}
-                            {% slot label %}
-                                {{ emailaddress.email }}
-                                {% if emailaddress.verified %}
-                                    {% element badge tags="success,email,verified" class="email-badge verified" %}
-                                        {% translate "Verified" %}
-                                    {% endelement %}
-                                {% else %}
-                                    {% element badge tags="warning,email,unverified" class="email-badge unverified" %}
-                                        {% translate "Unverified" %}
-                                    {% endelement %}
-                                {% endif %}
-                                {% if emailaddress.primary %}
-                                    {% element badge tags="email,primary" class="email-badge primary" %}
-                                        {% translate "Primary" %}
-                                    {% endelement %}
-                                {% endif %}
-                            {% endslot %}
-                        {% endelement %}
-                    {% endwith %}
+                
+                {% for emailaddress in emailaddresses %}
+                    <div class="email-item">
+                        <span class="email-label">{{ emailaddress.email }}</span>
+                        
+                        {% if emailaddress.verified %}
+                            <span class="badge-custom badge-success">{% trans "Verificado" %}</span>
+                        {% else %}
+                            <span class="badge-custom badge-warning">{% trans "Não Verificado" %}</span>
+                        {% endif %}
+                        
+                        </div>
                 {% endfor %}
-            {% endslot %}
 
-            {% slot actions class="form-actions" %}
-                {% element button type="submit" name="action_primary" class="btn primary-btn" %}
-                    {% trans 'Make Primary' %}
-                {% endelement %}
-                {% element button tags="secondary" type="submit" name="action_send" class="btn secondary-btn" %}
-                    {% trans 'Re-send Verification' %}
-                {% endelement %}
-                {% element button tags="danger,delete" type="submit" name="action_remove" class="btn danger-btn" %}
-                    {% trans 'Remove' %}
-                {% endelement %}
-            {% endslot %}
-        {% endelement %}
-    {% else %}
-        <div class="warning">
-            {% include "account/snippets/warn_no_email.html" %}
-        </div>
-    {% endif %}
+                <div class="form-actions">
+                    {# Apenas o botão de Re-enviar e Remover fazem sentido agora #}
+                    <button class="btn-custom btn-secondary-custom action-btn" type="submit" name="action_send">{% trans 'Re-enviar Verificação' %}</button>
+                    <button class="btn-custom btn-danger-custom action-btn" type="submit" name="action_remove">{% trans 'Remover E-mail' %}</button>
+                </div>
+            </form>
 
-    {% if can_add_email %}
-        {% element h2 class="add-email-title" %}  <!-- Classe adicionada aqui -->
-            {% trans "Add Email Address" %}
-        {% endelement %}
+        {% else %}
+            <p class="instructions">{% trans "Nenhum endereço de e-mail associado a esta conta." %}</p>
+        {% endif %}
 
-        {% url 'account_email' as action_url %}
-        {% element form form=form method="post" action=action_url tags="email,add" class="email-add-form" %}
-            {% slot body %}
+        <hr style="border-color: #333; margin: 40px 0;">
+
+        {% if can_add_email %}
+            <h2>{% trans "Alterar Endereço de E-mail" %}</h2>
+            <p class="instructions" style="font-size: 0.9em;">
+                {% trans "Para alterar seu e-mail, adicione o novo endereço abaixo. Você receberá um link de confirmação. Após confirmar o novo, ele se tornará o seu e-mail principal." %}
+            </p>
+
+            <form method="post" action="{% url 'account_email' %}" class="add-email-form">
                 {% csrf_token %}
-                {% element fields form=form class="form-fields" %}
-                {% endelement %}
-            {% endslot %}
-            {% slot actions class="form-actions" %}
-                {% element button name="action_add" type="submit" class="btn add-email-btn" %}
-                    {% trans "Add Email" %}
-                {% endelement %}
-            {% endslot %}
-        {% endelement %}
-    {% endif %}
+                {{ form.as_p }}
+                <button name="action_add" type="submit" class="btn-custom btn-primary-custom">{% trans "Salvar Novo E-mail" %}</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
 {% endblock content %}
 
+
 {% block extra_body %}
-    <script type="text/javascript">
-    (function() {
-        var message = "{% trans 'Do you really want to remove the selected email address?' %}";
-        var actions = document.getElementsByName('action_remove');
-        if (actions.length) {
-            actions[0].addEventListener("click", function(e) {
-                if (!confirm(message)) {
-                    e.preventDefault();
-                }
-            });
+<script type="text/javascript">
+(function() {
+    // Este script agora só precisa da confirmação de remoção
+    document.querySelector('button[name="action_remove"]')?.addEventListener("click", function(e) {
+        // Antes de enviar o formulário, ele pede uma confirmação
+        if (!confirm("{% trans 'Você realmente quer remover este endereço de e-mail? Esta ação não pode ser desfeita.' %}")) {
+            e.preventDefault(); // Cancela o envio do formulário se o usuário clicar em "Cancelar"
         }
-    })();
-    </script>
+    });
+})();
+</script>
 {% endblock extra_body %}

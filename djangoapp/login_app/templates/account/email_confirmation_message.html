@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Bem-vindo ao EsporteFY!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0d47a1, #b71c1c);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.7);
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+        }
+
+        h2 {
+            color: #ffcc00;
+            text-align: center;
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #f0f0f0;
+        }
+
+        .highlight {
+            color: #ff9800;
+            font-weight: bold;
+        }
+
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #e53935, #b71c1c);
+            color: #ffffff;
+            padding: 14px 28px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 10px;
+            box-shadow: 0 6px 15px rgba(255, 82, 82, 0.5);
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #ff7043, #d32f2f);
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 0.85em;
+            color: #cccccc;
+            text-align: center;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo img {
+            max-width: 120px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="https://i.imgur.com/lY2j1xS.png" alt="Logo EsporteFY"> <!-- substitua pelo seu logo se quiser -->
+        </div>
+
+        <h2>Bem-vindo ao EsporteFY, {{ user.username }}!</h2>
+
+        <p>Estamos super animados em ter você na nossa comunidade de apaixonados por esportes! 🎉</p>
+
+        <p>Para aproveitar tudo o que o <span class="highlight">EsporteFY</span> oferece — como agendar quadras, participar de campeonatos e muito mais — confirme seu e-mail clicando no botão abaixo:</p>
+
+        <p style="text-align: center;">
+            <a href="{{ activate_url }}" class="button">Confirmar Meu E-mail</a>
+        </p>
+
+        <p>Se você não se cadastrou no EsporteFY, pode ignorar este e-mail com segurança.</p>
+
+        <div class="footer">
+            <p>Forte abraço,<br>Equipe <strong>EsporteFY</strong> ⚽🏀🏐</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,119 @@
+{% load i18n %}
+{% if messages %}
+<style>
+.toast-container {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 1090;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+}
+
+/* Toast vermelho moderno */
+.toast {
+    position: relative;
+    min-width: 280px;
+    max-width: 350px;
+    background: linear-gradient(135deg, #ff1e2d, #8b0000);
+    color: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    backdrop-filter: blur(4px);
+    border-left: 5px solid #ff4b5c;
+}
+
+/* Mostrar o toast */
+.toast.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Cabeçalho bonito e funcional */
+.toast-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* Ícone opcional animado */
+.toast-header::before {
+    content: '🔥';
+    margin-right: 8px;
+    font-size: 1.2rem;
+    animation: bounce 1s infinite;
+}
+
+/* Botão de fechar */
+.toast-header .btn-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.1rem;
+    opacity: 0.8;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.toast-header .btn-close:hover {
+    opacity: 1;
+}
+
+.toast-body {
+    padding: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    text-align: left;
+}
+
+/* Bounce do ícone */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
+</style>
+
+<div class="toast-container">
+    {% for message in messages %}
+        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">EsporteFY</strong>
+                <small>{% trans "agora" %}</small>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                {{ message }}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const toasts = document.querySelectorAll('.toast');
+        toasts.forEach(el => {
+            const toast = new bootstrap.Toast(el, {
+                autohide: true,
+                delay: 5000
+            });
+            toast.show();
+        });
+    });
+</script>
+{% endif %}
