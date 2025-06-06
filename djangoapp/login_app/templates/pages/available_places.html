@@ -760,16 +760,18 @@
         });
 
         // Adicionar marcadores clicáveis
-        campos.forEach(campo => {
-            if (campo.regiao === regiao) {
-                const marker = L.marker([campo.lat, campo.lng])
-                    .addTo(map)
-                    .bindPopup(`<b>${campo.nome}</b><br>Esporte: ${campo.esporte}`)
-                    .on('click', function() {
-                        openModal(campo);
-                    });
-            }
+        // ...
+// Adicionar marcadores clicáveis
+campos.forEach(campo => {
+    // A CONDIÇÃO 'IF' FOI REMOVIDA DAQUI
+    const marker = L.marker([campo.lat, campo.lng])
+        .addTo(map)
+        .bindPopup(`<b>${campo.nome}</b><br>Esporte: ${campo.esporte}`)
+        .on('click', function() {
+            openModal(campo);
         });
+}); // A CHAVE DO 'IF' FOI REMOVIDA DAQUI
+// ...
 
         // Função para alterar a região do mapa ao clicar nos botões de filtro
         function changeRegion(novaRegiao) {
