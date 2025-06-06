@@ -1,1 +1,13 @@
-{% include "account/email/email_confirmation_message.txt" %}
+
+
+Olá, {{ user.username }}!
+
+Seja muito bem-vindo ao EsporteFY! Estamos felizes em ter você conosco.
+
+Para começar a agendar seus jogos e se conectar com outros usuários, por favor, confirme seu endereço de e-mail clicando no link abaixo:
+{{ activate_url }}
+
+Se você não se cadastrou no EsporteFY, por favor, ignore este e-mail.
+
+Abraços,
+Equipe EsporteFY

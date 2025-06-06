@@ -27,16 +27,14 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "login_app",
+    # Allauth apps
     "django.contrib.sites",
     "allauth",
     "allauth.account",
+    "allauth.mfa",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
-    'allauth.mfa',
 ]
-MFA_SUPPORTED_TYPES = ['totp', 'webauthn','recovery_codes']
-
-SITE_ID = 2
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -46,7 +44,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "allauth.account.middleware.AccountMiddleware",
+    "allauth.account.middleware.AccountMiddleware", # Middleware do Allauth
 ]
 
 ROOT_URLCONF = "djangoapp.urls"
@@ -62,7 +60,7 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
-                "django.template.context_processors.request",
+                "django.template.context_processors.request", # Obrigatório para o allauth
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
@@ -123,22 +121,49 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "/static/"
-# /data/web/static
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "login_app/static"),
 ]
 
+# Media files
 MEDIA_URL = "/media/"
-# /data/web/media
 MEDIA_ROOT = DATA_DIR / "media"
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-LOGIN_REDIRECT_URL = "main"
 
-ACCOUNT_LOGOUT_REDIRECT_URL = "account_login"
+# CSRF Settings
+CSRF_TRUSTED_ORIGINS = ["https://localhost:8000", "http://localhost:3000"] # CORRIGIDO
 
+
+# ==============================================================================
+# ALLAUTH CONFIGURATIONS
+# ==============================================================================
+
+SITE_ID = 1  # CORRIGIDO: Esta configuração é crucial para o allauth
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+# Configurações para login e registro
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email' # Mude para 'mandatory' para forçar verificação de e-mail
+
+# URLs de Redirecionamento
+LOGIN_REDIRECT_URL = "main" # O 'name' da URL para onde o usuário vai após o login
+ACCOUNT_LOGOUT_REDIRECT_URL = "account_login" # O 'name' da URL para onde o usuário vai após o logout
+
+# Configurações de MFA (Multi-Factor Authentication)
+MFA_SUPPORTED_TYPES = ['totp', 'webauthn','recovery_codes']
+
+# Configurações de Provedores Sociais (ex: Google)
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "APP": {
@@ -148,17 +173,14 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
-AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
-]
 
+
+# ==============================================================================
+# EMAIL CONFIGURATIONS
+# ==============================================================================
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
-
-CSRF_TRUSTED_ORIGINSS = ["https://localhost:8000", "http://localhost:3000"] #usado para "enganar o sistema" e 
-# permitir o uso dos formulários mesmo ainda não tendo ido para produção

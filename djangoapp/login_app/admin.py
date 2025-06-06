@@ -21,4 +21,7 @@ class AddressAdmin(admin.ModelAdmin):
 class AddressAdmin(admin.ModelAdmin):
     pass
 
+
+
+
 admin.site.register(Profile)

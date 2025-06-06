@@ -1,7 +1,9 @@
+# login_app/urls.py
+
 from django.urls import path, include
 from login_app.views import (
     mainPage,
-    registerPage,
+    # registerPage foi removido daqui
     areaProprietario,
     profile,
     listacampos,
@@ -18,11 +20,15 @@ from login_app.views import (
 
 urlpatterns = [
     path("", mainPage, name="home"),
+    # As URLs abaixo são específicas da lógica do seu aplicativo e estão corretas.
     path("accounts/profile/", mainPage, name="main"),
     path("available_places/", available_places, name="available_places"),
     path("available_places/<str:nome_campo>/", campo_detalhes, name="campo_detalhes"),
     path('partida/<int:partida_id>/', participar_partida, name='participar_partida'),
-    path("signup/", registerPage, name="signup"),
+    
+    # A LINHA ABAIXO FOI REMOVIDA PARA DEIXAR O ALLAUTH CONTROLAR O CADASTRO
+    # path("signup/", registerPage, name="signup"), 
+    
     path("accounts/profile/add-campo", areaProprietario, name="alugar-campo"),
     path("accounts/profile/perfilUsuario", profile, name="perfilUsuario"),
     path("accounts/profile/listas", listacampos, name="listacampos"),
@@ -33,5 +39,4 @@ urlpatterns = [
     path('reservar-espaco/', reservar_espaco, name='reservar_espaco'),
     path('participardois/', participar_dois, name='participar_dois'),
     path('criar-partida/', criar_partida, name='criar_partida')
-    
 ]
