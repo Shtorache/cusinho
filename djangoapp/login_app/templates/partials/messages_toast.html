@@ -1,105 +1,149 @@
 {% load i18n %}
 {% if messages %}
 <style>
-.toast-container {
-    position: fixed;
-    top: 80px;
-    right: 20px;
-    z-index: 1090;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 1rem;
-}
-
-/* Toast vermelho moderno */
-.toast {
-    position: relative;
-    min-width: 280px;
-    max-width: 350px;
-    background: linear-gradient(135deg, #ff1e2d, #8b0000);
-    color: white;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-    transition: opacity 0.4s ease, transform 0.4s ease;
-    backdrop-filter: blur(4px);
-    border-left: 5px solid #ff4b5c;
-}
-
-/* Mostrar o toast */
-.toast.show {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-}
-
-/* Cabeçalho bonito e funcional */
-.toast-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.75rem 1rem;
-    background-color: rgba(255, 255, 255, 0.05);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
-    font-weight: bold;
-    font-size: 1rem;
-}
-
-/* Ícone opcional animado */
-.toast-header::before {
-    content: '🔥';
-    margin-right: 8px;
-    font-size: 1.2rem;
-    animation: bounce 1s infinite;
-}
-
-/* Botão de fechar */
-.toast-header .btn-close {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.1rem;
-    opacity: 0.8;
-    cursor: pointer;
-    transition: opacity 0.3s ease;
-}
-
-.toast-header .btn-close:hover {
-    opacity: 1;
-}
-
-.toast-body {
-    padding: 1rem;
-    font-size: 0.95rem;
-    line-height: 1.4;
-    text-align: left;
-}
-
-/* Bounce do ícone */
-@keyframes bounce {
-    0%, 100% {
-        transform: translateY(0);
+    /* Container para todos os toasts */
+    .toast-container {
+        position: fixed;
+        top: 80px; /* Ajuste a distância do topo */
+        right: 20px; /* Ajuste a distância da direita */
+        z-index: 1090; /* Garante que fique acima de outros elementos */
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end; /* Alinha os toasts à direita */
+        gap: 1rem; /* Espaçamento entre os toasts */
+        pointer-events: none; /* Permite clicar através do container quando vazio */
     }
-    50% {
-        transform: translateY(-3px);
+
+    /* Toast vermelho moderno */
+    .toast {
+        position: relative;
+        min-width: 280px;
+        max-width: 350px;
+        background: linear-gradient(135deg, #ff1e2d, #8b0000); /* Gradiente de vermelho */
+        color: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); /* Sombra suave */
+        overflow: hidden; /* Para a barra de progresso e bordas */
+        opacity: 0; /* Começa invisível */
+        transform: translateY(30px) scale(0.95); /* Animação de entrada */
+        transition: opacity 0.4s ease, transform 0.4s ease, margin-bottom 0.4s ease; /* Transições suaves */
+        backdrop-filter: blur(4px); /* Efeito de desfoque */
+        border-left: 5px solid #ff4b5c; /* Borda esquerda decorativa */
+        pointer-events: auto; /* Permite interagir com o toast */
     }
-}
+
+    /* Mostrar o toast */
+    .toast.show {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    /* Esconder o toast (para animação de saída) */
+    .toast.hide {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.9); /* Animação de saída */
+        margin-bottom: -100px; /* Ajuda a remover o espaço ocupado */
+    }
+
+    /* Cabeçalho bonito e funcional */
+    .toast-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
+        background-color: rgba(255, 255, 255, 0.05); /* Fundo sutil */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Linha divisória */
+        color: white;
+        font-weight: bold;
+        font-size: 1rem;
+    }
+
+    /* Ícone opcional animado */
+    .toast-header::before {
+        content: '🔥'; /* Ícone de fogo */
+        margin-right: 8px;
+        font-size: 1.2rem;
+        animation: bounce 1s infinite; /* Animação de "pulo" */
+    }
+
+    /* Título da aplicação no header */
+    .toast-header strong.me-auto {
+        flex-grow: 1; /* Permite que o texto ocupe o espaço */
+    }
+
+  
+
+    /* Botão de fechar */
+    .toast-header .btn-close {
+        background: none;
+        border: none;
+        color: white; /* Cor branca para o X */
+        font-size: 1.5rem; /* Aumentei o tamanho para ser mais fácil de clicar */
+        font-weight: bold; /* Deixa o 'x' mais robusto */
+        opacity: 0.8;
+        cursor: pointer;
+        transition: opacity 0.3s ease, transform 0.2s ease;
+        line-height: 1; /* Alinhamento vertical */
+        padding: 0;
+    }
+
+    .toast-header .btn-close:hover {
+        opacity: 1;
+        transform: rotate(90deg); /* Rotação no hover */
+    }
+
+    .toast-body {
+        padding: 1rem;
+        font-size: 0.95rem;
+        line-height: 1.4;
+        text-align: left;
+    }
+
+    /* Animação de "pulo" do ícone */
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-3px);
+        }
+    }
+
+    /* Barra de progresso para auto-ocultar */
+    .toast .progress-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 5px;
+        background-color: rgba(255, 255, 255, 0.3); /* Cor da barra */
+        width: 100%;
+        transform-origin: left; /* Começa a encolher da esquerda */
+        animation: progressBarShrink linear forwards;
+    }
+
+    @keyframes progressBarShrink {
+        from {
+            transform: scaleX(1);
+        }
+        to {
+            transform: scaleX(0);
+        }
+    }
 </style>
 
 <div class="toast-container">
     {% for message in messages %}
-        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000"> {# data-delay para o JS #}
             <div class="toast-header">
                 <strong class="me-auto">EsporteFY</strong>
-                <small>{% trans "agora" %}</small>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                
+                {# O botão de fechar não precisa do data-bs-dismiss #}
+                <button type="button" class="btn-close" aria-label="Close">&times;</button>
             </div>
             <div class="toast-body">
                 {{ message }}
             </div>
+            <div class="progress-bar"></div> {# Adiciona a barra de progresso #}
         </div>
     {% endfor %}
 </div>
@@ -107,12 +151,91 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const toasts = document.querySelectorAll('.toast');
-        toasts.forEach(el => {
-            const toast = new bootstrap.Toast(el, {
-                autohide: true,
-                delay: 5000
+
+        toasts.forEach(toastEl => {
+            const delay = parseInt(toastEl.dataset.delay || '5000', 10); // Pega o delay do atributo data-delay, padrão 5s
+            let hideTimeout;
+            const progressBar = toastEl.querySelector('.progress-bar');
+            const closeBtn = toastEl.querySelector('.btn-close');
+
+            // Exibe o toast
+            setTimeout(() => {
+                toastEl.classList.add('show');
+                // Inicia a animação da barra de progresso
+                if (progressBar) {
+                    progressBar.style.animationDuration = `${delay}ms`;
+                }
+            }, 50); // Pequeno delay para a animação inicial
+
+            // Inicia o timer para auto-ocultar
+            const startHideTimer = () => {
+                hideTimeout = setTimeout(() => {
+                    hideToast(toastEl);
+                }, delay);
+                if (progressBar) {
+                    progressBar.style.animationPlayState = 'running';
+                }
+            };
+
+            // Pausa o timer no hover
+            toastEl.addEventListener('mouseenter', () => {
+                clearTimeout(hideTimeout);
+                if (progressBar) {
+                    progressBar.style.animationPlayState = 'paused';
+                }
             });
-            toast.show();
+
+            // Retoma o timer ao sair do hover
+            toastEl.addEventListener('mouseleave', () => {
+                // Calcula o tempo restante para a barra de progresso
+                const computedStyle = window.getComputedStyle(progressBar);
+                const transformValue = computedStyle.getPropertyValue('transform');
+                const matrix = new DOMMatrixReadOnly(transformValue);
+                const scaleX = matrix.m11; // Pega o valor de scaleX
+                const remainingTime = delay * scaleX; // Calcula o tempo restante
+
+                // Reinicia o timer com o tempo restante
+                clearTimeout(hideTimeout); // Limpa qualquer timer antigo
+                if (remainingTime > 0 && remainingTime < delay) { // Se ainda há tempo para acabar
+                    hideTimeout = setTimeout(() => {
+                        hideToast(toastEl);
+                    }, remainingTime);
+
+                    // Reinicia a animação da barra do ponto atual
+                    if (progressBar) {
+                        progressBar.style.animation = 'none'; // Reseta a animação
+                        void progressBar.offsetWidth; // Força um reflow para aplicar o reset
+                        progressBar.style.animation = `progressBarShrink ${remainingTime}ms linear forwards`;
+                        progressBar.style.animationPlayState = 'running';
+                    }
+                } else { // Se já deveria ter terminado ou se o mouse saiu rápido demais
+                    startHideTimer(); // Inicia um novo ciclo completo
+                }
+            });
+
+            // Oculta o toast quando o botão de fechar é clicado
+            closeBtn.addEventListener('click', () => {
+                clearTimeout(hideTimeout); // Cancela o timer de auto-ocultar
+                hideToast(toastEl);
+            });
+
+            // Função para esconder o toast com animação
+            function hideToast(toast) {
+                toast.classList.remove('show');
+                toast.classList.add('hide'); // Inicia a animação de saída
+
+                // Remove o toast do DOM após a animação de saída
+                toast.addEventListener('transitionend', function handleTransitionEnd() {
+                    // Só remove se a classe 'hide' estiver presente (garante que a transição de saída terminou)
+                    if (toast.classList.contains('hide')) {
+                        toast.remove(); // Remove o elemento do DOM
+                    }
+                    toast.removeEventListener('transitionend', handleTransitionEnd); // Remove o listener
+                });
+            }
+
+            // Inicia o timer quando o toast é mostrado pela primeira vez (após o 'show')
+            startHideTimer();
         });
     });
 </script>
