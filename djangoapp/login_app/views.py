@@ -5,7 +5,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
-from django.contrib.auth.forms import UserCreationForm # Import adicionado para o registro
 from django.http import Http404
 
 # Imports da Standard Library
@@ -18,48 +17,7 @@ from .forms import CoordenadaForm, ReservasForm, UpdateUserForm, UpdateProfileFo
 from .models import Coordenada, Profile, Reserva, DadosCampo, Feedback
 
 
-def loginPage(request):
-    return render(request, "account/login.html")
-
-
-# ==============================================================================
-# VIEW DE CADASTRO (REGISTRO) - VERSÃO CORRIGIDA E COMPLETA
-# ==============================================================================
-def registerPage(request):
-    """
-    Esta view lida com a exibição do formulário de cadastro (GET)
-    e com o processamento dos dados do novo usuário (POST).
-    """
-    if request.method == 'POST':
-        # Se o formulário foi enviado, cria uma instância com os dados recebidos
-        form = UserCreationForm(request.POST)
-
-        # Valida os dados
-        if form.is_valid():
-            # Se os dados são válidos, salva o usuário no banco de dados.
-            # A senha é automaticamente criptografada (hashed).
-            form.save()
-            
-            # Pega o nome do usuário para a mensagem de sucesso
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Conta para "{username}" criada com sucesso! Você já pode fazer o login.')
-            
-            # Redireciona o usuário para a página de login
-            # Certifique-se de que 'account_login' é o nome correto da sua URL de login
-            return redirect('account_login') 
-        else:
-            # Se o formulário tiver erros (ex: senhas não batem),
-            # envia uma mensagem de erro e renderiza a página novamente,
-            # desta vez o 'form' conterá os detalhes dos erros.
-            messages.error(request, 'Não foi possível criar a conta. Por favor, verifique os erros abaixo.')
-
-    # Se a requisição for GET (primeiro acesso à página), apenas cria um formulário em branco
-    else:
-        form = UserCreationForm()
-        
-    # Renderiza o template, passando o formulário (em branco ou com erros) para o contexto
-    return render(request, 'account/signup.html', {'form': form})
-
+# As views loginPage e registerPage foram removidas pois o django-allauth cuida disso.
 
 @login_required(redirect_field_name="account_login")
 def mainPage(request):
@@ -122,42 +80,45 @@ def available_places(request):
 
 def campo_detalhes(request, nome_campo):
     # Dicionário com todas as chaves usadas nas URLs
+    # O DICIONÁRIO ABAIXO FOI RESTAURADO COM TODAS AS CHAVES CORRETAS
     campos = {
-    # Região Itaipuaçu
-    "campo_a": {
-        "nome": "Arena Itaipuaçu",
-        "imagem_capa": "/static/images/arena_itaipuaçu.jpg",
-        "partidas": [
-            {"id": 1, "titulo": "Clássico da Região Oceânica", "data": "2025-05-15", "horario": "20:00", "categoria": "adulto", "genero": "misto", "vagas": 10},
-            {"id": 2, "titulo": "Torneio de Verão Masculino", "data": "2025-06-20", "horario": "19:00", "categoria": "adulto", "genero": "masculino", "vagas": 8},
-            {"id": 3, "titulo": "Escolinha de Futebol", "data": "2025-05-10", "horario": "09:00", "categoria": "infantil", "genero": "misto", "vagas": 15},
-            {"id": 4, "titulo": "Liga Feminina", "data": "2025-06-05", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 12},
-            {"id": 5, "titulo": "Torneio Master", "data": "2025-05-25", "horario": "16:00", "categoria": "master", "genero": "masculino", "vagas": 10}
-        ],
-    },
-    "campo_itaipuacu_1": {
-        "nome": "Arena Barroco",
-        "imagem_capa": "/static/images/arena_barroco.jpg",
-        "partidas": [
-            {"id": 1, "titulo": "Liga Barroco", "data": "2025-04-25", "horario": "18:30", "categoria": "adulto", "genero": "masculino", "vagas": 7},
-            {"id": 2, "titulo": "Treino Livre", "data": "2025-05-05", "horario": "14:00", "categoria": "livre", "genero": "misto", "vagas": 12},
-            {"id": 3, "titulo": "Campeonato Feminino", "data": "2025-05-12", "horario": "19:00", "categoria": "adulto", "genero": "feminino", "vagas": 9},
-            {"id": 4, "titulo": "Torneio Juvenil", "data": "2025-06-08", "horario": "15:00", "categoria": "juvenil", "genero": "misto", "vagas": 14}
-        ],
-    },
-    # ... (o resto do seu grande dicionário 'campos' continua aqui, sem alterações) ...
-    "quadra_saojose": {
-        "nome": "Quadra Poliesportiva Parque Nanci",
-        "imagem_capa": "/static/images/parque_nanci.jpg",
-        "partidas": [
-            {"id": 1, "titulo": "Festival Esportivo", "data": "2025-05-30", "horario": "08:00", "categoria": "livre", "genero": "misto", "vagas": 25},
-            {"id": 2, "titulo": "Torneio de Veteranos", "data": "2025-06-02", "horario": "19:00", "categoria": "master", "genero": "masculino", "vagas": 10},
-            {"id": 3, "titulo": "Escolinha de Futebol", "data": "2025-06-05", "horario": "14:00", "categoria": "infantil", "genero": "misto", "vagas": 18},
-            {"id": 4, "titulo": "Torneio Feminino", "data": "2025-06-10", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 12},
-            {"id": 5, "titulo": "Liga Masculina", "data": "2025-06-15", "horario": "20:00", "categoria": "adulto", "genero": "masculino", "vagas": 10}
-        ],
-    },
-}
+        # Região Itaipuaçu
+        "campo_a": {
+            "nome": "Arena Itaipuaçu", "imagem_capa": "/static/images/arena_itaipuaçu.jpg", "partidas": [{"id": 1, "titulo": "Clássico da Região Oceânica", "data": "2025-05-15", "horario": "20:00", "categoria": "adulto", "genero": "misto", "vagas": 10}, {"id": 2, "titulo": "Torneio de Verão Masculino", "data": "2025-06-20", "horario": "19:00", "categoria": "adulto", "genero": "masculino", "vagas": 8}, {"id": 3, "titulo": "Escolinha de Futebol", "data": "2025-05-10", "horario": "09:00", "categoria": "infantil", "genero": "misto", "vagas": 15}, {"id": 4, "titulo": "Liga Feminina", "data": "2025-06-05", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 12}, {"id": 5, "titulo": "Torneio Master", "data": "2025-05-25", "horario": "16:00", "categoria": "master", "genero": "masculino", "vagas": 10}],
+        },
+        "campo_itaipuacu_1": {
+            "nome": "Arena Barroco", "imagem_capa": "/static/images/arena_barroco.jpg", "partidas": [{"id": 1, "titulo": "Liga Barroco", "data": "2025-04-25", "horario": "18:30", "categoria": "adulto", "genero": "masculino", "vagas": 7}, {"id": 2, "titulo": "Treino Livre", "data": "2025-05-05", "horario": "14:00", "categoria": "livre", "genero": "misto", "vagas": 12}, {"id": 3, "titulo": "Campeonato Feminino", "data": "2025-05-12", "horario": "19:00", "categoria": "adulto", "genero": "feminino", "vagas": 9}, {"id": 4, "titulo": "Torneio Juvenil", "data": "2025-06-08", "horario": "15:00", "categoria": "juvenil", "genero": "misto", "vagas": 14}],
+        },
+        "arena_marques": {
+            "nome": "Campo Divino Esporte e Lazer", "imagem_capa": "/static/images/campo_divino.jpg", "partidas": [{"id": 1, "titulo": "Torneio Divino", "data": "2025-05-08", "horario": "20:00", "categoria": "adulto", "genero": "misto", "vagas": 10}, {"id": 2, "titulo": "Aulão de Futsal", "data": "2025-04-30", "horario": "10:00", "categoria": "infantil", "genero": "misto", "vagas": 20}, {"id": 3, "titulo": "Liga Masculina", "data": "2025-06-15", "horario": "19:30", "categoria": "adulto", "genero": "masculino", "vagas": 8}, {"id": 4, "titulo": "Treino Feminino", "data": "2025-05-22", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 10}],
+        },
+        "campo_palmeiras": {
+            "nome": "Campo Inter Academy", "imagem_capa": "/static/images/campo_inter_academy.jpg", "partidas": [{"id": 1, "titulo": "Treino de Equipe", "data": "2025-05-12", "horario": "08:00", "categoria": "juvenil", "genero": "masculino", "vagas": 18}, {"id": 2, "titulo": "Interclasses", "data": "2025-06-05", "horario": "16:00", "categoria": "juvenil", "genero": "misto", "vagas": 15}, {"id": 3, "titulo": "Torneio Feminino Juvenil", "data": "2025-05-20", "horario": "14:00", "categoria": "juvenil", "genero": "feminino", "vagas": 12}, {"id": 4, "titulo": "Escolinha de Futebol", "data": "2025-06-12", "horario": "09:00", "categoria": "infantil", "genero": "misto", "vagas": 20}],
+        },
+        # Região Centro
+        "arena_flamengo": {
+            "nome": "Arena Flamengo", "imagem_capa": "/static/images/arena_flamengo1.jpg", "partidas": [{"id": 1, "titulo": "Flamengo vs Vasco", "data": "2025-04-10", "horario": "18:00", "categoria": "adulto", "genero": "masculino", "vagas": 1}, {"id": 2, "titulo": "Amistoso Feminino", "data": "2025-04-12", "horario": "15:00", "categoria": "adulto", "genero": "feminino", "vagas": 8}, {"id": 3, "titulo": "Torneio Masters", "data": "2025-05-20", "horario": "19:30", "categoria": "master", "genero": "masculino", "vagas": 0}, {"id": 4, "titulo": "Pelada Mista", "data": "2025-06-08", "horario": "20:00", "categoria": "livre", "genero": "misto", "vagas": 12}, {"id": 5, "titulo": "Treino Juvenil", "data": "2025-05-05", "horario": "16:00", "categoria": "juvenil", "genero": "masculino", "vagas": 10}],
+        },
+        "campo_central": {
+            "nome": "Arena Centro", "imagem_capa": "/static/images/arena centro.png", "partidas": [{"id": 1, "titulo": "Campeonato Centro", "data": "2025-04-15", "horario": "20:00", "categoria": "adulto", "genero": "masculino", "vagas": 8}, {"id": 2, "titulo": "Pelada Semanal", "data": "2025-04-18", "horario": "19:00", "categoria": "livre", "genero": "misto", "vagas": 12}, {"id": 3, "titulo": "Torneio Feminino", "data": "2025-05-10", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 10}, {"id": 4, "titulo": "Escolinha de Futsal", "data": "2025-06-15", "horario": "09:00", "categoria": "infantil", "genero": "misto", "vagas": 15}],
+        },
+        "quadra_centro": {
+            "nome": "Campo Amparo Esporte Clube", "imagem_capa": "/static/images/amparo.jpg", "partidas": [{"id": 1, "titulo": "Torneio de Inauguração", "data": "2025-05-01", "horario": "09:00", "categoria": "livre", "genero": "misto", "vagas": 20}, {"id": 2, "titulo": "Escolinha de Futsal", "data": "2025-05-03", "horario": "14:00", "categoria": "infantil", "genero": "misto", "vagas": 15}, {"id": 3, "titulo": "Liga Masculina", "data": "2025-06-10", "horario": "20:00", "categoria": "adulto", "genero": "masculino", "vagas": 10}, {"id": 4, "titulo": "Treino Feminino", "data": "2025-06-12", "horario": "19:00", "categoria": "adulto", "genero": "feminino", "vagas": 12}],
+        },
+        # Região São José
+        "campo_c": {
+            "nome": "Arena Itapeba", "imagem_capa": "/static/images/arena_itapeba.jpeg", "partidas": [{"id": 1, "titulo": "Liga Itapeba", "data": "2025-04-22", "horario": "19:00", "categoria": "adulto", "genero": "masculino", "vagas": 7}, {"id": 2, "titulo": "Treino Feminino", "data": "2025-04-24", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 9}, {"id": 3, "titulo": "Torneio Misto", "data": "2025-05-15", "horario": "20:00", "categoria": "adulto", "genero": "misto", "vagas": 12}, {"id": 4, "titulo": "Escolinha de Futebol", "data": "2025-06-05", "horario": "14:00", "categoria": "infantil", "genero": "misto", "vagas": 18}],
+        },
+        "campo_saojose_1": {
+            "nome": "Arena São José", "imagem_capa": "/static/images/arena_são josé.jpg", "partidas": [{"id": 1, "titulo": "Copa São José", "data": "2025-05-25", "horario": "20:00", "categoria": "adulto", "genero": "masculino", "vagas": 6}, {"id": 2, "titulo": "Pelada da Comunidade", "data": "2025-05-28", "horario": "19:00", "categoria": "livre", "genero": "misto", "vagas": 14}, {"id": 3, "titulo": "Torneio Feminino", "data": "2025-06-08", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 10}, {"id": 4, "titulo": "Torneio Master", "data": "2025-06-15", "horario": "19:30", "categoria": "master", "genero": "masculino", "vagas": 8}],
+        },
+        "arena_jose": {
+            "nome": "Quadra Inoã", "imagem_capa": "/static/images/quadra_inoã.jpg", "partidas": [{"id": 1, "titulo": "Torneio de Inoã", "data": "2025-06-10", "horario": "18:30", "categoria": "adulto", "genero": "masculino", "vagas": 8}, {"id": 2, "titulo": "Aulão de Futsal", "data": "2025-06-12", "horario": "09:00", "categoria": "infantil", "genero": "misto", "vagas": 20}, {"id": 3, "titulo": "Liga Feminina", "data": "2025-06-18", "horario": "19:00", "categoria": "adulto", "genero": "feminino", "vagas": 10}, {"id": 4, "titulo": "Pelada Mista", "data": "2025-06-20", "horario": "20:00", "categoria": "livre", "genero": "misto", "vagas": 15}],
+        },
+        "quadra_saojose": {
+            "nome": "Quadra Poliesportiva Parque Nanci", "imagem_capa": "/static/images/parque_nanci.jpg", "partidas": [{"id": 1, "titulo": "Festival Esportivo", "data": "2025-05-30", "horario": "08:00", "categoria": "livre", "genero": "misto", "vagas": 25}, {"id": 2, "titulo": "Torneio de Veteranos", "data": "2025-06-02", "horario": "19:00", "categoria": "master", "genero": "masculino", "vagas": 10}, {"id": 3, "titulo": "Escolinha de Futebol", "data": "2025-06-05", "horario": "14:00", "categoria": "infantil", "genero": "misto", "vagas": 18}, {"id": 4, "titulo": "Torneio Feminino", "data": "2025-06-10", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 12}, {"id": 5, "titulo": "Liga Masculina", "data": "2025-06-15", "horario": "20:00", "categoria": "adulto", "genero": "masculino", "vagas": 10}],
+        },
+    }
 
     if nome_campo not in campos:
         raise Http404("Campo não encontrado")

@@ -1,39 +1,88 @@
 {% extends "account/base_entrance.html" %}
 {% load i18n %}
 {% load account %}
-{% load allauth %}
-{% block head_title %}
-    {% trans "Confirm Email Address" %}
-{% endblock head_title %}
+
+{% block head_title %}{% trans "Confirmar Endereço de E-mail" %}{% endblock head_title %}
+
+{% block extra_head %}
+<style>
+    /* Estilos para o container principal */
+    .confirmation-container {
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 500px;
+        margin: 40px auto;
+    }
+
+    /* Estilo para o título */
+    .confirmation-container h1 {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+
+    /* Estilo para os parágrafos de texto */
+    .confirmation-container p {
+        color: #555;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    /* Estilo para o botão de confirmação */
+    .btn-confirm {
+        display: inline-block;
+        background-color: #0d6efd; /* Azul vibrante */
+        color: #ffffff;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 20px;
+    }
+
+    .btn-confirm:hover {
+        background-color: #0b5ed7; /* Azul um pouco mais escuro */
+    }
+
+    /* Estilo para links de erro */
+    .error-link {
+        color: #0d6efd;
+        text-decoration: underline;
+    }
+</style>
+{% endblock extra_head %}
+
 {% block content %}
-    {% element h1 %}
-        {% trans "Confirm Email Address" %}
-    {% endelement %}
+<div class="confirmation-container">
+    <h1>{% trans "Confirmar Endereço de E-mail" %}</h1>
+
     {% if confirmation %}
         {% user_display confirmation.email_address.user as user_display %}
+        
         {% if can_confirm %}
-            {% element p %}
-                {% blocktrans with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an email address for user {{ user_display }}.{% endblocktrans %}
-            {% endelement %}
+            <p>{% blocktrans with confirmation.email_address.email as email %}Por favor, confirme que <strong>{{ email }}</strong> é o seu endereço de e-mail para a conta de usuário <strong>{{ user_display }}</strong> no EsporteFY.{% endblocktrans %}</p>
+            
             {% url 'account_confirm_email' confirmation.key as action_url %}
-            {% element form method="post" action=action_url %}
-                {% slot actions %}
-                    {% csrf_token %}
-                    {{ redirect_field }}
-                    {% element button type="submit" %}
-                        {% trans 'Confirm' %}
-                    {% endelement %}
-                {% endslot %}
-            {% endelement %}
+            <form method="post" action="{{ action_url }}">
+                {% csrf_token %}
+                {{ redirect_field }}
+                <button type="submit" class="btn-confirm">{% trans 'Confirmar' %}</button>
+            </form>
+            
         {% else %}
-            {% element p %}
-                {% blocktrans %}Unable to confirm {{ email }} because it is already confirmed by a different account.{% endblocktrans %}
-            {% endelement %}
+            <p>{% blocktrans %}Não foi possível confirmar o e-mail <strong>{{ email }}</strong>, pois ele já foi confirmado por outra conta.{% endblocktrans %}</p>
         {% endif %}
+        
     {% else %}
         {% url 'account_email' as email_url %}
-        {% element p %}
-            {% blocktrans %}This email confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a new email confirmation request</a>.{% endblocktrans %}
-        {% endelement %}
+        <p>{% blocktrans %}Este link de confirmação de e-mail expirou ou é inválido. Por favor, <a href="{{ email_url }}" class="error-link">solicite um novo link de confirmação</a>.{% endblocktrans %}</p>
     {% endif %}
+</div>
 {% endblock content %}
