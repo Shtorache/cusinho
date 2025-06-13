@@ -1,99 +1,90 @@
-{% extends "pages/base.html" %}
-{% load static %}
-{% load i18n %}
-    
-{% block extra_head %}
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/listacampos.css' %}">
-{% endblock extra_head %}
-
-{% block content %}
-
-    <div class="content">
-        
-        <div class="map-container">
-            <div id="map"></div>
-
-            <div class="card-container">
-                {% for dado in dadosCampo %}
-                <div class="card">
-
-                    <img src="{{dado.foto.url}}" alt="">
-                    {% comment %} <h3 class="card-title"> Nome: {{dado.nomeCampo}} </h3> {% endcomment %}
-                    <h4 class="card-title"> E-mail para contato: {{dado.email}} </h4>
-                    <h4 class="card-title"> Endereço: {{dado.endereco}} </h4>
-                    <h4 class="card-title"> Telefone: {{dado.telefone}} </h4>
-                    
-                    <p id="cont">{{dado.id}} </p>
-                    <button onclick="window.location.href='{% url "feedback" id=dado.id %}'">Ver Feedbacks</button>
-                </div>
-                {% endfor %}
-
-            </div>
-            
-           
-           
-        </div>      
-
-            
-    </div>
-    <!-- Incluindo o JavaScript do Leaflet -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
-        // Inicializando o mapa e definindo suas coordenadas iniciais e nível de zoom
-        var map = L.map('map').setView([-22.9187, -42.8224], 15);
-
-        // Adicionando o tile layer do OpenStreetMap
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        // Função para atualizar o mapa com novas coordenadas
-        function updateMap(coords) {
-            var [lat, lng] = coords.split(',').map(Number);
-            map.setView([lat, lng], 15);
+<!DOCTYPE html>
+{% load static i18n %}
+{% include 'partials/messages_toast.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EsporteFY</title>
+    <link rel="shortcut icon" href="{% static 'images/Goal_icon-icons.com_62267.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/navbar_base.css' %}">
+    <style>
+        /* Centraliza itens verticalmente e ajusta espaçamento */
+        .navbar, .navbar-menu, .navbar-menu li, .navbar-logo, .menu-toggle {
+            display: flex;
+            align-items: center;
         }
+        .navbar {
+            height: 56px; /* reduced navbar height */
+        }
+        .navbar-menu {
+            flex: 1;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .navbar-menu li {
+            margin: 0 8px;
+        }
+        .navbar-menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 0 3px;
+            line-height: 56px;
+        }
+        .navbar-menu a:hover {
+            text-decoration: underline;
+        }
+        .menu-toggle {
+            margin-left: 15px;
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-logo" onclick="window.location.href = '{% url 'perfilUsuario' %}'">EsporteFY</div>
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <ul class="navbar-menu" id="navbarMenu">
+            <li><a href="{% url 'mfa_index' %}">Segurança</a></li>
+            <li><a href="{% url 'listacampos' %}">Campos</a></li>
+            <li><a href="{% url 'relatorio' %}">Relatório</a></li>
+            <li><a href="{% url 'perfilUsuario' %}">Perfil</a></li>
+            <li><a href="{% url 'alugar-campo' %}">Adicionar Quadras</a></li>
+            <li><a href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a></li>
+        </ul>
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'perfilUsuario' %}" class="navbar-profile" style="margin-left:auto; width:44px; height:44px; border:2px solid #e53935; border-radius:50%; overflow:hidden; display:flex; align-items:center; justify-content:center; text-decoration:none;">
+            <img src="{% if request.user.profile.img %}{{ request.user.profile.img.url }}{% else %}{% static 'images/avatar_xbox.jpeg' %}{% endif %}"
+                 alt="{{ request.user.username }}"
+                 style="width:40px; height:40px; object-fit:cover; display:block;" />
+        </a>
+        {% endif %}
+    </nav>
 
-        // Adicionando um marcador em Maricá
-        var marker = L.marker([-22.9187, -42.8224]).addTo(map);
-        marker.bindPopup('<b>Maricá</b><br>Cidade do Rio de Janeiro').openPopup();
+    {% block content %}{% endblock %}
 
-        map.on('click', function(e) {
-        var latlng = e.latlng;
-
-    // Exibindo um popup com as coordenadas
-    var popupContent = `Latitude: ${latlng.lat.toFixed(6)}<br>Longitude: ${latlng.lng.toFixed(6)}`;
-    L.popup()
-        .setLatLng(latlng)
-        .setContent(popupContent)
-        .openOn(map);
-});
-
-var data = {{ coordenadas|safe }}
-console.log(data);
-// Exibindo os marcadores salvos no banco de dados
-    data.forEach(function(coordenada) {
-        var img = L.icon({
-            iconUrl: '{% static 'images/campo-de-futebol.png' %}',
+    {% block extra_js %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navbarMenu = document.getElementById('navbarMenu');
+            menuToggle.addEventListener('click', function() {
+                navbarMenu.classList.toggle('active');
+                menuToggle.innerHTML = navbarMenu.classList.contains('active') ? '✕' : '☰';
+            });
+            document.querySelectorAll('.navbar-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) {
+                        navbarMenu.classList.remove('active');
+                        menuToggle.innerHTML = '☰';
+                    }
+                });
+            });
         });
-        console.log("coordenada")
-        L.marker([coordenada.latitude, coordenada.longitude], { icon: img }).addTo(map)
-        .bindPopup("<a href= http://localhost:8000/accounts/profile/listas> Ver mais </a>")
-    })
-    
-
-
- {% comment %}    ############################################################################################# {% endcomment %}
-/* Estilos para o Modal */
-
-function openModal() {
-
-    document.getElementById('modal').style.display = "block";
-}
-
-function closeModal() {
-    document.getElementById('modal').style.display = "none";
-}
     </script>
-    {% endblock content %}
+    {% endblock %}
+</body>
+</html>
