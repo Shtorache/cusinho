@@ -1,77 +1,264 @@
-{% endblock extra_head %}
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-{% block content %}
-<div class="content">
-    <div class="option-section">
-        <h1 class="titulo-quadras {{ esporte|lower }}">
-            Quadras disponíveis para {{ esporte|title }}
-        </h1>
-        {% if esporte %}
-            <p class="esporte-destaque">Você selecionou: {{ esporte|title }}</p>
-        {% endif %}
-        <p>Escolha uma das opções abaixo</p>
+/* Estilo global (ALTERADO para o padrão EsporteFY) */
+body {
+    background: linear-gradient(135deg, #a72020, #000000, #a72020);
+    background-size: 200% 200%;
+    animation: gradientFlow 15s ease infinite;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #eaeaea;
+    min-height: 100vh;
+}
 
-        <div class="action-icons">
-            {% if esporte|lower == 'basquete' %}
-                <div class="action-icon" style="animation-delay:0.1s">
-                    <a href="{% url 'available_places' esporte=esporte %}">
-                        <img src="{% static 'images/basquete1.png' %}" alt="Basquete">
-                        <span>Encontrar partida</span>
-                    </a>
-                </div>
-                <div class="action-icon" style="animation-delay:0.2s">
-                    <a href="{% url 'reservar_espaco' esporte=esporte %}">
-                        <img src="{% static 'images/basquete2.png' %}" alt="Basquete">
-                        <span>Criar partida</span>
-                    </a>
-                </div>
+/* Keyframes para animações (ADICIONADO) */
+@keyframes gradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-            {% elif esporte|lower == 'futebol' %}
-                <div class="action-icon" style="animation-delay:0.1s">
-                    <a href="{% url 'available_places' esporte=esporte %}">
-                        <img src="{% static 'images/futebol1.png' %}" alt="Futebol">
-                        <span>Encontrar partida</span>
-                    </a>
-                </div>
-                <div class="action-icon" style="animation-delay:0.2s">
-                    <a href="{% url 'reservar_espaco' esporte=esporte %}">
-                        <img src="{% static 'images/futebol2.png' %}" alt="Futebol">
-                        <span>Criar partida</span>
-                    </a>
-                </div>
+/* Título da página (ALTERADO para um brilho mais sutil) */
+#title {
+    text-align: center;
+    margin: 30px 0;
+    font-size: 2.5rem;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(229, 57, 53, 0.5);
+}
 
-            {% elif esporte|lower == 'tênis' or esporte|lower == 'tenis' %}
-                <div class="action-icon" style="animation-delay:0.1s">
-                    <a href="{% url 'available_places' esporte=esporte %}">
-                        <img src="{% static 'images/tenis1.png' %}" alt="Tênis">
-                        <span>Encontrar partida</span>
-                    </a>
-                </div>
-                <div class="action-icon" style="animation-delay:0.2s">
-                    <a href="{% url 'reservar_espaco' esporte=esporte %}">
-                        <img src="{% static 'images/tenis2.png' %}" alt="Tênis">
-                        <span>Criar partida</span>
-                    </a>
-                </div>
+/* Container da tabela com glassmorphism (ALTERADO para o padrão EsporteFY) */
+#table-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    overflow-x: auto;
+    perspective: 1000px; /* ADICIONADO: para efeito 3D */
+    animation: fadeInUp 0.8s ease-out; /* ADICIONADO: animação de entrada */
+    transition: box-shadow 0.4s ease, transform 0.4s ease; /* ADICIONADO: para hover */
+}
 
-            {% elif esporte|lower == 'vôlei' or esporte|lower == 'volei' %}
-                <div class="action-icon" style="animation-delay:0.1s">
-                    <a href="{% url 'available_places' esporte=esporte %}">
-                        <img src="{% static 'images/volei1.png' %}" alt="Vôlei">
-                        <span>Encontrar partida</span>
-                    </a>
-                </div>
-                <div class="action-icon" style="animation-delay:0.2s">
-                    <a href="{% url 'reservar_espaco' esporte=esporte %}">
-                        <img src="{% static 'images/volei2.png' %}" alt="Vôlei">
-                        <span>Criar partida</span>
-                    </a>
-                </div>
+/* ADICIONADO: Efeito de hover 3D no container da tabela */
+#table-container:hover {
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    transform: rotateY(2deg) rotateX(4deg);
+}
 
-            {% else %}
-                <p>Esporte não disponível no momento.</p>
-            {% endif %}
-        </div>
-    </div>
-</div>
-{% endblock content %}
+/* Estilo da tabela */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.table th,
+.table td {
+    padding: 14px 16px;
+    text-align: center;
+    border-bottom: 1px solid rgba(229, 57, 53, 0.2); /* ALTERADO: Borda com a cor do tema */
+}
+
+/* Cabeçalho da tabela (ALTERADO para um gradiente) */
+.table th {
+    background: linear-gradient(200deg, #801f1f, #f30303);
+    color: #fff;
+    font-weight: 600;
+}
+
+.table tr:nth-child(even) {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.table tr:hover {
+    background: rgba(229, 57, 53, 0.3);
+}
+
+/* Rodapé da tabela (ALTERADO para um visual mais integrado) */
+.table tfoot td {
+    background: rgba(10, 10, 10, 0.8);
+    color: #fff;
+    font-weight: bold;
+    border-top: 2px solid #e53935;
+}
+
+/* Botão (ALTERADO: de ID para CLASSE para reutilização) */
+.btn-relatorio { /* Mudei de #btn para uma classe .btn-relatorio */
+    background: linear-gradient(135deg, #e53935, #b71c1c);
+    color: #fff;
+    padding: 14px 32px;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: block; /* ALTERADO: Para ocupar a largura no mobile */
+    margin: 20px auto 0; /* Centraliza o botão */
+    font-weight: bold;
+    text-decoration: none; /* Para o caso de usar uma tag <a> */
+    text-align: center;
+    max-width: 250px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), 0 0 10px rgba(229, 57, 53, 0.7);
+}
+
+.btn-relatorio:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 111, 97, 0.8);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    #table-container {
+        margin: 20px;
+        padding: 15px;
+        transform: none !important; /* Desativa o 3D no mobile */
+    }
+    .table th,
+    .table td {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+    .btn-relatorio {
+        width: 100%;
+        max-width: 100%; /* Ocupa toda a largura no mobile */
+    }
+}
+
+/* Adicione ou substitua este bloco no final do seu relatorio.css */
+
+@media print {
+
+    /* --- Configuração Geral da Página Impressa --- */
+    @page {
+        size: A4 portrait; /* Define o tamanho como A4 e a orientação como retrato */
+        margin: 1.5cm; /* Margens para a página impressa */
+
+        /* Adiciona o número da página no rodapé de cada página */
+        @bottom-right {
+            content: "Página " counter(page) " de " counter(pages);
+            font-size: 9pt;
+            color: #666;
+        }
+    }
+
+    /* --- Estilos Gerais para Impressão --- */
+    body {
+        background: #ffffff !important;
+        color: #333333 !important;
+        font-family: 'Georgia', serif; /* Fonte serifada para um visual mais formal */
+        font-size: 10pt;
+    }
+
+    /* --- Escondendo Elementos da Tela --- */
+    .navbar, .btn-relatorio, #btn, footer, .loading-bar, .print-header, .print-footer {
+        display: none !important; /* Esconde tudo por padrão na tela */
+    }
+
+    /* Mostra o cabeçalho e rodapé customizados APENAS na impressão */
+    .print-header, .print-footer {
+        display: block !important;
+    }
+
+
+    /* --- Estilizando o Cabeçalho do PDF --- */
+    .print-header {
+        display: flex !important;
+        align-items: center;
+        gap: 20px;
+        border-bottom: 2px solid #e53935;
+        padding-bottom: 15px;
+        margin-bottom: 30px;
+    }
+    .print-logo {
+        width: 50px;
+        height: 50px;
+    }
+    .print-header-text h2 {
+        margin: 0;
+        color: #b71c1c;
+        font-size: 16pt;
+    }
+    .print-header-text p {
+        margin: 0;
+        color: #333;
+        font-size: 11pt;
+    }
+
+    /* Esconde o título original da página para usar o do cabeçalho */
+    #title {
+        display: none !important;
+    }
+
+
+    /* --- Estilizando a Tabela para o PDF --- */
+    #table-container {
+        box-shadow: none !important;
+        border: none !important;
+        backdrop-filter: none !important;
+        background: transparent !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        animation: none !important;
+        transform: none !important;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table th, .table td {
+        border: 1px solid #ddd !important;
+        padding: 8px 10px;
+    }
+
+    .table th {
+        background-color: #e53935 !important; /* FORÇA a cor de fundo vermelha */
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact; /* Comando mágico para forçar cores no Chrome/Safari */
+        print-color-adjust: exact;         /* Comando mágico padrão */
+    }
+
+    .table tr:nth-child(even) {
+        background-color: #f9f9f9 !important; /* Zebrado suave para melhor leitura */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .table tfoot td {
+        background-color: #e0e0e0 !important;
+        font-weight: bold;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* --- Estilizando o Rodapé do PDF --- */
+    .print-footer {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 15px;
+        border-top: 1px solid #ccc;
+        font-size: 9pt;
+        color: #666;
+    }
+}
