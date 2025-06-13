@@ -3,46 +3,172 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/relatorio.css' %}">
+
+<style>
+    @media print {
+
+        /* --- Configuração Geral da Página Impressa --- */
+        @page {
+            size: A4 portrait;
+            margin: 1.5cm;
+
+            @bottom-right {
+                content: "Página " counter(page) " de " counter(pages);
+                font-size: 9pt;
+                color: #666;
+            }
+        }
+
+        /* --- Estilos Gerais para Impressão --- */
+        body {
+            background: #ffffff !important;
+            color: #333333 !important;
+            font-family: 'Georgia', serif;
+            font-size: 10pt;
+        }
+
+        /* --- Escondendo Elementos da Tela --- */
+        .navbar, #btn, footer, .loading-bar {
+            display: none !important;
+        }
+        
+        /* Mostra o cabeçalho e rodapé customizados APENAS na impressão */
+        .print-header, .print-footer {
+            display: block !important;
+        }
+
+        /* --- Estilizando o Cabeçalho do PDF --- */
+        .print-header {
+            display: flex !important;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 2px solid #e53935;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .print-logo {
+            width: 50px;
+            height: 50px;
+        }
+        .print-header-text h2 {
+            margin: 0;
+            color: #b71c1c;
+            font-size: 16pt;
+        }
+        .print-header-text p {
+            margin: 0;
+            color: #333;
+            font-size: 11pt;
+        }
+        
+        /* Esconde o título original da página para usar o do cabeçalho */
+        #title {
+            display: none !important;
+        }
+
+        /* --- Estilizando a Tabela para o PDF --- */
+        #table-container {
+            box-shadow: none !important;
+            border: none !important;
+            backdrop-filter: none !important;
+            background: transparent !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            animation: none !important;
+            transform: none !important;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table th, .table td {
+            border: 1px solid #ddd !important;
+            padding: 8px 10px;
+            text-align: left; /* Alinhamento mais formal para relatórios */
+        }
+        
+        .table th {
+            background-color: #e53935 !important;
+            color: #ffffff !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f9f9f9 !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        
+        /* --- Estilizando o Rodapé do PDF --- */
+        .print-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #ccc;
+            font-size: 9pt;
+            color: #666;
+        }
+    }
+</style>
 {% endblock extra_head %}
 
+
 {% block content %}
+
+<div class="print-header" style="display: none;">
+    <img src="{% static 'images/Goal_icon-icons.com_62267.ico' %}" class="print-logo" alt="Logo EsporteFY">
+    <div class="print-header-text">
+        <h2>EsporteFY Relatórios</h2>
+        <p>Relatório de Partidas Gerado em {% now "d/m/Y" %}</p>
+    </div>
+</div>
+
 <h1 id="title">Relatório de Partidas</h1>
 <div id="table-container">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Campo</th>
-        <th>Título</th>
-        <th>Data</th>
-        <th>Horário</th>
-        <th>Categoria</th>
-        <th>Gênero</th>
-        <th>Vagas</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for partida in partidas %}
-      <tr>
-        <td>{{ partida.id }}</td>
-        <td>{{ partida.campo }}</td>
-        <td>{{ partida.titulo }}</td>
-        <td>{{ partida.data|date:"d/m/Y" }}</td>
-        <td>{{ partida.horario }}</td>
-        <td>{{ partida.categoria }}</td>
-        <td>{{ partida.genero }}</td>
-        <td>{{ partida.vagas }}</td>
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="8">Nenhuma partida encontrada.</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Campo</th>
+                <th>Título</th>
+                <th>Data</th>
+                <th>Horário</th>
+                <th>Categoria</th>
+                <th>Gênero</th>
+                <th>Vagas</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for partida in partidas %}
+            <tr>
+                <td>{{ partida.id }}</td>
+                <td>{{ partida.campo }}</td>
+                <td>{{ partida.titulo }}</td>
+                <td>{{ partida.data|date:"d/m/Y" }}</td>
+                <td>{{ partida.horario }}</td>
+                <td>{{ partida.categoria }}</td>
+                <td>{{ partida.genero }}</td>
+                <td>{{ partida.vagas }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" style="text-align: center;">Nenhuma partida encontrada.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
-<center><button id="btn" class="btn btn-primary" onclick="window.print()">Salvar como PDF</button></center>
-{% endblock content %}
+<center><button id="btn" class="btn btn-relatorio" onclick="window.print()">Salvar como PDF</button></center>
 
-</body>
-</html>
+
+<div class="print-footer" style="display: none;">
+    <p>Copyright © {% now "Y" %} EsporteFY. Todos os direitos reservados.</p>
+</div>
+
+
+{% endblock content %}

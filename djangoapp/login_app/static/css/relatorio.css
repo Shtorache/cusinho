@@ -1,110 +1,77 @@
-/* Reset básico */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+{% endblock extra_head %}
 
-/* Estilo global */
-body {
-    background: linear-gradient(135deg, #1f90d1, #262c4e);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #eaeaea;
-    min-height: 100vh;
-}
+{% block content %}
+<div class="content">
+    <div class="option-section">
+        <h1 class="titulo-quadras {{ esporte|lower }}">
+            Quadras disponíveis para {{ esporte|title }}
+        </h1>
+        {% if esporte %}
+            <p class="esporte-destaque">Você selecionou: {{ esporte|title }}</p>
+        {% endif %}
+        <p>Escolha uma das opções abaixo</p>
 
-/* Navbar já vem de base.html */
+        <div class="action-icons">
+            {% if esporte|lower == 'basquete' %}
+                <div class="action-icon" style="animation-delay:0.1s">
+                    <a href="{% url 'available_places' esporte=esporte %}">
+                        <img src="{% static 'images/basquete1.png' %}" alt="Basquete">
+                        <span>Encontrar partida</span>
+                    </a>
+                </div>
+                <div class="action-icon" style="animation-delay:0.2s">
+                    <a href="{% url 'reservar_espaco' esporte=esporte %}">
+                        <img src="{% static 'images/basquete2.png' %}" alt="Basquete">
+                        <span>Criar partida</span>
+                    </a>
+                </div>
 
-/* Título da página */
-#title {
-    text-align: center;
-    margin: 30px 0;
-    font-size: 2.5rem;
-    color: #ffffff;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
-}
+            {% elif esporte|lower == 'futebol' %}
+                <div class="action-icon" style="animation-delay:0.1s">
+                    <a href="{% url 'available_places' esporte=esporte %}">
+                        <img src="{% static 'images/futebol1.png' %}" alt="Futebol">
+                        <span>Encontrar partida</span>
+                    </a>
+                </div>
+                <div class="action-icon" style="animation-delay:0.2s">
+                    <a href="{% url 'reservar_espaco' esporte=esporte %}">
+                        <img src="{% static 'images/futebol2.png' %}" alt="Futebol">
+                        <span>Criar partida</span>
+                    </a>
+                </div>
 
-/* Container da tabela com glassmorphism */
-#table-container {
-    max-width: 1000px;
-    margin: 40px auto;
-    padding: 25px;
-    background: rgba(30, 30, 30, 0.6);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    overflow-x: auto;
-}
+            {% elif esporte|lower == 'tênis' or esporte|lower == 'tenis' %}
+                <div class="action-icon" style="animation-delay:0.1s">
+                    <a href="{% url 'available_places' esporte=esporte %}">
+                        <img src="{% static 'images/tenis1.png' %}" alt="Tênis">
+                        <span>Encontrar partida</span>
+                    </a>
+                </div>
+                <div class="action-icon" style="animation-delay:0.2s">
+                    <a href="{% url 'reservar_espaco' esporte=esporte %}">
+                        <img src="{% static 'images/tenis2.png' %}" alt="Tênis">
+                        <span>Criar partida</span>
+                    </a>
+                </div>
 
-/* Estilo da tabela */
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 600px;
-}
+            {% elif esporte|lower == 'vôlei' or esporte|lower == 'volei' %}
+                <div class="action-icon" style="animation-delay:0.1s">
+                    <a href="{% url 'available_places' esporte=esporte %}">
+                        <img src="{% static 'images/volei1.png' %}" alt="Vôlei">
+                        <span>Encontrar partida</span>
+                    </a>
+                </div>
+                <div class="action-icon" style="animation-delay:0.2s">
+                    <a href="{% url 'reservar_espaco' esporte=esporte %}">
+                        <img src="{% static 'images/volei2.png' %}" alt="Vôlei">
+                        <span>Criar partida</span>
+                    </a>
+                </div>
 
-.table th,
-.table td {
-    padding: 14px 16px;
-    text-align: center;
-    border-bottom: 1px solid rgba(128, 146, 123, 0.4);
-}
-
-.table th {
-    background: rgba(229, 57, 53, 0.8);
-    color: #fff;
-    font-weight: 600;
-}
-
-.table tr:nth-child(even) {
-    background: rgba(0, 0, 0, 0.2);
-}
-
-.table tr:hover {
-    background: rgba(229, 57, 53, 0.3);
-}
-
-.table tfoot td {
-    background: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    font-weight: bold;
-    border-top: 2px solid rgba(255, 255, 255, 0.2);
-}
-
-/* Botão moderno */
-#btn {
-    background: linear-gradient(135deg, #e53935, #b71c1c);
-    color: #fff;
-    padding: 14px 32px;
-    font-size: 16px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: inline-block;
-    margin-top: 20px;
-    font-weight: bold;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), 0 0 10px rgba(229, 57, 53, 0.7);
-}
-
-#btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 111, 97, 0.8);
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-    #table-container {
-        margin: 20px;
-        padding: 15px;
-    }
-    .table th,
-    .table td {
-        padding: 10px 12px;
-        font-size: 14px;
-    }
-    #btn {
-        width: 100%;
-    }
-}
+            {% else %}
+                <p>Esporte não disponível no momento.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
