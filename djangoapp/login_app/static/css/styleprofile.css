@@ -4,11 +4,10 @@ html, body {
   padding: 0;
   height: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  /* ADICIONADO: Fundo gradiente aplicado à página inteira */
   background: linear-gradient(135deg, #a72020, #000000, #a72020);
   background-size: 200% 200%;
   animation: gradientFlow 15s ease infinite;
-  color: #f5f5f5; /* Cor de texto padrão para o fundo escuro */
+  color: #f5f5f5;
 }
 
 /* Keyframes para animações */
@@ -28,18 +27,17 @@ html, body {
   }
 }
 
-/* Wrapper de fundo (agora sem o background) */
+/* Wrapper de fundo */
 .profile-page-wrapper {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  /* Adiciona espaço no topo para não ficar atrás da navbar. Ajuste este valor se necessário. */
   padding-top: 120px; 
 }
 
-/* Container interno com perspectiva para o efeito 3D */
+/* Container interno com perspectiva */
 .profile-page {
   width: 100%;
   max-width: 960px;
@@ -94,7 +92,6 @@ html, body {
 
 /* Formulário */
 .profile-card .form-group {
-  flex: 1 1 200px;
   margin-bottom: 20px;
 }
 
@@ -103,6 +100,11 @@ html, body {
   margin-bottom: 8px;
   color: #f5f5f5;
   font-weight: 600;
+}
+
+/* Esconde o input de arquivo padrão */
+input[type="file"] {
+    display: none;
 }
 
 .profile-card .form-control {
@@ -162,6 +164,7 @@ html, body {
   transition: transform 0.25s ease, box-shadow 0.3s ease;
   user-select: none;
   position: relative;
+  text-align: center;
 }
 
 .btn:active {
@@ -191,12 +194,87 @@ html, body {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.8);
 }
 
+/* --- Estilos para a Seção MFA no Perfil --- */
+
+.mfa-section {
+  width: 100%;
+  margin-top: 40px;
+  padding-top: 30px;
+}
+
+.section-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,0.2), rgba(255,255,255,0));
+  margin-bottom: 30px;
+}
+
+.mfa-section-title {
+  text-align: center;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.mfa-section-subtitle {
+  text-align: center;
+  color: #ccc;
+  margin-bottom: 30px;
+}
+
+.mfa-panels-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.mfa-panel {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s;
+  flex-wrap: wrap;
+}
+
+.mfa-panel:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.mfa-panel-body {
+  flex-grow: 1;
+}
+
+.mfa-panel-title {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.mfa-panel p {
+  color: #ddd;
+  margin: 0;
+}
+
+.mfa-panel-actions {
+  display: flex;
+  gap: 15px;
+  margin-left: 20px;
+  flex-shrink: 0;
+}
+
+
 /* Responsividade */
 @media (max-width: 768px) {
   .profile-card {
     flex-direction: column;
     align-items: center;
-    transform: none !important; /* Desativa o efeito 3D no mobile para melhor performance */
+    transform: none !important;
   }
   .avatar-preview {
     width: 120px;
@@ -204,5 +282,17 @@ html, body {
   }
   .profile-card .form-actions {
     justify-content: center;
+  }
+  .mfa-panel {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .mfa-panel-actions {
+    margin-left: 0;
+    width: 100%;
+  }
+  .mfa-panel-actions .btn {
+    flex-grow: 1;
   }
 }

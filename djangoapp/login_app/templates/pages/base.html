@@ -22,9 +22,16 @@
         <ul class="navbar-menu" id="navbarMenu">
             <li><a href="{% url 'mfa_index' %}">Segurança</a></li>
             <li><a href="{% url 'relatorio' %}">Relatório</a></li>
-            <li><a href="{% url 'perfilUsuario' %}">Perfil</a></li>
+            
             <li><a href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a></li>
         </ul>
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'perfilUsuario' %}" class="navbar-profile" style="margin-left:auto; width:44px; height:44px; border:2px solid #e53935; border-radius:50%; overflow:hidden; display:flex; align-items:center; justify-content:center; text-decoration:none;">
+            <img src="{% if request.user.profile.img %}{{ request.user.profile.img.url }}{% else %}{% static 'images/avatar_xbox.jpeg' %}{% endif %}"
+                 alt="{{ request.user.username }}"
+                 style="width:40px; height:40px; object-fit:cover; display:block;" />
+        </a>
+        {% endif %}
     </nav>
 
     {% block content %}

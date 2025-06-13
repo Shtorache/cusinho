@@ -321,9 +321,11 @@ def areaProprietario(request):
 
 # Em seu_app/views.py
 
+# Em seu_app/views.py
+
 @login_required(redirect_field_name="account_login")
 def profile(request):
-    # Sua lógica de formulário continua a mesma
+    # Lógica para tratar o envio do formulário (quando o usuário salva as alterações)
     if request.method == "POST":
         user_form = UpdateUserForm(request.POST, instance=request.user)
         profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
@@ -331,8 +333,9 @@ def profile(request):
             user_form.save()
             profile_form.save()
             messages.success(request, "Seu perfil foi atualizado com sucesso")
-            return redirect(to="profile")
+            return redirect(to="perfilUsuario") # <--- CORREÇÃO APLICADA AQUI
     else:
+        # Lógica para exibir o formulário (quando o usuário acessa a página)
         user_form = UpdateUserForm(instance=request.user)
         profile_form = UpdateProfileForm(instance=request.user.profile)
 
