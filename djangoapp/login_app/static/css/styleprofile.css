@@ -4,22 +4,46 @@ html, body {
   padding: 0;
   height: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* ADICIONADO: Fundo gradiente aplicado à página inteira */
+  background: linear-gradient(135deg, #a72020, #000000, #a72020);
+  background-size: 200% 200%;
+  animation: gradientFlow 15s ease infinite;
+  color: #f5f5f5; /* Cor de texto padrão para o fundo escuro */
 }
 
-/* Wrapper de fundo gradiente vermelho */
+/* Keyframes para animações */
+@keyframes gradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Wrapper de fundo (agora sem o background) */
 .profile-page-wrapper {
   min-height: 100vh;
-  background: linear-gradient(135deg, #000000, #a72020);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
+  padding: 20px;
+  /* Adiciona espaço no topo para não ficar atrás da navbar. Ajuste este valor se necessário. */
+  padding-top: 120px; 
 }
 
-/* Container interno mantendo grid do Bootstrap */
+/* Container interno com perspectiva para o efeito 3D */
 .profile-page {
   width: 100%;
   max-width: 960px;
+  perspective: 1000px;
 }
 
 /* Card com glassmorphism */
@@ -33,15 +57,16 @@ html, body {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
-  transition: box-shadow 0.3s ease;
-
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
   position: relative;
-  top: -50px; /* sobe o card 50px para cima */
+  top: -50px;
+  animation: fadeInUp 0.8s ease-out;
+  transform-style: preserve-3d;
 }
 
-
 .profile-card:hover {
-  box-shadow: 0 15px 45px rgba(0,0,0,0.7);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+  transform: rotateY(5deg) rotateX(10deg);
 }
 
 /* Avatar */
@@ -126,8 +151,6 @@ html, body {
   flex-wrap: wrap;
 }
 
-
-
 /* Botões */
 .btn {
   padding: 14px 32px;
@@ -138,6 +161,12 @@ html, body {
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.3s ease;
   user-select: none;
+  position: relative;
+}
+
+.btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .btn-primary {
@@ -161,11 +190,13 @@ html, body {
   background: rgba(255, 255, 255, 0.25);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.8);
 }
+
 /* Responsividade */
 @media (max-width: 768px) {
   .profile-card {
     flex-direction: column;
     align-items: center;
+    transform: none !important; /* Desativa o efeito 3D no mobile para melhor performance */
   }
   .avatar-preview {
     width: 120px;
