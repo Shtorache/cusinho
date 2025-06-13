@@ -1,5 +1,179 @@
-{% extends "mfa/base_manage.html" %}
-{% load i18n %}
-{% block head_title %}
-    {% trans "Security Keys" %}
-{% endblock head_title %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaves de Segurança - Esportefy</title>
+
+    {# Importação da fonte Montserrat do Google Fonts #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Fundo animado em vermelho e preto (aplicado ao body) */
+        body {
+            margin: 0; /* Garante que não há margem padrão no body */
+            padding: 0; /* Garante que não há padding padrão no body */
+            width: 100%;
+            height: 100vh; /* Ocupa 100% da altura da viewport */
+            background: linear-gradient(45deg, #1a1a1a, #4a0000, #1a1a1a, #8b0000); /* Gradiente vermelho e preto */
+            background-size: 400% 400%; /* Aumenta o tamanho para permitir a animação do gradiente */
+            animation: backgroundMovement 15s ease infinite; /* Aplica a animação */
+            
+            /* Fonte mais legível para todo o corpo da página */
+            font-family: 'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #f0f0f0; /* Cor de texto padrão para o body, clara e visível */
+        }
+
+        @keyframes backgroundMovement {
+            0% {
+                background-position: 0% 50%; /* Posição inicial do gradiente */
+            }
+            50% {
+                background-position: 100% 50%; /* Posição intermediária (movimento para a direita) */
+            }
+            100% {
+                background-position: 0% 50%; /* Retorna à posição inicial, criando um loop suave */
+            }
+        }
+
+        /* Card principal com efeito glassmorphism (centralizado na tela) */
+        .reauth-card {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(231, 151, 151, 0.05); /* Fundo glassmorphism */
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 40px;
+            color: #e0e0e0; /* Cor do texto no card: cinza claro para visibilidade */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            text-align: center;
+            
+            /* Para centralizar o card no meio da tela */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            /* Animação que aparece centralizado e sobe suavemente */
+            animation: fadeInUpCentered 0.8s ease-out forwards;
+        }
+
+        /* Animação para o card aparecer já centralizado */
+        @keyframes fadeInUpCentered {
+            from { 
+                opacity: 0; 
+                transform: translate(-50%, -30%); /* Começa mais acima do centro */
+            }
+            to { 
+                opacity: 1; 
+                transform: translate(-50%, -50%); /* Termina exatamente no centro */
+            }
+        }
+
+        .reauth-card h1 {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: #ffffff; /* Título em branco puro para máximo contraste */
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3); /* Sombra suave para o título */
+            margin-bottom: 15px;
+            font-family: 'Montserrat', sans-serif; /* Aplica a fonte também ao título */
+        }
+
+        .reauth-card .instructions {
+            color: #c0c0c0; /* Cor mais clara para as instruções */
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Formulário e seus elementos */
+        /* Generaliza para todos os inputs de texto */
+        .reauth-form input[type="text"],
+        .reauth-form input[type="password"] { 
+            width: 90%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: #fff; /* Cor do texto dentro do input em branco */
+            font-size: 16px;
+            transition: background 0.3s, box-shadow 0.3s;
+            text-align: center; /* Centraliza o texto digitado */
+            margin-bottom: 25px;
+        }
+
+        .reauth-form input[type="text"]:focus,
+        .reauth-form input[type="password"]:focus { 
+            background: rgba(255,255,255,0.15);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5); /* Sombra de foco branca */
+            outline: none;
+        }
+
+        .error-message {
+            color: #ffb3b3; /* Mensagem de erro um pouco mais clara, mas ainda vermelha */
+            font-size: 0.9em;
+            margin-top: -15px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* Estilo do botão */
+        .btn {
+            padding: 14px 32px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+            user-select: none;
+            width: 80%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #e53935, #b71c1c); /* Gradiente vermelho para o botão */
+            color: #fff; /* Texto do botão em branco */
+            box-shadow: 0 8px 22px rgba(183, 28, 28, 0.7);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 28px rgba(255, 82, 82, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <div class="reauth-card">
+        <h1>Gerenciar Chaves de Segurança</h1>
+        <p class="instructions">
+            Use suas chaves de segurança para autenticação de dois fatores.
+            Você pode adicionar, remover ou renomear suas chaves aqui.
+        </p>
+        
+        <div class="reauth-form">
+            <label for="id_name" style="display: block; text-align: center; margin-bottom: 5px;">Nome da Chave</label>
+            <input type="text" name="name" id="id_name" placeholder="Ex: Chave do Trabalho">
+            <span class="error-message" style="display: none;">Mensagem de erro aqui (se houver)</span>
+
+            {# O campo para registrar a chave de segurança pode ser invisível ou manipulado via JS #}
+            {# Por exemplo, um input hidden para o desafio/resposta FIDO2 #}
+            <input type="hidden" name="challenge" value="SEU_DESAFIO_FIDO2_AQUI">
+            
+            <button type="submit" class="btn btn-primary">Registrar Nova Chave</button>
+
+            {# Exemplo de listagem de chaves existentes (apenas um placeholder visual) #}
+            <h2 style="margin-top: 40px; color: #fff; font-size: 1.4rem;">Minhas Chaves Registradas</h2>
+            <ul style="list-style: none; padding: 0; margin-top: 20px;">
+                <li style="background: rgba(255,255,255,0.08); padding: 10px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: #f0f0f0;">Chave Principal (Último uso: Hoje)</span>
+                    <button style="background: #b71c1c; color: #fff; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 0.8em;">Remover</button>
+                </li>
+                <li style="background: rgba(255,255,255,0.08); padding: 10px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: #f0f0f0;">Chave Reserva (Último uso: 1 semana atrás)</span>
+                    <button style="background: #b71c1c; color: #fff; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 0.8em;">Remover</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
