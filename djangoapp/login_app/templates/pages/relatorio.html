@@ -1,65 +1,48 @@
-{% load static %}
-{% load i18n %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'css/relatorio.css' %}">
-    <link rel="shortcut icon" href="{% static "images\Goal_icon-icons.com_62267.ico" %}" type="image/x-icon">
-</head>
-<body>
+{% extends "pages/base.html" %}
+{% load static i18n %}
 
-<nav class="navbar">
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/relatorio.css' %}">
+{% endblock extra_head %}
 
-    <div class="navbar-logo" onclick="window.location.href = '/accounts/profile/'">Aluga campos</div>
-
-    <ul class="navbar-menu">
-        <li><a href="{%url 'mfa_index'%}">Ativar Verificação de 2 fatores</a></li>
-        <li><a href="relatorio">Relatório</a></li>
-
-        <li><a href="perfilUsuario">Perfil</a></li>
-        <li><a href="add-campo">Adicionar Campo</a></li>
-        <li><a href="#cntt">Contato</a></li>
-        <li><a href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a></li>
-    </ul>
-</nav>
-
-<h1 id= "title">Relatório de Reservas</h1>
-
+{% block content %}
+<h1 id="title">Relatório de Partidas</h1>
 <div id="table-container">
-<table class="table">
-    <thead id="table-head">
-        <tr id="table-row">
-            <th>Data</th>
-            <th>Início</th>
-            <th>Fim</th>
-            <th>Valor Total</th>
-        </tr>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Campo</th>
+        <th>Título</th>
+        <th>Data</th>
+        <th>Horário</th>
+        <th>Categoria</th>
+        <th>Gênero</th>
+        <th>Vagas</th>
+      </tr>
     </thead>
-    <tbody id = "table-body">
-        {% for reserva in reservas %}
-        <tr>
-            <td id="table-data">{{ reserva.dia|date:"d/m/Y" }}</td>
-            <td id="table-data">{{ reserva.inicio|time:"H:i" }}</td>
-            <td id="table-data">{{ reserva.final|time:"H:i" }}</td>
-            <td id="table-data">R$ {{ reserva.valor_total|floatformat:2 }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="4">Nenhuma reserva encontrada.</td>
-        </tr>
-        {% endfor %}
+    <tbody>
+      {% for partida in partidas %}
+      <tr>
+        <td>{{ partida.id }}</td>
+        <td>{{ partida.campo }}</td>
+        <td>{{ partida.titulo }}</td>
+        <td>{{ partida.data|date:"d/m/Y" }}</td>
+        <td>{{ partida.horario }}</td>
+        <td>{{ partida.categoria }}</td>
+        <td>{{ partida.genero }}</td>
+        <td>{{ partida.vagas }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="8">Nenhuma partida encontrada.</td>
+      </tr>
+      {% endfor %}
     </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="3"><strong>Total:</strong></td>
-            <td><strong>R$ {{ total_valor|floatformat:2 }}</strong></td>
-        </tr>
-    </tfoot>
-</table>
+  </table>
 </div>
-<center><button id="btn" onclick= "window.print()">Salvar como pdf</button></center>
+<center><button id="btn" class="btn btn-primary" onclick="window.print()">Salvar como PDF</button></center>
+{% endblock content %}
+
 </body>
 </html>

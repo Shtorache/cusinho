@@ -7,117 +7,13 @@
 
 /* Estilo global */
 body {
-    background: linear-gradient(135deg, #1e2413, #1f801f);
+    background: linear-gradient(135deg, #1f90d1, #262c4e);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #eaeaea;
     min-height: 100vh;
 }
 
-/* Navbar escura moderna */
-/* Reset básico */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Estilo global */
-body {
-    background: linear-gradient(135deg, #1e2413, #1f801f);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #eaeaea;
-    min-height: 100vh;
-}
-
-/* Navbar moderna com fundo animado e efeito glass */
-.navbar {
-    padding: 14px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #fff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(270deg, #0f0f0f, #1a3c1a, #0f0f0f);
-    background-size: 600% 600%;
-    animation: gradientFlow 12s ease infinite;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(4px);
-    position: sticky;
-    top: 0;
-    z-index: 999;
-    border-radius: 0 0 16px 16px;
-}
-
-/* Logo estilizada */
-.navbar-logo {
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #aaffaa;
-    text-shadow: 0 0 10px rgba(0, 255, 0, 0.4);
-    transition: transform 0.3s ease;
-}
-
-.navbar-logo:hover {
-    transform: scale(1.05);
-}
-
-/* Menu de navegação */
-.navbar-menu {
-    list-style: none;
-    display: flex;
-    gap: 25px;
-    margin: 0;
-    padding: 0;
-}
-
-/* Itens do menu */
-.navbar-menu li {
-    position: relative;
-}
-
-/* Links com efeito neon no hover */
-.navbar-menu a {
-    color: #f1f1f1;
-    text-decoration: none;
-    font-size: 18px;
-    transition: color 0.3s ease;
-    position: relative;
-}
-
-.navbar-menu a::after {
-    content: '';
-    position: absolute;
-    width: 0%;
-    height: 2px;
-    left: 0;
-    bottom: -4px;
-    background-color: #69ff69;
-    transition: width 0.3s ease;
-}
-
-.navbar-menu a:hover::after {
-    width: 100%;
-}
-
-.navbar-menu a:hover {
-    color: #69ff69;
-    text-shadow: 0 0 5px #69ff69;
-}
-
-/* Animação do gradiente de fundo */
-@keyframes gradientFlow {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
+/* Navbar já vem de base.html */
 
 /* Título da página */
 #title {
@@ -128,14 +24,15 @@ body {
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
 }
 
-/* Container da tabela */
+/* Container da tabela com glassmorphism */
 #table-container {
     max-width: 1000px;
     margin: 40px auto;
     padding: 25px;
-    border-radius: 12px;
-    background-color: #1e1e1e;
-    color: #eaeaea;
+    background: rgba(30, 30, 30, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     overflow-x: auto;
 }
@@ -151,195 +48,63 @@ body {
 .table td {
     padding: 14px 16px;
     text-align: center;
-    border-bottom: 1px solid #80927b;
+    border-bottom: 1px solid rgba(128, 146, 123, 0.4);
 }
 
 .table th {
-    background-color: #d3d3d3;
-    color: #0a0a0a;
+    background: rgba(229, 57, 53, 0.8);
+    color: #fff;
     font-weight: 600;
 }
 
 .table tr:nth-child(even) {
-    background-color: #2a2a2a;
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .table tr:hover {
-    background-color: #333;
+    background: rgba(229, 57, 53, 0.3);
 }
 
 .table tfoot td {
-    background-color: #111;
+    background: rgba(0, 0, 0, 0.8);
     color: #fff;
     font-weight: bold;
-    border-top: 2px solid #f3f6f7;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Botão moderno */
 #btn {
-    background-color: #f8f4f4;
-    color: #0a0a0a;
+    background: linear-gradient(135deg, #e53935, #b71c1c);
+    color: #fff;
     padding: 14px 32px;
     font-size: 16px;
     border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-block;
-    margin-top: 20px;
-    font-weight: bold;
-}
-
-#btn:hover {
-    background-color: #90ee90;
-    color: #ffffff;
-    transform: scale(1.05);
-}
-
-/* Centralização do botão */
-.btn-container {
-    text-align: center;
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .navbar-menu {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .navbar-menu li {
-        margin: 10px 0;
-    }
-
-    .table {
-        font-size: 14px;
-    }
-
-    #btn {
-        width: 100%;
-    }
-
-    #table-container {
-        margin: 20px;
-        padding: 15px;
-    }
-}
-
-
-/* Título da página */
-#title {
-    text-align: center;
-    margin: 30px 0;
-    font-size: 2.5rem;
-    color: #ffffff;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
-}
-
-/* Container da tabela */
-#table-container {
-    max-width: 1000px;
-    margin: 40px auto;
-    padding: 25px;
     border-radius: 12px;
-    background-color: #1e1e1e;
-    color: #eaeaea;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    overflow-x: auto;
-}
-
-/* Estilo da tabela */
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 600px;
-}
-
-.table th,
-.table td {
-    padding: 14px 16px;
-    text-align: center;
-    border-bottom: 1px solid #80927b;
-}
-
-.table th {
-    background-color: #d3d3d3;
-    color: #0a0a0a;
-    font-weight: 600;
-}
-
-.table tr:nth-child(even) {
-    background-color: #2a2a2a;
-}
-
-.table tr:hover {
-    background-color: #333;
-}
-
-.table tfoot td {
-    background-color: #111;
-    color: #fff;
-    font-weight: bold;
-    border-top: 2px solid #f3f6f7;
-}
-
-/* Botão moderno */
-#btn {
-    background-color: #f8f4f4;
-    color: #0a0a0a;
-    padding: 14px 32px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: inline-block;
     margin-top: 20px;
     font-weight: bold;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), 0 0 10px rgba(229, 57, 53, 0.7);
 }
 
 #btn:hover {
-    background-color: #349234;
-    color: #ffffff;
     transform: scale(1.05);
-}
-
-/* Centralização do botão */
-.btn-container {
-    text-align: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 111, 97, 0.8);
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .navbar-menu {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .navbar-menu li {
-        margin: 10px 0;
-    }
-
-    .table {
-        font-size: 14px;
-    }
-
-    #btn {
-        width: 100%;
-    }
-
     #table-container {
         margin: 20px;
         padding: 15px;
+    }
+    .table th,
+    .table td {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+    #btn {
+        width: 100%;
     }
 }

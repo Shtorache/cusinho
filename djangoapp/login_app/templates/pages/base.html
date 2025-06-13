@@ -10,12 +10,12 @@
     <link rel="shortcut icon" href="{% static 'images/Goal_icon-icons.com_62267.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'css/navbar_base.css' %}">
 
-   
+
 
     {% block extra_head %}{% endblock extra_head %}
 </head>
 <body>
-    
+
     <nav class="navbar">
     <div class="navbar-logo" onclick="window.location.href = '/accounts/profile/'">EsporteFY</div>
     <button class="menu-toggle" id="menuToggle">☰</button>
@@ -45,7 +45,7 @@
 
     {% block content %}
     {% endblock content %}
-    
+
     {% block extra_js %}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
