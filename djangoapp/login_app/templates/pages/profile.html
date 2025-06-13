@@ -8,6 +8,11 @@
 
 {% block content %}
 <div class="profile-page-wrapper container">
+  
+  {% if messages %}
+    {% include 'partials/messages_toast.html' %}
+  {% endif %}
+
   {% if user_form.errors %}
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
       {% for field, errors in user_form.errors.items %}
@@ -21,50 +26,127 @@
     </div>
   {% endif %}
 
-  <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
-    {% csrf_token %}
+  <div class="profile-card row mx-auto">
+    
+    <div class="col-12">
+        <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <div class="avatar-preview mb-3">
+                        <img
+                            id="preview-img"
+                            src="{% if request.user.profile.img %}{{ request.user.profile.img.url }}{% else %}{% static 'images/avatar_xbox.jpeg' %}{% endif %}"
+                            alt="{{ user.username }}"
+                            class="avatar img-fluid rounded-circle"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="id_img" class="btn btn-outline-light btn-sm w-100">
+                            {% trans "Alterar Foto" %}
+                        </label>
+                        {{ profile_form.img }}
+                    </div>
+                </div>
 
-    <div class="profile-card row mx-auto">
-      <div class="col-md-4 text-center">
-        <div class="avatar-preview mb-3">
-          <img
-            id="preview-img"
-            src="{% if request.user.profile.img %}{{ request.user.profile.img.url }}{% else %}{% static 'images/avatar_xbox.jpeg' %}{% endif %}"
-            alt="{{ user.username }}"
-            class="avatar img-fluid rounded-circle"
-          >
-        </div>
-
-        <div class="form-group">
-          <label for="id_img" class="small mb-1">{% trans "Alterar Foto de Perfil" %}</label>
-          {{ profile_form.img }}
-        </div>
-      </div>
-
-      <div class="col-md-8">
-        <div class="form-group">
-          <label for="{{ user_form.username.id_for_label }}" class="small mb-1">{% trans "Username" %}</label>
-          {{ user_form.username }}
-        </div>
-
-        <div class="form-group">
-          <label for="{{ user_form.email.id_for_label }}" class="small mb-1">{% trans "Email" %}</label>
-          {{ user_form.email }}
-        </div>
-
-        <div class="form-group">
-          <a href="{% url 'account_change_password' %}" class="btn btn-link p-0">
-            {% trans "Change Password" %}
-          </a>
-        </div>
-
-        <div class="form-actions d-flex justify-content-end mt-4">
-          <button type="reset" class="btn btn-secondary mr-2">{% trans "Resetar" %}</button>
-          <button type="submit" class="btn btn-primary">{% trans "Salvar" %}</button>
-        </div>
-      </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="{{ user_form.username.id_for_label }}" class="small mb-1">{% trans "Username" %}</label>
+                        {{ user_form.username }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ user_form.email.id_for_label }}" class="small mb-1">{% trans "Email" %}</label>
+                        {{ user_form.email }}
+                    </div>
+                    <div class="form-group">
+                        <a href="{% url 'account_change_password' %}" class="btn btn-link p-0">
+                            {% trans "Change Password" %}
+                        </a>
+                    </div>
+                    <div class="form-actions d-flex justify-content-end mt-4">
+                        <button type="submit" class="btn btn-primary">{% trans "Salvar Alterações" %}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
-  </form>
+
+
+    <div class="col-12">
+        <div class="mfa-section">
+            <hr class="section-divider">
+            <h2 class="mfa-section-title">Autenticação de Dois Fatores (2FA)</h2>
+            <p class="mfa-section-subtitle">Aumente a segurança da sua conta.</p>
+
+            <div class="mfa-panels-container">
+
+                {% if "totp" in MFA_SUPPORTED_TYPES %}
+                <div class="mfa-panel">
+                    <div class="mfa-panel-body">
+                        <h3 class="mfa-panel-title">App Autenticador</h3>
+                        {% if authenticators.totp %}
+                            <p>Autenticação por aplicativo está <strong>ativa</strong>.</p>
+                        {% else %}
+                            <p>Autenticação por aplicativo não está ativa.</p>
+                        {% endif %}
+                    </div>
+                    <div class="mfa-panel-actions">
+                        {% if authenticators.totp %}
+                            <a href="{% url 'mfa_deactivate_totp' %}" class="btn btn-secondary">Desativar</a>
+                        {% else %}
+                            <a href="{% url 'mfa_activate_totp' %}" class="btn btn-primary">Ativar</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if "webauthn" in MFA_SUPPORTED_TYPES %}
+                <div class="mfa-panel">
+                    <div class="mfa-panel-body">
+                        <h3 class="mfa-panel-title">Chaves de Segurança</h3>
+                        {% if authenticators.webauthn|length %}
+                            <p>{% blocktrans count count=authenticators.webauthn|length %}Você tem {{ count }} chave de segurança adicionada.{% plural %}Você tem {{ count }} chaves de segurança adicionadas.{% endblocktrans %}</p>
+                        {% else %}
+                            <p>Nenhuma chave de segurança foi adicionada.</p>
+                        {% endif %}
+                    </div>
+                    <div class="mfa-panel-actions">
+                        {% if authenticators.webauthn|length %}
+                            <a href="{% url 'mfa_list_webauthn' %}" class="btn btn-secondary">Gerenciar</a>
+                        {% else %}
+                            <a href="{% url 'mfa_add_webauthn' %}" class="btn btn-primary">Adicionar</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if is_mfa_enabled and "recovery_codes" in MFA_SUPPORTED_TYPES %}
+                {% with authenticator=authenticators.recovery_codes %}
+                {% with total_count=authenticator.wrap.generate_codes|length unused_count=authenticator.wrap.get_unused_codes|length %}
+                <div class="mfa-panel">
+                    <div class="mfa-panel-body">
+                        <h3 class="mfa-panel-title">Códigos de Recuperação</h3>
+                        {% if authenticator %}
+                            <p>{% blocktrans count unused_count=unused_count %}Você tem {{ unused_count }} de {{ total_count }} código de recuperação disponível.{% plural %}Você tem {{ unused_count }} de {{ total_count }} códigos de recuperação disponíveis.{% endblocktrans %}</p>
+                        {% else %}
+                            <p>Nenhum código de recuperação configurado.</p>
+                        {% endif %}
+                    </div>
+                    <div class="mfa-panel-actions multi-button">
+                        {% if authenticator and unused_count > 0 %}
+                            <a href="{% url 'mfa_view_recovery_codes' %}" class="btn btn-secondary">Ver</a>
+                        {% endif %}
+                         <a href="{% url 'mfa_generate_recovery_codes' %}" class="btn btn-secondary">Gerar Novos</a>
+                    </div>
+                </div>
+                {% endwith %}
+                {% endwith %}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+    </div>
 </div>
 
 {% block extra_js %}
@@ -72,6 +154,12 @@
   document.addEventListener("DOMContentLoaded", function() {
     const input = document.getElementById("id_img");
     const preview = document.getElementById("preview-img");
+    
+    // Esconde o input de arquivo original
+    if (input) {
+        input.style.display = "none";
+    }
+
     input.addEventListener("change", function(event) {
       const file = event.target.files[0];
       if (file) {

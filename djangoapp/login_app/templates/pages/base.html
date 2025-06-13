@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-{% load static i18n %}
+{% load static %}
+{% load i18n %}
 {% include 'partials/messages_toast.html' %}
 <html lang="en">
 <head>
@@ -8,50 +9,20 @@
     <title>EsporteFY</title>
     <link rel="shortcut icon" href="{% static 'images/Goal_icon-icons.com_62267.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'css/navbar_base.css' %}">
-    <style>
-        /* Centraliza itens verticalmente e ajusta espaçamento */
-        .navbar, .navbar-menu, .navbar-menu li, .navbar-logo, .menu-toggle {
-            display: flex;
-            align-items: center;
-        }
-        .navbar {
-            height: 46px; /* reduced navbar height */
-        }
-        .navbar-menu {
-            flex: 1;
-            justify-content: center;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-        .navbar-menu li {
-            margin: 0 8px;
-        }
-        .navbar-menu a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            padding: 0 3px;
-            line-height: 56px;
-        }
-        .navbar-menu a:hover {
-            text-decoration: underline;
-        }
-        .menu-toggle {
-            margin-left: 15px;
-        }
-    </style>
-    {% block extra_head %}{% endblock %}
+
+
+
+    {% block extra_head %}{% endblock extra_head %}
 </head>
 <body>
+
     <nav class="navbar">
-        <div class="navbar-logo" onclick="window.location.href = '{% url 'perfilUsuario' %}'">EsporteFY</div>
+        <div class="navbar-logo" onclick="window.location.href = '/accounts/profile/'">EsporteFY</div>
         <button class="menu-toggle" id="menuToggle">☰</button>
         <ul class="navbar-menu" id="navbarMenu">
             <li><a href="{% url 'mfa_index' %}">Segurança</a></li>
-            <li><a href="{% url 'listacampos' %}">Campos</a></li>
             <li><a href="{% url 'relatorio' %}">Relatório</a></li>
-            <li><a href="{% url 'alugar-campo' %}">Adicionar Quadras</a></li>
+
             <li><a href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a></li>
         </ul>
         {% if request.user.is_authenticated %}
@@ -63,17 +34,25 @@
         {% endif %}
     </nav>
 
-    {% block content %}{% endblock %}
+    {% block content %}
+    {% endblock content %}
 
     {% block extra_js %}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const menuToggle = document.getElementById('menuToggle');
             const navbarMenu = document.getElementById('navbarMenu');
+
             menuToggle.addEventListener('click', function() {
                 navbarMenu.classList.toggle('active');
-                menuToggle.innerHTML = navbarMenu.classList.contains('active') ? '✕' : '☰';
+                if (navbarMenu.classList.contains('active')) {
+                    menuToggle.innerHTML = '✕';
+                } else {
+                    menuToggle.innerHTML = '☰';
+                }
             });
+
+            // Fecha o menu ao clicar em um link (mobile)
             document.querySelectorAll('.navbar-menu a').forEach(link => {
                 link.addEventListener('click', () => {
                     if (window.innerWidth <= 768) {

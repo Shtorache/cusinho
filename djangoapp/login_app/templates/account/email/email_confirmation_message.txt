@@ -1,3 +1,36 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Bem-vindo ao EsporteFY!</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { padding: 20px; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 5px; }
+        .button { background-color: #007bff; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; }
+        .footer { margin-top: 20px; font-size: 0.8em; color: #777; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <h2>Olá, {{ user.username }}!</h2>
+        
+        <p>Seja muito bem-vindo ao <strong>EsporteFY</strong>! Estamos felizes em ter você conosco.</p>
+        
+        <p>Para começar a agendar seus jogos e se conectar com outros atletas, por favor, confirme seu endereço de e-mail clicando no botão abaixo:</p>
+        
+        <a href="{{ activate_url }}" class="button">Confirmar Meu E-mail</a>
+        
+        <p>Se você não se cadastrou no EsporteFY, por favor, ignore este e-mail.</p>
+        
+        <div class="footer">
+            <p>Abraços,<br>Equipe EsporteFY</p>
+        </div>
+    </div>
+</body>
+</html>
+=======
 {% extends "account/email/email_confirmation_message.html" %}
 {% load account %}
 {% load i18n %}
@@ -5,3 +38,4 @@
 {% block content %}{% autoescape off %}{% user_display user as user_display %}{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}You're receiving this email because user {{ user_display }} has given your email address to register an account on {{ site_domain }}.
 
 To confirm this is correct, go to {{ activate_url }}{% endblocktrans %}{% endautoescape %}{% endblock content %}
+>>>>>>> testes

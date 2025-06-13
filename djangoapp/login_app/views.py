@@ -7,6 +7,12 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm # Import adicionado para o registro
 from django.http import Http404
+# Em seu_app/views.py
+# ...
+# Imports FINAIS para a abordagem manual
+from allauth.mfa.models import Authenticator
+from allauth.mfa import app_settings as mfa_app_settings
+# ...
 
 # Imports da Standard Library
 import json
@@ -313,24 +319,68 @@ def areaProprietario(request):
     return render(request, "pages/alugarcamp.html", context)
 
 
+# Em seu_app/views.py
+
+# Em seu_app/views.py
+
 @login_required(redirect_field_name="account_login")
 def profile(request):
+    # Lógica para tratar o envio do formulário (quando o usuário salva as alterações)
     if request.method == "POST":
         user_form = UpdateUserForm(request.POST, instance=request.user)
         profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            messages.success(request, "Your profile is updated successfully")
-            return redirect(to="perfilUsuario")
+            messages.success(request, "Seu perfil foi atualizado com sucesso")
+            return redirect(to="perfilUsuario") # <--- CORREÇÃO APLICADA AQUI
     else:
+        # Lógica para exibir o formulário (quando o usuário acessa a página)
         user_form = UpdateUserForm(instance=request.user)
         profile_form = UpdateProfileForm(instance=request.user.profile)
 
+    # --- INÍCIO DO BLOCO DE CÓDIGO 2FA (ABORDAGEM MANUAL) ---
+    
+    # 1. Busca todos os autenticadores do usuário diretamente no banco de dados.
+    user_authenticators = Authenticator.objects.filter(user=request.user)
+    
+    # 2. Verifica se o 2FA está ativo da forma mais simples: vendo se há algum autenticador.
+    mfa_is_enabled = user_authenticators.exists()
+    
+    # 3. Constrói o dicionário que o template precisa, do zero.
+    authenticators_for_template = {
+        "totp": None,
+        "webauthn": [],
+        "recovery_codes": None
+    }
+    for auth in user_authenticators:
+        if auth.type == Authenticator.Type.TOTP:
+            authenticators_for_template["totp"] = auth.wrap()
+        elif auth.type == Authenticator.Type.WEBAUTHN:
+            authenticators_for_template["webauthn"].append(auth.wrap())
+        elif auth.type == Authenticator.Type.RECOVERY_CODES:
+            authenticators_for_template["recovery_codes"] = auth.wrap()
+
+    # Cria o dicionário de contexto final
+    mfa_context = {
+        "authenticators": authenticators_for_template,
+        "MFA_SUPPORTED_TYPES": mfa_app_settings.SUPPORTED_TYPES,
+        "is_mfa_enabled": mfa_is_enabled,
+    }
+    # --- FIM DO BLOCO DE CÓDIGO ---
+
+    # Une os contextos
+    context = {
+        "user_form": user_form,
+        "profile_form": profile_form,
+        **mfa_context
+    }
+
+    # Renderiza o template
     return render(
         request,
         "pages/profile.html",
-        {"user_form": user_form, "profile_form": profile_form},
+        context,
     )
 
 
