@@ -1,5 +1,5 @@
+/* navbar_base.css */
 .navbar {
-    /* background-color: #333; */
     color: white;
     padding: 10px 20px;
     display: flex;
@@ -7,14 +7,12 @@
     align-items: center;
     font-family: Arial, sans-serif;
     animation: nav-animation 7.5s infinite alternate;
-    
 }
 
 .navbar-logo {
     font-size: 24px;
     cursor: pointer;
     font-weight: bold;
-
 }
 
 .navbar-menu {
@@ -22,33 +20,53 @@
     margin: 0;
     padding: 0;
     display: flex;
+    align-items: center;
 }
 
 .navbar-menu li {
     margin: 0 15px;
-    
 }
 
 .navbar-menu a {
     color: white;
     text-decoration: none;
     font-size: 18px;
+    line-height: 1;
 }
 
 .navbar-menu a:hover {
     text-decoration: underline;
-
 }
 
-
-
-
 @keyframes nav-animation {
-    from{
-        background-color: white;
-    }
+    from { background-color: white; }
+    to   { background-color: black; }
+}
 
-    to{
-        background-color: black;
-    }
+/* Avatar container, must be outside .navbar-menu for proper spacing */
+.navbar-profile {
+    margin-left: auto !important;
+    width: 44px !important;         /* inner diameter (image 40px + 4px border) */
+    height: 44px !important;
+    box-sizing: content-box !important; /* border adds outside */
+    border: 2px solid #e53935 !important;  /* consistent red border */
+    border-radius: 50% !important;
+    overflow: hidden !important;    /* crop image overflow */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Avatar image forced fill inside container */
+.avatar-navbar {
+    width: 40px !important;        /* set image size smaller than container */
+    height: 40px !important;
+    object-fit: cover !important;
+    transition: transform 0.3s ease !important;
+    display: block !important;
+}
+
+/* Hover scale effect */
+.avatar-navbar:hover {
+    transform: scale(1.1) !important;
 }

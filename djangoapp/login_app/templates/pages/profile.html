@@ -1,10 +1,9 @@
 {% extends "pages/base.html" %}
-{% load static %}
-{% load i18n %}
+{% load static i18n %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-<link rel="stylesheet" href="{% static 'css/styleprofile.css' %}">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="{% static 'css/styleprofile.css' %}">
 {% endblock extra_head %}
 
 {% block content %}
@@ -22,26 +21,27 @@
     </div>
   {% endif %}
 
-  <div class="profile-card row mx-auto">
-    <div class="col-md-4 text-center">
-      <div class="avatar-preview mb-3">
-        <img
-          <img src="{% static 'images/avatar_xbox.jpeg' %}" alt="Avatar padrão" class="avatar img-fluid rounded-circle" />
+  <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+    {% csrf_token %}
 
-          alt="{{ user.username }}"
-          class="avatar img-fluid rounded-circle"
-        >
+    <div class="profile-card row mx-auto">
+      <div class="col-md-4 text-center">
+        <div class="avatar-preview mb-3">
+          <img
+            id="preview-img"
+            src="{% if request.user.profile.img %}{{ request.user.profile.img.url }}{% else %}{% static 'images/avatar_xbox.jpeg' %}{% endif %}"
+            alt="{{ user.username }}"
+            class="avatar img-fluid rounded-circle"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="id_img" class="small mb-1">{% trans "Alterar Foto de Perfil" %}</label>
+          {{ profile_form.img }}
+        </div>
       </div>
-      <label class="btn btn-outline-light btn-sm w-100" for="id_img">
-        
-        
-      </label>
-    </div>
 
-    <div class="col-md-8">
-      <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
-        {% csrf_token %}
-
+      <div class="col-md-8">
         <div class="form-group">
           <label for="{{ user_form.username.id_for_label }}" class="small mb-1">{% trans "Username" %}</label>
           {{ user_form.username }}
@@ -53,15 +53,36 @@
         </div>
 
         <div class="form-group">
-          <a href="{% url 'account_change_password' %}" class="btn btn-link p-0">{% trans "Change Password" %}</a>
+          <a href="{% url 'account_change_password' %}" class="btn btn-link p-0">
+            {% trans "Change Password" %}
+          </a>
         </div>
 
         <div class="form-actions d-flex justify-content-end mt-4">
           <button type="reset" class="btn btn-secondary mr-2">{% trans "Resetar" %}</button>
           <button type="submit" class="btn btn-primary">{% trans "Salvar" %}</button>
         </div>
-      </form>
+      </div>
     </div>
-  </div>
+  </form>
 </div>
+
+{% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const input = document.getElementById("id_img");
+    const preview = document.getElementById("preview-img");
+    input.addEventListener("change", function(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          preview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  });
+</script>
+{% endblock extra_js %}
 {% endblock content %}
