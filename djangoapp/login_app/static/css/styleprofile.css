@@ -31,7 +31,7 @@ html, body {
 .profile-page-wrapper {
   min-height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* ALTERADO: Alinha o card no topo */
   justify-content: center;
   padding: 20px;
   padding-top: 120px; 
@@ -40,7 +40,7 @@ html, body {
 /* Container interno com perspectiva */
 .profile-page {
   width: 100%;
-  max-width: 960px;
+  max-width: 1100px; /* ALTERADO: Card mais largo */
   perspective: 1000px;
 }
 
@@ -50,7 +50,7 @@ html, body {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 16px;
-  padding: 40px;
+  padding: 50px; /* ALTERADO: Mais espaçamento interno */
   box-shadow: 0 10px 30px rgba(0,0,0,0.6);
   display: flex;
   flex-wrap: wrap;
@@ -66,6 +66,8 @@ html, body {
   box-shadow: 0 20px 50px rgba(0,0,0,0.8);
   transform: rotateY(5deg) rotateX(10deg);
 }
+
+/* O resto do seu código permanece o mesmo... */
 
 /* Avatar */
 .avatar-preview {
@@ -108,7 +110,7 @@ input[type="file"] {
 }
 
 .profile-card .form-control {
-  width: 100%;
+  width: 90%;
   padding: 12px 16px;
   border-radius: 10px;
   border: none;
@@ -173,7 +175,7 @@ input[type="file"] {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #0a7700, #ebdede);
+  background: linear-gradient(135deg, #e61010, #ebdede);
   color: #fff;
   box-shadow: 0 8px 22px rgba(183, 28, 28, 0.7);
 }
@@ -194,11 +196,11 @@ input[type="file"] {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.8);
 }
 
-/* --- Estilos para a Seção MFA no Perfil --- */
+/* --- Estilos para a Seção MFA no Perfil (VERSÃO APRIMORADA) --- */
 
 .mfa-section {
   width: 100%;
-  margin-top: 40px;
+  margin-top: 70px; 
   padding-top: 30px;
 }
 
@@ -215,6 +217,7 @@ input[type="file"] {
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 8px;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
 }
 
 .mfa-section-subtitle {
@@ -230,18 +233,23 @@ input[type="file"] {
 }
 
 .mfa-panel {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px;
-  padding: 20px;
+  padding: 20px 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: background 0.3s;
   flex-wrap: wrap;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
 }
 
 .mfa-panel:hover {
-  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .mfa-panel-body {
@@ -259,6 +267,7 @@ input[type="file"] {
 .mfa-panel p {
   color: #ddd;
   margin: 0;
+  font-size: 15px;
 }
 
 .mfa-panel-actions {
@@ -269,7 +278,8 @@ input[type="file"] {
 }
 
 
-/* Responsividade */
+/* --- Responsividade --- */
+
 @media (max-width: 768px) {
   .profile-card {
     flex-direction: column;
@@ -283,6 +293,9 @@ input[type="file"] {
   .profile-card .form-actions {
     justify-content: center;
   }
+}
+
+@media (max-width: 600px) {
   .mfa-panel {
     flex-direction: column;
     align-items: flex-start;
@@ -294,5 +307,6 @@ input[type="file"] {
   }
   .mfa-panel-actions .btn {
     flex-grow: 1;
+    padding: 12px 20px;
   }
 }

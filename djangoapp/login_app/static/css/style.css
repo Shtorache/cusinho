@@ -26,12 +26,13 @@ body {
   z-index: 0;
 }
 
-body::before {
-  content: "";
+/* A nova barra de carregamento */
+/* A nova barra de carregamento */
+.loading-bar {
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 800%;
+  width: 100%;
   height: 60px;
   background: linear-gradient(90deg, #d94f4f, #a83232, #d94f4f);
   background-size: 200% 100%;
@@ -41,7 +42,46 @@ body::before {
   animation:
     slideIn 6s ease-in-out forwards,
     barGradient 20s ease infinite;
-  z-index: 1;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* ESTA É A LINHA CHAVE: */
+  overflow: hidden; /* Garante que o texto não "vaze" ou apareça antes da hora. */
+}
+.loading-bar-text {
+  font-size: 22px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #e9e8e7, #c2b5b5, #eb0b04);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  opacity: 0;
+  animation: fadeInText 1s ease-in-out 2s forwards, glowPulseOnce 1.5s ease-in-out 3s 1 forwards;
+}
+
+/* Fade-in para o texto */
+@keyframes fadeInText {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Piscar uma vez apenas */
+@keyframes glowPulseOnce {
+  0% {
+    text-shadow: 0 0 8px rgba(252, 9, 9, 0.8), 0 0 16px rgba(255, 0, 0, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 14px rgb(245, 3, 3), 0 0 28px rgba(255, 0, 0, 0.8);
+  }
+  100% {
+    text-shadow: none;
+  }
 }
 
 body::after {
