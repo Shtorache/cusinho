@@ -1,5 +1,5 @@
 # login_app/urls.py
-
+from . import views
 from django.urls import path, include
 from login_app.views import (
     mainPage,
@@ -37,6 +37,7 @@ urlpatterns = [
     path('campo/<int:id>/feedback/', feedPage, name='feedPage'),
     path('escolher-opcao/<str:esporte>/', selecao_opcao, name='selecao_opcao'),
     path('reservar-espaco/', reservar_espaco, name='reservar_espaco'),
+    path('relatorio/', views.relatorio_partidas, name='relatorio_partidas'), # 'name' adicionado!
     path('participardois/', participar_dois, name='participar_dois'),
     path('criar-partida/', criar_partida, name='criar_partida')
 ]

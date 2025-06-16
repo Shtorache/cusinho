@@ -2,17 +2,16 @@
 
 # Imports do Django
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
-from django.contrib.auth.forms import UserCreationForm # Import adicionado para o registro
+from django.contrib.auth.forms import UserCreationForm
 from django.http import Http404
-# Em seu_app/views.py
-# ...
+
 # Imports FINAIS para a abordagem manual
 from allauth.mfa.models import Authenticator
 from allauth.mfa import app_settings as mfa_app_settings
-# ...
 
 # Imports da Standard Library
 import json
@@ -20,6 +19,9 @@ from datetime import datetime
 from decimal import Decimal
 
 # Imports Locais (do seu app)
+# ATENÇÃO: Se o modelo Partida não existir em models.py, você pode remover a linha abaixo.
+# Se ele existir para outro propósito, pode manter.
+
 from .forms import CoordenadaForm, ReservasForm, UpdateUserForm, UpdateProfileForm, DadosCampoForm, FeedbackForm
 from .models import Coordenada, Profile, Reserva, DadosCampo, Feedback
 
@@ -37,33 +39,16 @@ def registerPage(request):
     e com o processamento dos dados do novo usuário (POST).
     """
     if request.method == 'POST':
-        # Se o formulário foi enviado, cria uma instância com os dados recebidos
         form = UserCreationForm(request.POST)
-
-        # Valida os dados
         if form.is_valid():
-            # Se os dados são válidos, salva o usuário no banco de dados.
-            # A senha é automaticamente criptografada (hashed).
             form.save()
-            
-            # Pega o nome do usuário para a mensagem de sucesso
             username = form.cleaned_data.get('username')
             messages.success(request, f'Conta para "{username}" criada com sucesso! Você já pode fazer o login.')
-            
-            # Redireciona o usuário para a página de login
-            # Certifique-se de que 'account_login' é o nome correto da sua URL de login
-            return redirect('account_login') 
+            return redirect('account_login')
         else:
-            # Se o formulário tiver erros (ex: senhas não batem),
-            # envia uma mensagem de erro e renderiza a página novamente,
-            # desta vez o 'form' conterá os detalhes dos erros.
             messages.error(request, 'Não foi possível criar a conta. Por favor, verifique os erros abaixo.')
-
-    # Se a requisição for GET (primeiro acesso à página), apenas cria um formulário em branco
     else:
         form = UserCreationForm()
-        
-    # Renderiza o template, passando o formulário (em branco ou com erros) para o contexto
     return render(request, 'account/signup.html', {'form': form})
 
 
@@ -114,19 +99,8 @@ def mainPage(request):
     return render(request, "pages/main.html", context)
 
 
-def available_places(request):
-    # Obter parâmetros da URL
-    regiao = request.GET.get('regiao', 'centro')
-    esporte = request.GET.get('esporte', 'futebol')
-    
-    context = {
-        'regiao': regiao,
-        'esporte': esporte,
-    }
-    return render(request, 'pages/available_places.html', context)
-
-
-# Em login_app/views.py
+# DICIONÁRIO DE CAMPOS E PARTIDAS (FONTE DE DADOS)
+# Movido para cima para ficar antes das views que o utilizam
 campos = {
     # Região Itaipuaçu
     "campo_a": {
@@ -150,7 +124,8 @@ campos = {
             {"id": 4, "titulo": "Torneio Juvenil", "data": "2025-06-08", "horario": "15:00", "categoria": "juvenil", "genero": "misto", "vagas": 14}
         ],
     },
-    "arena_marques": {
+    # ... (restante do seu dicionário 'campos' aqui) ...
+     "arena_marques": {
         "nome": "Campo Divino Esporte e Lazer",
         "imagem_capa": "/static/images/campo_divino.jpg",
         "partidas": [
@@ -170,8 +145,6 @@ campos = {
             {"id": 4, "titulo": "Escolinha de Futebol", "data": "2025-06-12", "horario": "09:00", "categoria": "infantil", "genero": "misto", "vagas": 20}
         ],
     },
-
-    # Região Centro
     "arena_flamengo": {
         "nome": "Arena Flamengo",
         "imagem_capa": "/static/images/arena_flamengo1.jpg",
@@ -203,8 +176,6 @@ campos = {
             {"id": 4, "titulo": "Treino Feminino", "data": "2025-06-12", "horario": "19:00", "categoria": "adulto", "genero": "feminino", "vagas": 12}
         ],
     },
-
-    # Região São José
     "campo_c": {
         "nome": "Arena Itapeba",
         "imagem_capa": "/static/images/arena_itapeba.jpeg",
@@ -247,10 +218,111 @@ campos = {
         ],
     },
 }
+
+# ==============================================================================
+# VIEW relatorio_partidas - VERSÃO CORRIGIDA
+# ==============================================================================
+# seu_app/views.py
+
+from datetime import datetime # Certifique-se que 'datetime' de 'datetime' está importado no topo do arquivo
+
+# ... (outras views e o dicionário 'campos' aqui em cima) ...
+
+# ==============================================================================
+# VIEW relatorio_partidas - VERSÃO COM CONVERSÃO DE DATA
+# ==============================================================================
+# seu_app/views.py
+
+from django.contrib import messages # Verifique se 'messages' está importado
+from datetime import datetime
+
+# ... (outras views e o dicionário 'campos' aqui em cima) ...
+
+# ==============================================================================
+# VIEW relatorio_partidas - VERSÃO COM FILTRO DE DATA ROBUSTO
+# ==============================================================================
+# seu_app/views.py
+
+from django.contrib import messages
+from datetime import datetime
+
+# ... (outras views e o dicionário 'campos' aqui em cima) ...
+
+# ==============================================================================
+# VIEW relatorio_partidas - VERSÃO DE DEPURAÇÃO
+# ==============================================================================
+# seu_app/views.py
+
+from django.contrib import messages
+from datetime import datetime
+
+# ... (outras views e o dicionário 'campos' aqui em cima) ...
+
+# ==============================================================================
+# VIEW relatorio_partidas - VERSÃO FINAL
+# ==============================================================================
+def relatorio_partidas(request):
+    # 1. Prepara a lista de partidas, convertendo as datas
+    todas_as_partidas = []
+    for info_campo in campos.values():
+        for partida_dict in info_campo['partidas']:
+            partida_completa = partida_dict.copy()
+            partida_completa['campo'] = info_campo['nome']
+            try:
+                data_obj = datetime.strptime(partida_dict['data'], '%Y-%m-%d').date()
+                partida_completa['data'] = data_obj
+            except (ValueError, KeyError):
+                partida_completa['data'] = None
+            todas_as_partidas.append(partida_completa)
+            
+    partidas_filtradas = todas_as_partidas
+
+    # 2. Obtém os parâmetros de filtro da requisição
+    selected_campo = request.GET.get('campo_filtro')
+    selected_data_str = request.GET.get('data_filtro') 
+
+    # 3. Aplica filtro de CAMPO (se existir)
+    if selected_campo:
+        partidas_filtradas = [p for p in partidas_filtradas if p['campo'] == selected_campo]
+    
+    # 4. Aplica filtro de DATA (se existir)
+    if selected_data_str and selected_data_str.strip():
+        try:
+            data_filtro = datetime.strptime(selected_data_str, '%Y-%m-%d').date()
+            
+            # ================================================================== #
+            # =================== MUDANÇA DA LÓGICA AQUI =================== #
+            # Trocamos >= (maior ou igual) por == (exatamente igual)
+            # ================================================================== #
+            partidas_filtradas = [
+                p for p in partidas_filtradas 
+                if p['data'] is not None and p['data'] == data_filtro
+            ]
+        except ValueError:
+            messages.error(request, f"O formato da data '{selected_data_str}' é inválido. Use AAAA-MM-DD.")
+    
+    # 5. Prepara o contexto final para o template
+    campos_disponiveis = sorted(list(set(info['nome'] for info in campos.values())))
+    context = {
+        'partidas': partidas_filtradas,
+        'campos_disponiveis': campos_disponiveis,
+        'selected_campo': selected_campo,
+        'selected_data': selected_data_str,
+    }
+    
+    return render(request, 'pages/relatorio.html', context)
+def available_places(request):
+    regiao = request.GET.get('regiao', 'centro')
+    esporte = request.GET.get('esporte', 'futebol')
+    
+    context = {
+        'regiao': regiao,
+        'esporte': esporte,
+    }
+    return render(request, 'pages/available_places.html', context)
+
+
 def campo_detalhes(request, nome_campo):
-    # DICIONÁRIO COMPLETO E CORRIGIDO, COM TODAS AS PARTIDAS
-
-
     if nome_campo not in campos:
         raise Http404("Campo não encontrado")
 
@@ -319,13 +391,8 @@ def areaProprietario(request):
     return render(request, "pages/alugarcamp.html", context)
 
 
-# Em seu_app/views.py
-
-# Em seu_app/views.py
-
 @login_required(redirect_field_name="account_login")
 def profile(request):
-    # Lógica para tratar o envio do formulário (quando o usuário salva as alterações)
     if request.method == "POST":
         user_form = UpdateUserForm(request.POST, instance=request.user)
         profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
@@ -333,21 +400,14 @@ def profile(request):
             user_form.save()
             profile_form.save()
             messages.success(request, "Seu perfil foi atualizado com sucesso")
-            return redirect(to="perfilUsuario") # <--- CORREÇÃO APLICADA AQUI
+            return redirect(to="perfilUsuario")
     else:
-        # Lógica para exibir o formulário (quando o usuário acessa a página)
         user_form = UpdateUserForm(instance=request.user)
         profile_form = UpdateProfileForm(instance=request.user.profile)
 
-    # --- INÍCIO DO BLOCO DE CÓDIGO 2FA (ABORDAGEM MANUAL) ---
-    
-    # 1. Busca todos os autenticadores do usuário diretamente no banco de dados.
     user_authenticators = Authenticator.objects.filter(user=request.user)
-    
-    # 2. Verifica se o 2FA está ativo da forma mais simples: vendo se há algum autenticador.
     mfa_is_enabled = user_authenticators.exists()
     
-    # 3. Constrói o dicionário que o template precisa, do zero.
     authenticators_for_template = {
         "totp": None,
         "webauthn": [],
@@ -361,32 +421,22 @@ def profile(request):
         elif auth.type == Authenticator.Type.RECOVERY_CODES:
             authenticators_for_template["recovery_codes"] = auth.wrap()
 
-    # Cria o dicionário de contexto final
     mfa_context = {
         "authenticators": authenticators_for_template,
         "MFA_SUPPORTED_TYPES": mfa_app_settings.SUPPORTED_TYPES,
         "is_mfa_enabled": mfa_is_enabled,
     }
-    # --- FIM DO BLOCO DE CÓDIGO ---
-
-    # Une os contextos
+    
     context = {
         "user_form": user_form,
         "profile_form": profile_form,
         **mfa_context
     }
-
-    # Renderiza o template
-    return render(
-        request,
-        "pages/profile.html",
-        context,
-    )
+    return render(request, "pages/profile.html", context)
 
 
 @staff_member_required
 def fazer_relatorio(request):
-    # Flatten partidas
     partidas = []
     for slug, info in campos.items():
         for p in info['partidas']:
