@@ -9,39 +9,49 @@
     <title>EsporteFY</title>
     <link rel="shortcut icon" href="{% static 'images/Goal_icon-icons.com_62267.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'css/navbar_base.css' %}">
-
-
-
     {% block extra_head %}{% endblock extra_head %}
 </head>
 <body>
 
     <nav class="navbar">
-    <div class="navbar-logo" onclick="window.location.href = '/accounts/profile/'">EsporteFY</div>
-    <button class="menu-toggle" id="menuToggle">☰</button>
+        <div class="navbar-logo" onclick="window.location.href = '/accounts/profile/'">
+            EsporteFY
+        </div>
     
-    <ul class="navbar-menu" id="navbarMenu">
-        <li><a href="{% url 'mfa_index' %}">Segurança</a></li>
-        <li><a href="{% url 'relatorio' %}">Relatório</a></li>
-    </ul>
+        <!-- IMAGEM CENTRAL -->
+        <div class="navbar-center-logo">
+            <img src="{% static 'images/LOGO-MARICA-300x169.png' %}" alt="Logo Maricá">
+        </div>
 
-    {% if request.user.is_authenticated %}
-    <div style="display: flex; align-items: center; gap: 15px; margin-left: auto;">
-        <a href="{% url 'account_logout' %}" class="navbar-menu logout" style="color: #fff; font-size: 16px; text-decoration: none;">{% trans "Sign Out" %}</a>
+        <button class="menu-toggle" id="menuToggle">☰</button>
         
-        <a href="{% url 'perfilUsuario' %}" class="navbar-profile" style="width:44px; height:44px; border:2px solid #e53935; border-radius:50%; overflow:hidden; display:flex; align-items:center; justify-content:center; text-decoration:none;">
-            <img src="{% if request.user.profile.img %}{{ request.user.profile.img.url }}{% else %}{% static 'images/avatar_xbox.jpeg' %}{% endif %}"
-                 alt="{{ request.user.username }}"
-                 style="width:40px; height:40px; object-fit:cover; display:block;" />
-        </a>
-    </div>
-    {% endif %}
-</nav>
+        <ul class="navbar-menu" id="navbarMenu">
+            <!-- Menu principal (Início, Sobre, etc.) -->
+        </ul>
 
-<div class="loading-bar">
+        {% if request.user.is_authenticated %}
+        <div class="navbar-actions">
+            <a href="{% url 'account_logout' %}" class="btn">
+                {% trans "Sign Out" %}
+            </a>
 
-</div>
+            {% if request.user.is_superuser %}
+            <a href="{% url 'relatorio' %}" class="btn">
+                Relatório
+            </a>
+            {% endif %}
 
+            <a href="{% url 'perfilUsuario' %}" class="navbar-profile">
+                <img
+                    src="{% if request.user.profile.img %}{{ request.user.profile.img.url }}{% else %}{% static 'images/avatar_xbox.jpeg' %}{% endif %}"
+                    alt="{{ request.user.username }}"
+                />
+            </a>
+        </div>
+        {% endif %}
+    </nav>
+
+    <div class="loading-bar"></div>
 
     {% block content %}
     {% endblock content %}
@@ -54,11 +64,7 @@
 
             menuToggle.addEventListener('click', function() {
                 navbarMenu.classList.toggle('active');
-                if (navbarMenu.classList.contains('active')) {
-                    menuToggle.innerHTML = '✕';
-                } else {
-                    menuToggle.innerHTML = '☰';
-                }
+                menuToggle.innerHTML = navbarMenu.classList.contains('active') ? '✕' : '☰';
             });
 
             // Fecha o menu ao clicar em um link (mobile)
@@ -71,8 +77,6 @@
                 });
             });
         });
-
-        
     </script>
     {% endblock %}
     {% block extra_body %}{% endblock extra_body %}

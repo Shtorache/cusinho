@@ -6,7 +6,7 @@
     align-items: center;
     color: #fff;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(-45deg, #fc6163, #f83434, #f50004);
+    background:  #fc6163;
     background-size: 400% 400%;
     animation: gradientFlow 15s ease infinite;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
@@ -54,7 +54,6 @@
 }
 
 /* Base do menu */
-/* Base do menu */
 .navbar-menu {
     list-style: none;
     display: flex;
@@ -62,13 +61,10 @@
     margin: 0;
     padding: 0;
     transition: opacity 0.3s ease, visibility 0.3s ease;
-     /* --- LINHAS ADICIONADAS PARA CENTRALIZAR --- */
-    flex-grow: 1;            /* 1. Faz o menu "crescer" e ocupar todo o espaço livre */
-    justify-content: center; /* 2. Centraliza os links dentro desse novo espaço */
+    flex-grow: 1;            /* faz o menu "crescer" e ocupar espaço */
+    justify-content: center; /* centraliza os itens do menu */
 }
 
-
-/* Links */
 .navbar-menu li {
     position: relative;
 }
@@ -78,7 +74,6 @@
     text-decoration: none;
     font-size: 18px;
     transition: color 0.3s ease;
-    position: center;
 }
 
 .navbar-menu a::after {
@@ -88,7 +83,7 @@
     height: 2px;
     left: 0;
     bottom: -4px;
-    background-color: #000000;
+    background-color: #000;
     transition: width 0.3s ease;
 }
 
@@ -101,23 +96,64 @@
     text-shadow: 0 0 5px #bbb;
 }
 
-
 /* Botão toggle hamburger */
 .menu-toggle {
     display: none;
     background: none;
     border: none;
-    color: #fff; /* branco padrão */
+    color: #fff;
     font-size: 24px;
     cursor: pointer;
     transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .menu-toggle:hover {
-    color: #eee9e9; /* vermelho vibrante no hover */
+    color: #eee9e9;
     transform: scale(1.1);
 }
 
+/* ——— AÇÕES (Relatório + Logout + Avatar) ——— */
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;       /* empurra todo o bloco para a direita */
+}
+
+.navbar-actions .btn {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid #fff;
+    color: #f1f1f1;
+    padding: 6px 14px;
+    font-size: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+}
+
+.navbar-actions .btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.navbar-profile {
+    width: 44px;
+    height: 44px;
+    border: 2px solid #e53935;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.navbar-profile img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
 
 /* Responsividade */
 @media (max-width: 768px) {
@@ -147,27 +183,30 @@
         border-radius: 0 0 16px 16px;
         transition: max-height 0.35s ease, opacity 0.35s ease;
     }
-
-    /* Quando ativo mostra o menu */
     .navbar-menu.active {
         opacity: 1;
         visibility: visible;
-        max-height: 500px; /* permite a animação */
+        max-height: 500px;
         padding: 10px 0;
     }
-
     .navbar-menu li {
         padding: 10px 20px;
     }
-
     .navbar-menu a {
         font-size: 16px;
         padding: 8px 0;
         display: block;
     }
-
     .navbar-menu a::after {
         bottom: 2px;
+    }
+
+    /* Move ações para baixo, mas ainda alinhadas à direita */
+    .navbar-actions {
+        order: 4;
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 10px;
     }
 }
 
@@ -199,4 +238,21 @@
 
 .navbar-menu a.active {
     background-color: transparent !important;
+}
+
+.navbar-center-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none; /* impede que a imagem atrapalhe cliques abaixo */
+}
+
+.navbar-center-logo img {
+    height: 98px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 4px rgba(0,0,0,0.3));
 }
