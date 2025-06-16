@@ -34,7 +34,7 @@ html, body {
   align-items: flex-start; /* ALTERADO: Alinha o card no topo */
   justify-content: center;
   padding: 20px;
-  padding-top: 120px;
+  padding-top: 120px; 
 }
 
 /* Container interno com perspectiva */
@@ -310,3 +310,4 @@ input[type="file"] {
     padding: 12px 20px;
   }
 }
+

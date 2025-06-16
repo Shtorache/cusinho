@@ -1,78 +1,127 @@
-/* Estiliza o container principal do conteúdo */
+/* Fundo animado em vermelho e preto (aplicado ao body) */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #68a942;
-    margin: 0;
-    padding: 20px;
+  margin: 0; /* Garante que não há margem padrão no body */
+  padding: 0; /* Garante que não há padding padrão no body */
+  width: 100%;
+  height: 100vh; /* Ocupa 100% da altura da viewport */
+  background: linear-gradient(45deg, #1a1a1a, #4a0000, #1a1a1a, #8b0000); /* Gradiente vermelho e preto */
+  background-size: 400% 400%; /* Aumenta o tamanho para permitir a animação do gradiente */
+  animation: backgroundMovement 15s ease infinite; /* Aplica a animação */
+  
+  /* Fonte mais legível para todo o corpo da página */
+  font-family: 'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: #f0f0f0; /* Cor de texto padrão para o body, clara e visível */
 }
 
-form {
-    max-width: 350px;
-    margin: 0 auto;
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+@keyframes backgroundMovement {
+  0% {
+    background-position: 0% 50%; /* Posição inicial do gradiente */
+  }
+  50% {
+    background-position: 100% 50%; /* Posição intermediária (movimento para a direita) */
+  }
+  100% {
+    background-position: 0% 50%; /* Retorna à posição inicial, criando um loop suave */
+  }
 }
 
-/* Estilo para os títulos principais (h1) e subtítulos (h2) */
-h1 {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #0f0f0f;
-    text-align: center;
+/* Card principal com efeito glassmorphism (ajustado para ser independente do container) */
+.reauth-card {
+  width: 100%;
+  max-width: 450px;
+  background: rgba(43, 33, 33, 0.05); /* Mantém o fundo glassmorphism */
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 40px;
+  color: #e0e0e0; /* Cor do texto no card: cinza claro para visibilidade */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  text-align: center;
+  
+  /* Para centralizar o card no meio da tela */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* A animação agora ajusta a translação */
+  animation: fadeInUpCentered 0.8s ease-out forwards; /* Nome da animação alterado e 'forwards' adicionado */
+}
+
+/* Nova keyframe para animar o card já centralizado */
+@keyframes fadeInUpCentered {
+  from { 
+    opacity: 0; 
+    transform: translate(-50%, -30%); /* Começa mais acima do centro */
+  }
+  to { 
+    opacity: 1; 
+    transform: translate(-50%, -50%); /* Termina exatamente no centro */
+  }
+}
+
+
+.reauth-card h1 {
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: #ffffff; /* Título em branco puro para máximo contraste */
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3); /* Sombra mais suave para o título */
+  margin-bottom: 15px;
+  font-family: 'Montserrat', sans-serif; /* Aplica a fonte também ao título */
+}
+
+.reauth-card .instructions {
+  color: #c0c0c0; /* Cor mais clara para as instruções */
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+/* Formulário e seus elementos */
+.reauth-form input[type="password"] {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: #fff; /* Cor do texto dentro do input em branco */
+  font-size: 16px;
+  transition: background 0.3s, box-shadow 0.3s;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.reauth-form input[type="password"]:focus {
+  background: rgba(255,255,255,0.15);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5); /* Sombra de foco branca */
+  outline: none;
+}
+
+.error-message {
+    color: #ffb3b3; /* Mensagem de erro um pouco mais clara, mas ainda vermelha */
+    font-size: 0.9em;
+    margin-top: -15px;
     margin-bottom: 20px;
+    display: block;
 }
 
-h2 {
-    font-size: 1.5rem;
-    color: #050404;
-    margin-top: 40px;
-    text-align: center;
+/* Estilo do botão herdado do padrão do site */
+.btn {
+  padding: 14px 32px;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
+  user-select: none;
+  width: 100%;
 }
 
-/* Estilo para os parágrafos */
-p {
-    font-size: 1rem;
-    color: #161616;
-    text-align: center;
-    margin-bottom: 20px;
+.btn-primary {
+  background: linear-gradient(135deg, #e53935, #b71c1c); /* Mantém o gradiente vermelho para o botão */
+  color: #fff; /* Texto do botão em branco */
+  box-shadow: 0 8px 22px rgba(183, 28, 28, 0.7);
 }
 
-/* Estiliza as opções de rádio */
-input[type="radio"] {
-    margin-right: 10px;
-}
-
-
-/* Estilo para os botões */
-button {
-    padding: 10px 10px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-/* Estilo específico para o botão de remoção */
-button[type="submit"] {
-    background-color: #5597cc;
-    color: #fff;
-}
-
-button[type="submit"]:hover {
-    background-color: #c82333;
-}
-
-a{
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    margin-right: 40px;
-    display: flex;
-   
+.btn-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 28px rgba(255, 82, 82, 0.9);
 }

@@ -239,6 +239,30 @@ body {
         print-color-adjust: exact;         /* Comando mágico padrão */
     }
 
+
+    .table tr:nth-child(even) {
+        background-color: #f9f9f9 !important; /* Zebrado suave para melhor leitura */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .table tfoot td {
+        background-color: #e0e0e0 !important;
+        font-weight: bold;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* --- Estilizando o Rodapé do PDF --- */
+    .print-footer {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 15px;
+        border-top: 1px solid #ccc;
+        font-size: 9pt;
+        color: #666;
+    }
+}
     .table tr:nth-child(even) {
         background-color: #f9f9f9 !important; /* Zebrado suave para melhor leitura */
         -webkit-print-color-adjust: exact;

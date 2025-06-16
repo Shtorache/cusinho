@@ -5,6 +5,7 @@
 
 {% block extra_head %}
 <style>
+    /* Seus estilos CSS existentes aqui (mantidos do seu código original) */
     body {
         background: #121212;
         font-family: 'Segoe UI', sans-serif;
@@ -57,6 +58,7 @@
         margin-bottom: 15px;
         background: #1e1e1e;
         transition: background 0.3s ease, transform 0.2s ease;
+        position: relative; /* Necessário para posicionar o rádio absoluto */
     }
 
     .email-item:hover {
@@ -68,6 +70,45 @@
         font-weight: 500;
         color: #f0f0f0;
         word-break: break-all;
+        flex-grow: 1; /* Permite que o e-mail ocupe o espaço */
+        text-align: left; /* Alinha o texto do e-mail à esquerda */
+        padding-left: 35px; /* Espaço para o rádio button */
+    }
+
+    /* Estilo para o input de rádio */
+    .email-radio {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        appearance: none; /* Esconde o estilo padrão do navegador */
+        -webkit-appearance: none;
+        border: 2px solid #555;
+        border-radius: 50%;
+        outline: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .email-radio:checked {
+        background-color: #ff4c4c; /* Cor de preenchimento quando selecionado */
+        border-color: #ff4c4c;
+        box-shadow: 0 0 5px rgba(255, 76, 76, 0.7);
+    }
+
+    .email-radio:checked::after {
+        content: '';
+        display: block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 
     .badge-custom {
@@ -78,6 +119,7 @@
         margin-left: 10px;
         color: white;
         box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+        flex-shrink: 0; /* Evita que o badge encolha */
     }
 
     .badge-success {
@@ -184,7 +226,13 @@
                 
                 {% for emailaddress in emailaddresses %}
                     <div class="email-item">
-                        <span class="email-label">{{ emailaddress.email }}</span>
+                        {# Adicione o input de rádio aqui #}
+                        <input type="radio" name="email" value="{{ emailaddress.email }}" 
+                               id="email_{{ forloop.counter }}" class="email-radio"
+                               {% if emailaddress.primary %}checked{% endif %} {# Marca o principal como selecionado #}
+                               {% if emailaddress.primary and not emailaddress.verified %}disabled{% endif %}> {# Desabilita principal não verificado se quiser evitar remoção direta sem novo principal #}
+                        
+                        <label for="email_{{ forloop.counter }}" class="email-label">{{ emailaddress.email }}</label>
                         
                         {% if emailaddress.verified %}
                             <span class="badge-custom badge-success">{% trans "Verificado" %}</span>
@@ -192,13 +240,14 @@
                             <span class="badge-custom badge-warning">{% trans "Não Verificado" %}</span>
                         {% endif %}
                         
-                        </div>
+                    </div>
                 {% endfor %}
 
                 <div class="form-actions">
-                    {# Apenas o botão de Re-enviar e Remover fazem sentido agora #}
                     <button class="btn-custom btn-secondary-custom action-btn" type="submit" name="action_send">{% trans 'Re-enviar Verificação' %}</button>
                     <button class="btn-custom btn-danger-custom action-btn" type="submit" name="action_remove">{% trans 'Remover E-mail' %}</button>
+                    {# Adicione um botão para definir como principal, se quiser #}
+                    {# <button class="btn-custom btn-primary-custom action-btn" type="submit" name="action_primary">{% trans 'Definir como Principal' %}</button> #}
                 </div>
             </form>
 
@@ -216,7 +265,20 @@
 
             <form method="post" action="{% url 'account_email' %}" class="add-email-form">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {# Isso renderiza os campos do seu formulário Django, geralmente o campo de e-mail #}
+                {% for field in form %}
+                    <p>
+                        {# O allauth.account.forms.AddEmailForm geralmente tem apenas um campo 'email' #}
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.help_text %}
+                            <span class="helptext">{{ field.help_text }}</span>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <span class="error-message">{{ error }}</span>
+                        {% endfor %}
+                    </p>
+                {% endfor %}
                 <button name="action_add" type="submit" class="btn-custom btn-primary-custom">{% trans "Salvar Novo E-mail" %}</button>
             </form>
         {% endif %}
@@ -224,17 +286,47 @@
 </div>
 {% endblock content %}
 
-
 {% block extra_body %}
 <script type="text/javascript">
 (function() {
-    // Este script agora só precisa da confirmação de remoção
+    console.log("Script carregado");
+
+    // Lógica para o botão REMOVER
     document.querySelector('button[name="action_remove"]')?.addEventListener("click", function(e) {
-        // Antes de enviar o formulário, ele pede uma confirmação
-        if (!confirm("{% trans 'Você realmente quer remover este endereço de e-mail? Esta ação não pode ser desfeita.' %}")) {
-            e.preventDefault(); // Cancela o envio do formulário se o usuário clicar em "Cancelar"
+        const selectedEmailRadio = document.querySelector('input[name="email"]:checked');
+
+        if (!selectedEmailRadio) {
+            e.preventDefault();
+            alert("{% trans 'Por favor, selecione um endereço de e-mail para remover.' %}");
+            return;
         }
+
+        if (!confirm("{% trans 'Você realmente quer remover o endereço de e-mail ' %}" + selectedEmailRadio.value + "? {% trans 'Esta ação não pode ser desfeita.' %}")) {
+            e.preventDefault();
+        }
+    });
+
+    // Lógica para o botão REENVIAR VERIFICAÇÃO
+    document.querySelector('button[name="action_send"]')?.addEventListener("click", function(e) {
+        const selectedEmailRadio = document.querySelector('input[name="email"]:checked');
+
+        if (!selectedEmailRadio) {
+            e.preventDefault();
+            alert("{% trans 'Por favor, selecione um endereço de e-mail para reenviar a verificação.' %}");
+        }
+    });
+
+    // Permite clicar no item do e-mail para selecionar o rádio automaticamente
+    document.querySelectorAll('.email-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const radio = this.querySelector('.email-radio');
+            if (radio && !radio.checked) {
+                radio.checked = true;
+            }
+        });
     });
 })();
 </script>
+
+
 {% endblock extra_body %}
