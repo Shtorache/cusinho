@@ -19,13 +19,15 @@
         --modal-width: 450px;
     }
 
-    body {
-        background-color: var(--dark-bg);
-        color: var(--text-primary);
-        font-family: 'Montserrat', sans-serif;
-        line-height: 1.6;
-    }
-
+    html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #a72020, #000000, #a72020);
+    background-size: 200% 200%;
+    animation: gradientFlow 15s ease infinite;
+    color: var(--text-primary);
+}
   .main-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -109,20 +111,25 @@
 }
 
 
-.filter-card {
-    background: radial-gradient(circle, #ff4848, #181818);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 16px;
-    padding: 2rem;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-    margin-bottom: 2rem;
+.filter-card, #calendar {
+    /* NOVO EFEITO DE FUNDO APLICADO */
+    background: radial-gradient(circle, #5e2121, #181818) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    
+    /* Removido efeito de vidro */
+    /* backdrop-filter: blur(10px) !important; */
+    
+    border-radius: 16px !important;
+    padding: 2rem !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25) !important;
     color: var(--text-primary);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
 }
 
-.filter-card:hover {
+.filter-card:hover, #calendar:hover {
+    /* NOVO EFEITO DE HOVER APLICADO */
     transform: translateY(-5px);
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4) !important;
 }
 
 .filter-card h4 {

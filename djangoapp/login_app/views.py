@@ -1,6 +1,9 @@
 # seu_app/views.py
-
+import json # Garanta que 'import json' está no topo do arquivo
 # Imports do Django
+# No topo do seu views.py, junto com os outros imports
+from collections import Counter
+from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
@@ -8,6 +11,24 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.http import Http404
+
+from datetime import datetime # Certifique-se que 'datetime' de 'datetime' está importado no topo do arquivo
+
+
+from django.contrib import messages 
+from datetime import datetime
+
+
+from django.contrib import messages
+from datetime import datetime
+
+
+
+from django.contrib import messages
+from datetime import datetime
+
+
+
 
 # Imports FINAIS para a abordagem manual
 from allauth.mfa.models import Authenticator
@@ -25,6 +46,28 @@ from decimal import Decimal
 from .forms import CoordenadaForm, ReservasForm, UpdateUserForm, UpdateProfileForm, DadosCampoForm, FeedbackForm
 from .models import Coordenada, Profile, Reserva, DadosCampo, Feedback
 
+
+
+def mapa_quadras(request):
+    # Prepara os dados dos campos para serem usados no JavaScript do mapa
+    # Criamos uma lista simples de dicionários
+    campos_para_mapa = []
+    for slug, info in campos.items():
+        campos_para_mapa.append({
+            'slug': slug,
+            'nome': info['nome'],
+            'bairro': info.get('bairro', 'Indefinido'),
+            'lat': info.get('lat', 0), # Adicione lat/lng ao seu dicionário 'campos'
+            'lng': info.get('lng', 0), # Adicione lat/lng ao seu dicionário 'campos'
+            'imagens': info.get('imagens', []), # Adicione uma lista de imagens em 'campos'
+            'url': f"/campo/{slug}/" # Exemplo de URL, ajuste conforme sua urls.py
+        })
+        
+    context = {
+        'esporte': request.GET.get('esporte', 'futebol'),
+        'campos_json': json.dumps(campos_para_mapa)
+    }
+    return render(request, "pages/mapa_quadras.html", context)
 
 def loginPage(request):
     return render(request, "account/login.html")
@@ -101,224 +144,244 @@ def mainPage(request):
 
 # DICIONÁRIO DE CAMPOS E PARTIDAS (FONTE DE DADOS)
 # Movido para cima para ficar antes das views que o utilizam
+# COPIE E COLE ESTE BLOCO INTEIRO, SUBSTITUINDO O SEU DICIONÁRIO campos ATUAL
+
+# Em login_app/views.py, substitua seu dicionário 'campos' por este:
+
 campos = {
     # Região Itaipuaçu
     "campo_a": {
         "nome": "Arena Itaipuaçu",
+        "bairro": "Itaipuaçu",
         "imagem_capa": "/static/images/arena_itaipuaçu.jpg",
         "partidas": [
-            {"id": 1, "titulo": "Clássico da Região Oceânica", "data": "2025-05-15", "horario": "20:00", "categoria": "adulto", "genero": "misto", "vagas": 10},
-            {"id": 2, "titulo": "Torneio de Verão Masculino", "data": "2025-06-20", "horario": "19:00", "categoria": "adulto", "genero": "masculino", "vagas": 8},
-            {"id": 3, "titulo": "Escolinha de Futebol", "data": "2025-05-10", "horario": "09:00", "categoria": "infantil", "genero": "misto", "vagas": 15},
-            {"id": 4, "titulo": "Liga Feminina", "data": "2025-06-05", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 12},
-            {"id": 5, "titulo": "Torneio Master", "data": "2025-05-25", "horario": "16:00", "categoria": "master", "genero": "masculino", "vagas": 10}
+            {"id": 1, "titulo": "Desafio das Praias: Itaipuaçu vs Recanto", "data": "2025-07-12", "horario": "16:00", "esporte": "Futebol", "categoria": "adulto", "genero": "masculino", "vagas": 14},
+            {"id": 2, "titulo": "Circuito Maricaense de Vôlei - Etapa Itaipuaçu", "data": "2025-07-19", "horario": "10:00", "esporte": "Vôlei", "categoria": "adulto", "genero": "misto", "vagas": 16},
+            {"id": 3, "titulo": "Escolinha de Futebol 'Futuro Craque'", "data": "2025-07-05", "horario": "09:00", "esporte": "Futebol", "categoria": "infantil", "genero": "misto", "vagas": 20},
+            {"id": 4, "titulo": "Torneio de Vôlei Feminino", "data": "2025-07-26", "horario": "11:00", "esporte": "Vôlei", "categoria": "adulto", "genero": "feminino", "vagas": 12},
+            {"id": 5, "titulo": "Racha dos Veteranos da Orla", "data": "2025-07-08", "horario": "19:30", "esporte": "Futebol", "categoria": "master", "genero": "masculino", "vagas": 10},
+            {"id": 6, "titulo": "Treino Aberto de Vôlei 4x4", "data": "2025-07-15", "horario": "18:00", "esporte": "Vôlei", "categoria": "livre", "genero": "misto", "vagas": 16},
         ],
     },
     "campo_itaipuacu_1": {
         "nome": "Arena Barroco",
+        "bairro": "Itaipuaçu",
         "imagem_capa": "/static/images/arena_barroco.jpg",
         "partidas": [
-            {"id": 1, "titulo": "Liga Barroco", "data": "2025-04-25", "horario": "18:30", "categoria": "adulto", "genero": "masculino", "vagas": 7},
-            {"id": 2, "titulo": "Treino Livre", "data": "2025-05-05", "horario": "14:00", "categoria": "livre", "genero": "misto", "vagas": 12},
-            {"id": 3, "titulo": "Campeonato Feminino", "data": "2025-05-12", "horario": "19:00", "categoria": "adulto", "genero": "feminino", "vagas": 9},
-            {"id": 4, "titulo": "Torneio Juvenil", "data": "2025-06-08", "horario": "15:00", "categoria": "juvenil", "genero": "misto", "vagas": 14}
+            {"id": 1, "titulo": "Copa Barroco de Futebol", "data": "2025-07-18", "horario": "20:30", "esporte": "Futebol", "categoria": "adulto", "genero": "masculino", "vagas": 10},
+            {"id": 2, "titulo": "Treino da Seleção Feminina de Maricá", "data": "2025-07-07", "horario": "19:00", "esporte": "Futebol", "categoria": "adulto", "genero": "feminino", "vagas": 15},
+            {"id": 3, "titulo": "Amistoso Juvenil: Barroco vs Flamengo", "data": "2025-07-12", "horario": "15:00", "esporte": "Futebol", "categoria": "juvenil", "genero": "misto", "vagas": 14},
+            {"id": 4, "titulo": "Liga Master de Futebol +40", "data": "2025-07-21", "horario": "21:00", "esporte": "Futebol", "categoria": "master", "genero": "masculino", "vagas": 8},
+            {"id": 5, "titulo": "Festival de Basquete Escolar", "data": "2025-08-02", "horario": "09:30", "esporte": "Basquete", "categoria": "infantil", "genero": "misto", "vagas": 25},
         ],
     },
-    # ... (restante do seu dicionário 'campos' aqui) ...
-     "arena_marques": {
+    "arena_marques": {
         "nome": "Campo Divino Esporte e Lazer",
+        "bairro": "Marques de Maricá",
         "imagem_capa": "/static/images/campo_divino.jpg",
         "partidas": [
-            {"id": 1, "titulo": "Torneio Divino", "data": "2025-05-08", "horario": "20:00", "categoria": "adulto", "genero": "misto", "vagas": 10},
-            {"id": 2, "titulo": "Aulão de Futsal", "data": "2025-04-30", "horario": "10:00", "categoria": "infantil", "genero": "misto", "vagas": 20},
-            {"id": 3, "titulo": "Liga Masculina", "data": "2025-06-15", "horario": "19:30", "categoria": "adulto", "genero": "masculino", "vagas": 8},
-            {"id": 4, "titulo": "Treino Feminino", "data": "2025-05-22", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 10}
+            {"id": 1, "titulo": "Copa Divino de Futebol", "data": "2025-07-11", "horario": "20:00", "esporte": "Futebol", "categoria": "adulto", "genero": "misto", "vagas": 14},
+            {"id": 2, "titulo": "Aulão de Basquete para Crianças", "data": "2025-07-05", "horario": "10:00", "esporte": "Basquete", "categoria": "infantil", "genero": "misto", "vagas": 20},
+            {"id": 3, "titulo": "Liga de Empresas - Etapa Final", "data": "2025-07-25", "horario": "19:30", "esporte": "Futebol", "categoria": "adulto", "genero": "masculino", "vagas": 14},
+            {"id": 4, "titulo": "Treino Aberto Feminino de Vôlei", "data": "2025-07-14", "horario": "18:30", "esporte": "Vôlei", "categoria": "adulto", "genero": "feminino", "vagas": 12},
+            {"id": 5, "titulo": "Torneio de Pais e Filhos", "data": "2025-07-27", "horario": "11:00", "esporte": "Futebol", "categoria": "livre", "genero": "misto", "vagas": 22},
         ],
     },
     "campo_palmeiras": {
         "nome": "Campo Inter Academy",
+        "bairro": "Centro",
         "imagem_capa": "/static/images/campo_inter_academy.jpg",
         "partidas": [
-            {"id": 1, "titulo": "Treino de Equipe", "data": "2025-05-12", "horario": "08:00", "categoria": "juvenil", "genero": "masculino", "vagas": 18},
-            {"id": 2, "titulo": "Interclasses", "data": "2025-06-05", "horario": "16:00", "categoria": "juvenil", "genero": "misto", "vagas": 15},
-            {"id": 3, "titulo": "Torneio Feminino Juvenil", "data": "2025-05-20", "horario": "14:00", "categoria": "juvenil", "genero": "feminino", "vagas": 12},
-            {"id": 4, "titulo": "Escolinha de Futebol", "data": "2025-06-12", "horario": "09:00", "categoria": "infantil", "genero": "misto", "vagas": 20}
+            {"id": 1, "titulo": "Peneira de Novos Talentos Sub-17", "data": "2025-07-13", "horario": "09:00", "esporte": "Futebol", "categoria": "juvenil", "genero": "masculino", "vagas": 30},
+            {"id": 2, "titulo": "Campeonato Interbairros Juvenil", "data": "2025-07-20", "horario": "16:00", "esporte": "Futebol", "categoria": "juvenil", "genero": "misto", "vagas": 22},
+            {"id": 3, "titulo": "Final da Copa Maricá Feminina Sub-20", "data": "2025-07-27", "horario": "14:00", "esporte": "Futebol", "categoria": "juvenil", "genero": "feminino", "vagas": 22},
+            {"id": 4, "titulo": "Clínica de Futebol com Ex-Jogadores", "data": "2025-08-03", "horario": "10:00", "esporte": "Futebol", "categoria": "infantil", "genero": "misto", "vagas": 40},
         ],
     },
     "arena_flamengo": {
         "nome": "Arena Flamengo",
+        "bairro": "Flamengo",
         "imagem_capa": "/static/images/arena_flamengo1.jpg",
         "partidas": [
-            {"id": 1, "titulo": "Flamengo vs Vasco", "data": "2025-04-10", "horario": "18:00", "categoria": "adulto", "genero": "masculino", "vagas": 1},
-            {"id": 2, "titulo": "Amistoso Feminino", "data": "2025-04-12", "horario": "15:00", "categoria": "adulto", "genero": "feminino", "vagas": 8},
-            {"id": 3, "titulo": "Torneio Masters", "data": "2025-05-20", "horario": "19:30", "categoria": "master", "genero": "masculino", "vagas": 0},
-            {"id": 4, "titulo": "Pelada Mista", "data": "2025-06-08", "horario": "20:00", "categoria": "livre", "genero": "misto", "vagas": 12},
-            {"id": 5, "titulo": "Treino Juvenil", "data": "2025-05-05", "horario": "16:00", "categoria": "juvenil", "genero": "masculino", "vagas": 10}
+            {"id": 1, "titulo": "Desafio dos Veteranos: Flamengo vs Vasco", "data": "2025-07-12", "horario": "18:00", "esporte": "Futebol", "categoria": "master", "genero": "masculino", "vagas": 14},
+            {"id": 2, "titulo": "Torneio 3x3 de Basquete de Rua", "data": "2025-07-19", "horario": "15:00", "esporte": "Basquete", "categoria": "adulto", "genero": "misto", "vagas": 1},
+            {"id": 3, "titulo": "Amistoso da Seleção Master de Maricá", "data": "2025-07-22", "horario": "19:30", "esporte": "Futebol", "categoria": "master", "genero": "masculino", "vagas": 14},
+            {"id": 4, "titulo": "Racha Semanal da Comunidade", "data": "2025-07-09", "horario": "20:00", "esporte": "Futebol", "categoria": "livre", "genero": "misto", "vagas": 0},
+            {"id": 5, "titulo": "Treino de Arremessos - Basquete", "data": "2025-07-16", "horario": "17:00", "esporte": "Basquete", "categoria": "juvenil", "genero": "misto", "vagas": 10},
         ],
     },
     "campo_central": {
         "nome": "Arena Centro",
+        "bairro": "Centro",
         "imagem_capa": "/static/images/arena centro.png",
         "partidas": [
-            {"id": 1, "titulo": "Campeonato Centro", "data": "2025-04-15", "horario": "20:00", "categoria": "adulto", "genero": "masculino", "vagas": 8},
-            {"id": 2, "titulo": "Pelada Semanal", "data": "2025-04-18", "horario": "19:00", "categoria": "livre", "genero": "misto", "vagas": 12},
-            {"id": 3, "titulo": "Torneio Feminino", "data": "2025-05-10", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 10},
-            {"id": 4, "titulo": "Escolinha de Futsal", "data": "2025-06-15", "horario": "09:00", "categoria": "infantil", "genero": "misto", "vagas": 15}
+            {"id": 1, "titulo": "Finais dos Jogos Abertos de Maricá", "data": "2025-08-09", "horario": "20:00", "esporte": "Futebol", "categoria": "adulto", "genero": "masculino", "vagas": 10},
+            {"id": 2, "titulo": "Torneio de Vôlei de Aniversário da Cidade", "data": "2025-08-10", "horario": "10:00", "esporte": "Vôlei", "categoria": "livre", "genero": "misto", "vagas": 12},
+            {"id": 3, "titulo": "Final da Liga Feminina de Futebol", "data": "2025-08-09", "horario": "18:30", "esporte": "Futebol", "categoria": "adulto", "genero": "feminino", "vagas": 10},
+            {"id": 4, "titulo": "Apresentação da Escolinha de Basquete", "data": "2025-08-10", "horario": "15:00", "esporte": "Basquete", "categoria": "infantil", "genero": "misto", "vagas": 30},
+            {"id": 5, "titulo": "Campeonato de Tênis de Duplas", "data": "2025-08-11", "horario": "19:00", "esporte": "Tênis", "categoria": "livre", "genero": "misto", "vagas": 20},
         ],
     },
     "quadra_centro": {
         "nome": "Campo Amparo Esporte Clube",
+        "bairro": "Centro",
         "imagem_capa": "/static/images/amparo.jpg",
         "partidas": [
-            {"id": 1, "titulo": "Torneio de Inauguração", "data": "2025-05-01", "horario": "09:00", "categoria": "livre", "genero": "misto", "vagas": 20},
-            {"id": 2, "titulo": "Escolinha de Futsal", "data": "2025-05-03", "horario": "14:00", "categoria": "infantil", "genero": "misto", "vagas": 15},
-            {"id": 3, "titulo": "Liga Masculina", "data": "2025-06-10", "horario": "20:00", "categoria": "adulto", "genero": "masculino", "vagas": 10},
-            {"id": 4, "titulo": "Treino Feminino", "data": "2025-06-12", "horario": "19:00", "categoria": "adulto", "genero": "feminino", "vagas": 12}
+            {"id": 1, "titulo": "Taça Amparo de Futebol", "data": "2025-07-14", "horario": "20:00", "esporte": "Futebol", "categoria": "adulto", "genero": "masculino", "vagas": 10},
+            {"id": 2, "titulo": "Aula de Vôlei para Terceira Idade", "data": "2025-07-15", "horario": "09:00", "esporte": "Vôlei", "categoria": "master", "genero": "misto", "vagas": 16},
+            {"id": 3, "titulo": "Treino do time principal - Amparo FC", "data": "2025-07-17", "horario": "19:00", "esporte": "Futebol", "categoria": "adulto", "genero": "masculino", "vagas": 12},
+            {"id": 4, "titulo": "Torneio de Tênis", "data": "2025-07-19", "horario": "14:00", "esporte": "Tênis", "categoria": "livre", "genero": "misto", "vagas": 24},
         ],
     },
     "campo_c": {
         "nome": "Arena Itapeba",
+        "bairro": "Itapeba",
         "imagem_capa": "/static/images/arena_itapeba.jpeg",
         "partidas": [
-            {"id": 1, "titulo": "Liga Itapeba", "data": "2025-04-22", "horario": "19:00", "categoria": "adulto", "genero": "masculino", "vagas": 7},
-            {"id": 2, "titulo": "Treino Feminino", "data": "2025-04-24", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 9},
-            {"id": 3, "titulo": "Torneio Misto", "data": "2025-05-15", "horario": "20:00", "categoria": "adulto", "genero": "misto", "vagas": 12},
-            {"id": 4, "titulo": "Escolinha de Futebol", "data": "2025-06-05", "horario": "14:00", "categoria": "infantil", "genero": "misto", "vagas": 18}
+            {"id": 1, "titulo": "Campeonato de Rua de Itapeba", "data": "2025-07-26", "horario": "16:00", "esporte": "Futebol", "categoria": "adulto", "genero": "masculino", "vagas": 14},
+            {"id": 2, "titulo": "Treino Físico Comunitário para Atletas", "data": "2025-07-08", "horario": "07:00", "esporte": "Vôlei", "categoria": "livre", "genero": "misto", "vagas": 25},
+            {"id": 3, "titulo": "Torneio de Vôlei Misto", "data": "2025-07-20", "horario": "15:00", "esporte": "Vôlei", "categoria": "livre", "genero": "misto", "vagas": 20},
+            {"id": 4, "titulo": "Escolinha de Futebol do Bairro", "data": "2025-07-12", "horario": "09:00", "esporte": "Futebol", "categoria": "infantil", "genero": "misto", "vagas": 18},
         ],
     },
     "campo_saojose_1": {
         "nome": "Arena São José",
+        "bairro": "São José do Imbassaí",
         "imagem_capa": "/static/images/arena_são josé.jpg",
         "partidas": [
-            {"id": 1, "titulo": "Copa São José", "data": "2025-05-25", "horario": "20:00", "categoria": "adulto", "genero": "masculino", "vagas": 6},
-            {"id": 2, "titulo": "Pelada da Comunidade", "data": "2025-05-28", "horario": "19:00", "categoria": "livre", "genero": "misto", "vagas": 14},
-            {"id": 3, "titulo": "Torneio Feminino", "data": "2025-06-08", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 10},
-            {"id": 4, "titulo": "Torneio Master", "data": "2025-06-15", "horario": "19:30", "categoria": "master", "genero": "masculino", "vagas": 8}
+            {"id": 1, "titulo": "Copa Integração São José", "data": "2025-07-25", "horario": "20:00", "esporte": "Futebol", "categoria": "adulto", "genero": "masculino", "vagas": 14},
+            {"id": 2, "titulo": "Racha dos Comerciantes Locais", "data": "2025-07-16", "horario": "19:30", "esporte": "Futebol", "categoria": "livre", "genero": "misto", "vagas": 14},
+            {"id": 3, "titulo": "Amistoso Feminino São José vs Inoã", "data": "2025-07-27", "horario": "16:00", "esporte": "Futebol", "categoria": "adulto", "genero": "feminino", "vagas": 14},
+            {"id": 4, "titulo": "Torneio de Tênis de Duplas", "data": "2025-08-03", "horario": "17:00", "esporte": "Tênis", "categoria": "livre", "genero": "misto", "vagas": 16},
         ],
     },
     "arena_jose": {
         "nome": "Quadra Inoã",
+        "bairro": "Inoã",
         "imagem_capa": "/static/images/quadra_inoã.jpg",
         "partidas": [
-            {"id": 1, "titulo": "Torneio de Inoã", "data": "2025-06-10", "horario": "18:30", "categoria": "adulto", "genero": "masculino", "vagas": 8},
-            {"id": 2, "titulo": "Aulão de Futsal", "data": "2025-06-12", "horario": "09:00", "categoria": "infantil", "genero": "misto", "vagas": 20},
-            {"id": 3, "titulo": "Liga Feminina", "data": "2025-06-18", "horario": "19:00", "categoria": "adulto", "genero": "feminino", "vagas": 10},
-            {"id": 4, "titulo": "Pelada Mista", "data": "2025-06-20", "horario": "20:00", "categoria": "livre", "genero": "misto", "vagas": 15}
+            {"id": 1, "titulo": "Supercopa Inoã de Futebol", "data": "2025-07-19", "horario": "18:30", "esporte": "Futebol", "categoria": "adulto", "genero": "masculino", "vagas": 10},
+            {"id": 2, "titulo": "Festival de Basquete Juvenil", "data": "2025-07-20", "horario": "09:00", "esporte": "Basquete", "categoria": "juvenil", "genero": "misto", "vagas": 20},
+            {"id": 3, "titulo": "Liga Feminina de Vôlei", "data": "2025-07-26", "horario": "19:00", "esporte": "Vôlei", "categoria": "adulto", "genero": "feminino", "vagas": 14},
+            {"id": 4, "titulo": "Pelada Mista dos Moradores", "data": "2025-07-23", "horario": "20:30", "esporte": "Futebol", "categoria": "livre", "genero": "misto", "vagas": 15},
         ],
     },
     "quadra_saojose": {
         "nome": "Quadra Poliesportiva Parque Nanci",
+        "bairro": "Parque Nanci",
         "imagem_capa": "/static/images/parque_nanci.jpg",
         "partidas": [
-            {"id": 1, "titulo": "Festival Esportivo", "data": "2025-05-30", "horario": "08:00", "categoria": "livre", "genero": "misto", "vagas": 25},
-            {"id": 2, "titulo": "Torneio de Veteranos", "data": "2025-06-02", "horario": "19:00", "categoria": "master", "genero": "masculino", "vagas": 10},
-            {"id": 3, "titulo": "Escolinha de Futebol", "data": "2025-06-05", "horario": "14:00", "categoria": "infantil", "genero": "misto", "vagas": 18},
-            {"id": 4, "titulo": "Torneio Feminino", "data": "2025-06-10", "horario": "18:00", "categoria": "adulto", "genero": "feminino", "vagas": 12},
-            {"id": 5, "titulo": "Liga Masculina", "data": "2025-06-15", "horario": "20:00", "categoria": "adulto", "genero": "masculino", "vagas": 10}
+            {"id": 1, "titulo": "Festival de Vôlei do Parque Nanci", "data": "2025-07-13", "horario": "09:00", "esporte": "Vôlei", "categoria": "livre", "genero": "misto", "vagas": 25},
+            {"id": 2, "titulo": "Torneio de Veteranos do Basquete", "data": "2025-07-14", "horario": "19:00", "esporte": "Basquete", "categoria": "master", "genero": "masculino", "vagas": 10},
+            {"id": 3, "titulo": "Torneio Escolar de Basquete", "data": "2025-07-28", "horario": "14:00", "esporte": "Basquete", "categoria": "infantil", "genero": "misto", "vagas": 50},
+            {"id": 4, "titulo": "Copa de Vôlei Feminino", "data": "2025-08-02", "horario": "18:00", "esporte": "Vôlei", "categoria": "adulto", "genero": "feminino", "vagas": 12},
+            {"id": 5, "titulo": "Campeonato Municipal de Basquete", "data": "2025-08-04", "horario": "20:00", "esporte": "Basquete", "categoria": "adulto", "genero": "masculino", "vagas": 14},
         ],
     },
 }
 
-# ==============================================================================
-# VIEW relatorio_partidas - VERSÃO CORRIGIDA
-# ==============================================================================
-# seu_app/views.py
 
-from datetime import datetime # Certifique-se que 'datetime' de 'datetime' está importado no topo do arquivo
 
-# ... (outras views e o dicionário 'campos' aqui em cima) ...
+# Cole esta versão ÚNICA e CORRETA no seu views.py
 
-# ==============================================================================
-# VIEW relatorio_partidas - VERSÃO COM CONVERSÃO DE DATA
-# ==============================================================================
-# seu_app/views.py
+# login_app/views.py
 
-from django.contrib import messages # Verifique se 'messages' está importado
-from datetime import datetime
+from collections import Counter, defaultdict
+# ... outros imports ...
 
-# ... (outras views e o dicionário 'campos' aqui em cima) ...
+# Em login_app/views.py
 
-# ==============================================================================
-# VIEW relatorio_partidas - VERSÃO COM FILTRO DE DATA ROBUSTO
-# ==============================================================================
-# seu_app/views.py
-
-from django.contrib import messages
-from datetime import datetime
-
-# ... (outras views e o dicionário 'campos' aqui em cima) ...
-
-# ==============================================================================
-# VIEW relatorio_partidas - VERSÃO DE DEPURAÇÃO
-# ==============================================================================
-# seu_app/views.py
-
-from django.contrib import messages
-from datetime import datetime
-
-# ... (outras views e o dicionário 'campos' aqui em cima) ...
-
-# ==============================================================================
-# VIEW relatorio_partidas - VERSÃO FINAL
-# ==============================================================================
+@staff_member_required
 def relatorio_partidas(request):
-    # 1. Prepara a lista de partidas, convertendo as datas
+    """
+    Gera um relatório estatístico de partidas. 
+    Esta view é 'stateless' - ela recria tudo do zero a cada requisição.
+    """
+    # --- 1. FONTE DE DADOS: Sempre recriada do zero ---
     todas_as_partidas = []
     for info_campo in campos.values():
-        for partida_dict in info_campo['partidas']:
-            partida_completa = partida_dict.copy()
+        for p in info_campo['partidas']:
+            # Usar .copy() garante que não modificamos o dicionário original 'campos'
+            partida_completa = p.copy()
             partida_completa['campo'] = info_campo['nome']
             try:
-                data_obj = datetime.strptime(partida_dict['data'], '%Y-%m-%d').date()
-                partida_completa['data'] = data_obj
-            except (ValueError, KeyError):
-                partida_completa['data'] = None
-            todas_as_partidas.append(partida_completa)
+                # Converte a data para um objeto, garantindo consistência
+                partida_completa['data'] = datetime.strptime(p['data'], '%Y-%m-%d').date()
+            except (ValueError, TypeError):
+                partida_completa['data'] = datetime.now().date()
             
+            todas_as_partidas.append(partida_completa)
+
+    # --- 2. FILTROS ---
+    selected_campo = request.GET.get('campo_filtro', '')
+    selected_data_str = request.GET.get('data_filtro', '')
     partidas_filtradas = todas_as_partidas
 
-    # 2. Obtém os parâmetros de filtro da requisição
-    selected_campo = request.GET.get('campo_filtro')
-    selected_data_str = request.GET.get('data_filtro') 
-
-    # 3. Aplica filtro de CAMPO (se existir)
     if selected_campo:
         partidas_filtradas = [p for p in partidas_filtradas if p['campo'] == selected_campo]
     
-    # 4. Aplica filtro de DATA (se existir)
-    if selected_data_str and selected_data_str.strip():
+    if selected_data_str:
         try:
             data_filtro = datetime.strptime(selected_data_str, '%Y-%m-%d').date()
-            
-            # ================================================================== #
-            # =================== MUDANÇA DA LÓGICA AQUI =================== #
-            # Trocamos >= (maior ou igual) por == (exatamente igual)
-            # ================================================================== #
-            partidas_filtradas = [
-                p for p in partidas_filtradas 
-                if p['data'] is not None and p['data'] == data_filtro
-            ]
-        except ValueError:
-            messages.error(request, f"O formato da data '{selected_data_str}' é inválido. Use AAAA-MM-DD.")
-    
-    # 5. Prepara o contexto final para o template
+            partidas_filtradas = [p for p in partidas_filtradas if p['data'] >= data_filtro]
+        except (ValueError, TypeError):
+            pass
+
+    # --- 3. CÁLCULOS: Sempre feitos com base nos dados frescos ---
+    # O dicionário 'stats' é sempre novo a cada requisição
+    stats = {
+        'quadra_mais_utilizada': None, 'horario_pico_pessoas': None,
+        'esporte_mais_praticado': None, 'categoria_popular': None,
+        'distribuicao_genero': [], 'total_usuarios': 0,
+    }
+
+    if partidas_filtradas:
+        # Todos os cálculos usam a lista 'partidas_filtradas' recém-criada
+        contagem_quadras = Counter(p['campo'] for p in partidas_filtradas)
+        if contagem_quadras:
+            stats['quadra_mais_utilizada'] = {'nome': contagem_quadras.most_common(1)[0][0], 'partidas': contagem_quadras.most_common(1)[0][1]}
+
+        horarios_por_vagas = defaultdict(int)
+        for p in partidas_filtradas:
+            horarios_por_vagas[p['horario']] += p['vagas']
+        if horarios_por_vagas:
+            horario_top = max(horarios_por_vagas.items(), key=lambda item: item[1])
+            stats['horario_pico_pessoas'] = {'horario': horario_top[0], 'participantes': horario_top[1]}
+
+        contagem_esportes = Counter(p.get('esporte', 'Não definido') for p in partidas_filtradas)
+        if contagem_esportes:
+            esporte_top = contagem_esportes.most_common(1)[0]
+            stats['esporte_mais_praticado'] = {'nome': esporte_top[0], 'partidas': esporte_top[1]}
+
+        contagem_categoria = Counter(p['categoria'] for p in partidas_filtradas)
+        if contagem_categoria:
+            categoria_top = contagem_categoria.most_common(1)[0]
+            stats['categoria_popular'] = {'nome': categoria_top[0], 'partidas': categoria_top[1]}
+
+        stats['distribuicao_genero'] = [{'genero': g, 'total': t} for g, t in Counter(p['genero'] for p in partidas_filtradas).items()]
+        stats['total_usuarios'] = sum(p['vagas'] for p in partidas_filtradas)
+
+    # --- 4. CONTEXTO: Sempre novo ---
     campos_disponiveis = sorted(list(set(info['nome'] for info in campos.values())))
     context = {
         'partidas': partidas_filtradas,
         'campos_disponiveis': campos_disponiveis,
         'selected_campo': selected_campo,
         'selected_data': selected_data_str,
+        'stats': stats,
     }
-    
     return render(request, 'pages/relatorio.html', context)
+
+
 def available_places(request):
-    regiao = request.GET.get('regiao', 'centro')
-    esporte = request.GET.get('esporte', 'futebol')
+    """
+    Esta view renderiza a página de locais disponíveis.
+    """
+    # No futuro, você pode adicionar lógica aqui para buscar dados do banco
+    # e enviar para o template através do dicionário 'context'.
+    context = {} 
     
-    context = {
-        'regiao': regiao,
-        'esporte': esporte,
-    }
+    # A linha abaixo é a mais importante: ela renderiza seu template.
     return render(request, 'pages/available_places.html', context)
 
 

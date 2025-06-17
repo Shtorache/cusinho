@@ -5,129 +5,108 @@
 <link rel="stylesheet" href="{% static 'css/relatorio.css' %}">
 
 <style>
-    @media print {
+    /* --- Estilos para os Cards de Estatísticas --- */
+    .stats-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: space-around;
+        margin-bottom: 30px;
+        animation: fadeIn 0.8s ease-in-out;
+        overflow: visible !important;
+    height: auto !important;
+    }
 
-        /* --- Configuração Geral da Página Impressa --- */
+    .stat-card {
+        background: #ffffff;
+        border-left: 5px solid #e53935;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        padding: 20px;
+        flex-basis: 250px; /* Base para o tamanho do card */
+        flex-grow: 1;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    .stat-card h3 {
+        margin: 0 0 10px 0;
+        font-size: 1.1rem;
+        color: #b71c1c;
+    }
+
+    .stat-card .stat-value {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .stat-card .stat-label {
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    
+    
+    /* --- Estilos para a impressão --- */
+    @media print {
         @page {
             size: A4 portrait;
             margin: 1.5cm;
-
             @bottom-right {
                 content: "Página " counter(page) " de " counter(pages);
-                font-size: 9pt;
-                color: #666;
+                font-size: 9pt; color: #666;
             }
         }
+        body { background: #fff !important; color: #333 !important; font-family: 'Georgia', serif; font-size: 10pt; }
+        .navbar, #btn, footer, .loading-bar, .filter-container { display: none !important; }
+        .print-header, .print-footer { display: block !important; }
 
-        /* --- Estilos Gerais para Impressão --- */
-        body {
-            background: #ffffff !important;
-            color: #333333 !important;
-            font-family: 'Georgia', serif;
-            font-size: 10pt;
-        }
-
-        /* --- Escondendo Elementos da Tela --- */
-        /* ATUALIZADO: Adicionado .filter-container para também ser escondido na impressão */
-        .navbar, #btn, footer, .loading-bar, .filter-container {
-            display: none !important;
-        }
-        
-        /* Mostra o cabeçalho e rodapé customizados APENAS na impressão */
-        .print-header, .print-footer {
-            display: block !important;
-        }
-
-        /* --- Estilizando o Cabeçalho do PDF --- */
-        .print-header {
-            display: flex !important;
-            align-items: center;
-            gap: 20px;
-            border-bottom: 2px solid #e53935;
-            padding-bottom: 15px;
-            margin-bottom: 30px;
-        }
-        .print-logo {
-            width: 50px;
-            height: 50px;
-        }
-        .print-header-text h2 {
-            margin: 0;
-            color: #b71c1c;
-            font-size: 16pt;
-        }
-        .print-header-text p {
-            margin: 0;
-            color: #333;
-            font-size: 11pt;
-        }
-        
-        /* Esconde o título original da página para usar o do cabeçalho */
-        #title {
-            display: none !important;
-        }
-
-        /* --- Estilizando a Tabela para o PDF --- */
-        #table-container {
+        /* Fazendo os cards serem impressos também! */
+       .stats-container {
+    display: flex !important;
+    flex-wrap: nowrap !important; 
+    gap: 15px !important;
+    /* page-break-after: always; */ /* Linha desativada */
+}
+        .stat-card {
             box-shadow: none !important;
-            border: none !important;
-            backdrop-filter: none !important;
-            background: transparent !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            animation: none !important;
-            transform: none !important;
+            border: 1px solid #ddd;
+            flex-basis: 0; /* Deixa o flex-grow distribuir o espaço igualmente */
+            padding: 10px;
         }
+        .stat-card h3 { font-size: 10pt; color: #b71c1c !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .stat-card .stat-value { font-size: 14pt; color: #333 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .stat-card .stat-label { font-size: 8pt; color: #666 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .table th, .table td {
-            border: 1px solid #ddd !important;
-            padding: 8px 10px;
-            text-align: left;
-        }
-        
-        .table th {
-            background-color: #e53935 !important;
-            color: #ffffff !important;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
 
-        .table tr:nth-child(even) {
-            background-color: #f9f9f9 !important;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
-        
-        /* --- Estilizando o Rodapé do PDF --- */
-        .print-footer {
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 15px;
-            border-top: 1px solid #ccc;
-            font-size: 9pt;
-            color: #666;
-        }
+        .print-header { display: flex !important; align-items: center; gap: 20px; border-bottom: 2px solid #e53935; padding-bottom: 15px; margin-bottom: 20px; }
+        .print-logo { width: 50px; height: 50px; }
+        .print-header-text h2 { margin: 0; color: #b71c1c; font-size: 16pt; -webkit-print-color-adjust: exact; print-color-adjust: exact;}
+        .print-header-text p { margin: 0; color: #333; font-size: 11pt; }
+        #title { display: none !important; }
+        #table-container { box-shadow: none !important; border: none !important; backdrop-filter: none !important; background: transparent !important; width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; animation: none !important; transform: none !important; }
+        .table { width: 100%; border-collapse: collapse; }
+        .table th, .table td { border: 1px solid #ddd !important; padding: 8px 10px; text-align: left; }
+        .table th { background-color: #e53935 !important; color: #ffffff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .table tr:nth-child(even) { background-color: #f9f9f9 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .print-footer { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ccc; font-size: 9pt; color: #666; }
     }
 </style>
 {% endblock extra_head %}
-
-
-
 
 {% block content %}
 
 <div class="print-header" style="display: none;">
     <img src="{% static 'images/Goal_icon-icons.com_62267.ico' %}" class="print-logo" alt="Logo EsporteFY">
     <div class="print-header-text">
-        <h2>EsporteFY Relatórios</h2>
-        <p>Relatório de Partidas Gerado em {% now "Y-m-d" %}</p>
+        <h2>EsporteFY - Relatório de Uso</h2>
+        <p>Dados consolidados gerados em {% now "d/m/Y" %}</p>
     </div>
 </div>
 
@@ -138,31 +117,75 @@
         <div class="form-group">
             <label for="campo_filtro">Filtrar por Quadra:</label>
             <select name="campo_filtro" id="campo_filtro" class="form-control">
-                <option value="">Todos os campos</option>
+                <option value="">Todas as quadras</option>
                 {% for campo in campos_disponiveis %}
-                    <option value="{{ campo }}" {% if campo == selected_campo %}selected{% endif %}>
-                        {{ campo }}
-                    </option>
+                    <option value="{{ campo }}" {% if campo == selected_campo %}selected{% endif %}>{{ campo }}</option>
                 {% endfor %}
             </select>
         </div>
-
         <div class="form-group">
-            <label for="data_filtro">Filtrar por data (a partir de):</label>
+            <label for="data_filtro">A partir de:</label>
             <input type="date" name="data_filtro" id="data_filtro" value="{{ selected_data|default:'' }}" class="form-control">
         </div>
-
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">Filtrar</button>
-            <a href="{% url 'relatorio_partidas' %}" class="btn btn-secondary">Limpar Filtros</a>
+            <a href="{% url 'relatorio_partidas' %}" class="btn btn-secondary">Limpar</a>
         </div>
     </form>
 </div>
+<div class="stats-container">
+    <div class="stat-card">
+        <h3>Quadra Mais Utilizada</h3>
+        <div class="stat-value">{{ stats.quadra_mais_utilizada.nome|default:"N/A" }}</div>
+        <div class="stat-label">com {{ stats.quadra_mais_utilizada.partidas|default:0 }} partidas</div>
+    </div>
+
+    <div class="stat-card">
+        <h3>Horário de Pico (Pessoas)</h3>
+        <div class="stat-value">{{ stats.horario_pico_pessoas.horario|default:"N/A" }}</div>
+        <div class="stat-label">com {{ stats.horario_pico_pessoas.participantes|default:0 }} participantes</div>
+    </div>
+    
+    <div class="stat-card">
+        <h3>Esporte Mais Praticado</h3>
+        <div class="stat-value">{{ stats.esporte_mais_praticado.nome|default:"N/A" }}</div>
+        <div class="stat-label">com {{ stats.esporte_mais_praticado.partidas|default:0 }} partidas</div>
+    </div>
+    
+    <div class="stat-card">
+        <h3>Público Principal</h3>
+        <div class="stat-value">{{ stats.categoria_popular.nome|capfirst|default:"N/A" }}</div>
+        <div class="stat-label">com {{ stats.categoria_popular.partidas|default:0 }} partidas</div>
+    </div>
+
+    <div class="stat-card">
+        <h3>Total de Participações</h3>
+        <div class="stat-value">{{ stats.total_usuarios }}</div>
+        <div class="stat-label">em vagas de partidas</div>
+    </div>
+
+    <div class="stat-card">
+        <h3>Distribuição por Gênero</h3>
+        {% for item in stats.distribuicao_genero %}
+            <div class="stat-label" style="margin-bottom: 5px;">
+                <strong>{{ item.genero|capfirst }}:</strong>
+                <span class="stat-value" style="font-size: 1.2rem;">{{ item.total }}</span>
+            </div>
+        {% empty %}
+            <div class="stat-label">Nenhum dado encontrado.</div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
 <div id="table-container">
+    <h2 class="print-only" style="display:none; text-align:center; margin-bottom: 20px;">Lista de Partidas Detalhadas</h2>
     <table class="table">
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Esporte</th>
                 <th>Campo</th>
                 <th>Título</th>
                 <th>Data</th>
@@ -176,28 +199,28 @@
             {% for partida in partidas %}
             <tr>
                 <td>{{ partida.id }}</td>
+                <td>{{ partida.esporte|default:"-" }}</td>
                 <td>{{ partida.campo }}</td>
                 <td>{{ partida.titulo }}</td>
                 <td>{{ partida.data|date:"d/m/Y" }}</td>
                 <td>{{ partida.horario }}</td>
-                <td>{{ partida.categoria }}</td>
-                <td>{{ partida.genero }}</td>
+                <td>{{ partida.categoria|capfirst }}</td>
+                <td>{{ partida.genero|capfirst }}</td>
                 <td>{{ partida.vagas }}</td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="8" style="text-align: center;">Nenhuma partida encontrada com os filtros atuais.</td>
+                <td colspan="9" style="text-align: center;">Nenhuma partida encontrada com os filtros atuais.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
-<center><button id="btn" class="btn btn-relatorio" onclick="window.print()">Salvar como PDF</button></center>
 
+<center><button id="btn" class="btn btn-relatorio" onclick="window.print()">Salvar como PDF</button></center>
 
 <div class="print-footer" style="display: none;">
     <p>Copyright © {% now "Y" %} EsporteFY. Todos os direitos reservados.</p>
 </div>
-
 
 {% endblock content %}
