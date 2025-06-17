@@ -2,36 +2,47 @@
 {% load i18n %}
 {% load allauth %}
 {% load static %}
+
 {% block head_title %}
-    {% trans "Sign In" %}
+    {% trans "Social Network Sign In" %}
 {% endblock head_title %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/login_social.css' %}">
+    {# O seu CSS importado, como você pediu. #}
+    <link rel="stylesheet" href="{% static 'css/login_social.css' %}">
 {% endblock extra_head %}
 
 {% block content %}
+<div class="social-login-container">
+
+    {# ÍCONE DO PROVEDOR ADICIONADO PARA MELHOR UX #}
+   
+
     {% if process == "connect" %}
         {% element h1 %}
-            {% blocktrans with provider.name as provider %}Connect {{ provider }}{% endblocktrans %}
+            {% blocktrans with provider.name as provider %}Conectar {{ provider }}{% endblocktrans %}
         {% endelement %}
         {% element p %}
-            {% blocktrans with provider.name as provider %}You are about to connect a new third-party account from {{ provider }}.{% endblocktrans %}
+            {% blocktrans with provider.name as provider %}Você está prestes a conectar uma nova conta de terceiros do {{ provider }}.{% endblocktrans %}
         {% endelement %}
     {% else %}
         {% element h1 %}
-            {% blocktrans with provider.name as provider %}Sign In Via {{ provider }}{% endblocktrans %}
+            {% blocktrans with provider.name as provider %}Entrar com {{ provider }}{% endblocktrans %}
         {% endelement %}
         {% element p %}
-            {% blocktrans with provider.name as provider %}You are about to sign in using a third-party account from {{ provider }}.{% endblocktrans %}
+            {% blocktrans with provider.name as provider %}Você está prestes a entrar usando sua conta do {{ provider }}.{% endblocktrans %}
         {% endelement %}
     {% endif %}
+
     {% element form method="post" no_visible_fields=True %}
         {% slot actions %}
             {% csrf_token %}
-            {% element button type="submit" %}
+            {# CLASSES ADICIONADAS AO BOTÃO #}
+            {% element button type="submit" class="btn btn-primary" %}
                 {% trans "Continue" %}
             {% endelement %}
         {% endslot %}
     {% endelement %}
+
+</div>
 {% endblock content %}

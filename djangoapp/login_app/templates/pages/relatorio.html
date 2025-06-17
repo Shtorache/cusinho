@@ -222,5 +222,16 @@
 <div class="print-footer" style="display: none;">
     <p>Copyright © {% now "Y" %} EsporteFY. Todos os direitos reservados.</p>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterForm = document.querySelector('.filter-form');
+        const currentUrlParams = new URLSearchParams(window.location.search);
 
+        // Verifica se há parâmetros de filtro na URL.
+        // Se a URL não tiver parâmetros (ou seja, está carregando limpa), envia o formulário automaticamente.
+        if (currentUrlParams.toString() === '') {
+            filterForm.submit();
+        }
+    });
+</script>
 {% endblock content %}

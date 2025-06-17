@@ -4,329 +4,257 @@
 
 {% block extra_head %}
 <style>
- * {
+/* CSS CORRIGIDO E FINALIZADO
+   - Estilo do formulário <select> melhorado para legibilidade.
+*/
+
+/* ===== Keyframes para Animações ===== */
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Estilo Base do Body ===== */
+html, body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
-
-
-
-
-/* Espaço para a navbar fixa */
-body {
-  margin: 0;
-  /* Tipografia e suavização */
-  font-family: 'Segoe UI', 'Roboto', sans-serif;
-  color: #e0e0e0;
-  line-height: 1.6;
+  min-height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #a72020, #000000, #a72020);
+  background-size: 200% 200%;
+  animation: gradientFlow 15s ease infinite;
+  color: #f5f5f5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  /* Fundo com gradiente animado em tons de vermelho */
-  background: linear-gradient(135deg, #330000, #660000, #990000, #cc0000);
-  background-size: 400% 400%;
-  animation: gradientShift 20s ease infinite;
 }
 
-/* Animação suave do gradiente vermelho */
-@keyframes gradientShift {
-  0%   { background-position:   0% 50%; }
-  25%  { background-position: 100% 50%; }
-  50%  { background-position: 100% 100%; }
-  75%  { background-position:   0% 100%; }
-  100% { background-position:   0% 50%; }
-}
-
-/* Container centralizado */
+/* ===== Container Principal (COM MARGEM PARA CENTRALIZAR) ===== */
 .container {
-  width: 95%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
+  width: 95%; /* Usando 95% para ter uma pequena margem nas laterais */
+  max-width: 1100px;
+  /* Margem para centralizar horizontalmente e dar espaço no topo/fundo */
+  margin: 120px auto 50px auto; 
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  animation: fadeInUp 0.8s ease-out;
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
+  transform-style: preserve-3d;
 }
 
-/* Links em destaque vermelho */
-a {
-  color: #ff5252;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-a:hover {
-  color: #ff8a80;
+.container:hover {
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+  transform: rotateY(3deg) rotateX(5deg) translateY(-5px);
 }
 
-/* Suaviza transições gerais */
-* {
-  transition: all 0.3s ease;
-}
-
-
-/* Container principal */
-.container {
-  width: 95%;
-  max-width: 1000px;
-  margin: 20px auto;
-  padding: 25px;
-  background: #1e1e1e;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-}
-
-/* Título */
+/* ===== Título ===== */
 h2 {
   text-align: center;
-  margin-bottom: 25px;
-  font-size: 1.8rem;
-  color: #ebebeb;
-  position: relative;
-  padding-bottom: 10px;
-  transition: all 0.3s ease; /* Transição suave para todos os efeitos */
+  margin-bottom: 30px;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
 }
 
-h2::before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background-color: #ff5252;
-  transform: scaleX(0);
-  transform-origin: bottom right;
-  transition: transform 0.3s ease;
-}
-
-h2:hover {
-  color: #d32f2f;
-  transform: translateY(-5px); /* Efeito de elevação no hover */
-}
-
-h2:hover::before {
-  transform: scaleX(1);
-  transform-origin: bottom left;
-}
-
-h2:focus {
-  outline: none; /* Remove o contorno padrão do foco */
-  box-shadow: 0 0 10px rgba(255, 82, 82, 0.6); /* Sombra suave no foco */
-}
-
-h2:hover,
-h2:focus {
-  color: #c02525; /* Mudança de cor no hover/focus */
-  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra suave no texto */
-}
-
-h2::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 3px;
-  background: linear-gradient(90deg, #ff5252, transparent);
-}
-
-/* Tabela responsiva */
+/* ===== Estilo da Tabela (adaptado ao Glassmorphism) ===== */
 .table-responsive {
   width: 100%;
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  margin-bottom: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 table {
   width: 100%;
   min-width: 600px;
   border-collapse: collapse;
-  background: #252525;
-  border-radius: 8px;
-  overflow: hidden;
+  background: transparent;
 }
 
 thead {
-  background: linear-gradient(135deg, #d32f2f, #b71c1c);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 th, td {
   padding: 15px;
   text-align: center;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 th {
-  color: white;
+  color: #fff;
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.85rem;
-  letter-spacing: 0.5px;
+  font-size: 0.8rem;
+  letter-spacing: 0.8px;
 }
 
 tbody tr {
-  transition: all 0.3s ease;
-}
-
-tbody tr:nth-child(even) {
-  background-color: #2a2a2a;
+  transition: background-color 0.3s ease;
 }
 
 tbody tr:hover {
-  background-color: #333;
-  transform: translateY(-1px);
+  background-color: rgba(229, 57, 53, 0.15);
 }
 
-/* Ações */
+/* ===== Ações (Botões e Selects com novo estilo) ===== */
 .actions {
   display: flex;
-  gap: 10px;
+  gap: 15px;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-/* Selects e inputs */
-select, input[type="date"] {
+
+/* ===== NOVO ESTILO PARA O SELECT - MAIS LEGÍVEL ===== */
+td select {
   width: 100%;
-  max-width: 180px;
-  padding: 10px 12px;
-  background: #333;
-  border: 1px solid #444;
-  border-radius: 6px;
-  color: #fff;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-}
-
-select:focus, input[type="date"]:focus {
-  border-color: #ff5252;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(255, 82, 82, 0.2);
-}
-
-/* Botões */
-button {
-  padding: 10px 18px;
-  font-size: 0.9rem;
-  border: none;
-  border-radius: 6px;
+  padding: 12px 40px 12px 16px; /* Mais padding à direita para a seta */
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.3); /* Fundo escuro para contraste */
+  color: #f5f5f5;
+  font-size: 16px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  transition: background-color 0.3s, box-shadow 0.3s, border-color 0.3s;
+
+  /* Remove a aparência padrão para customizar a seta */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  /* Adiciona uma seta customizada (SVG embutido) */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
 }
 
-button img {
-  margin-right: 8px;
+/* Estilo das opções do dropdown */
+td select option {
+  background: #212121;
+  color: #f5f5f5;
 }
 
+td select:hover {
+  border-color: rgba(229, 57, 53, 0.7);
+  box-shadow: 0 0 8px rgba(229, 57, 53, 0.4);
+}
+
+td select:focus {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-color: #e53935;
+  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.5);
+  outline: none;
+}
+
+
+/* ===== ESTILOS DOS BOTÕES CORRIGIDOS ===== */
 .confirmar {
-  background-color: #4caf50;
-  color: white;
+  padding: 12px 28px;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
+  user-select: none;
+  background: linear-gradient(135deg, #e53935, #b71c1c);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(183, 28, 28, 0.5);
 }
 
 .confirmar:hover {
-  background-color: #388e3c;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+  transform: scale(1.05);
+  box-shadow: 0 10px 28px rgba(229, 57, 53, 0.7);
+}
+
+.confirmar:active {
+  transform: scale(0.95);
 }
 
 .remover {
-  background-color: #f44336;
-  color: white;
+  padding: 12px 28px;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.3s ease, background 0.3s ease;
+  user-select: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.4);
 }
 
 .remover:hover {
-  background-color: #d32f2f;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+  transform: scale(1.05);
 }
 
-/* Botão WhatsApp */
+.remover:active {
+  transform: scale(0.95);
+}
+
+
+/* ===== Botão WhatsApp ===== */
 .whatsapp-btn {
-  background-color: #25d366;
+  background-color: #25D366;
   color: white;
-  padding: 12px 24px;
-  border-radius: 6px;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
   text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin: 25px auto;
-  max-width: 300px;
+  gap: 8px; /* Espaço entre a imagem e o texto */
   transition: all 0.3s ease;
+  box-shadow: 0 8px 22px rgba(37, 211, 102, 0.4);
+}
+
+.whatsapp-btn img {
+  width: 20px;
+  height: 20px;
 }
 
 .whatsapp-btn:hover {
   background-color: #128c7e;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(37, 211, 102, 0.3);
+  transform: scale(1.05);
+  box-shadow: 0 10px 28px rgba(37, 211, 102, 0.5);
 }
 
-/* Responsividade */
-@media (max-width: 992px) {
-  .container {
-    padding: 20px;
-  }
-  
-  th, td {
-    padding: 12px 10px;
-  }
-}
 
+/* ===== Responsividade ===== */
 @media (max-width: 768px) {
-  body {
-    padding-top: 70px;
-  }
-  
-  h2 {
-    font-size: 1.5rem;
-  }
-  
   .container {
-    width: 98%;
-    padding: 15px;
+    margin-top: 90px;
+    padding: 25px;
+    transform: none !important; /* Remove efeito 3D em telas pequenas */
   }
-  
-  .whatsapp-btn {
-    padding: 10px 20px;
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 576px) {
-  h2 {
-    font-size: 1.3rem;
-  }
-  
-  table {
-    min-width: 100%;
-  }
-  
-  th, td {
-    padding: 10px 8px;
-    font-size: 0.85rem;
-  }
-  
-  .actions {
-    flex-direction: column;
-    gap: 8px;
-  align-items: center;
-  }
-  
-  button {
-    width: 100%;
-    max-width: 150px;
-    padding: 8px 12px;
-  }
-  
-  select, input[type="date"] {
-    max-width: 140px;
-    padding: 8px 10px;
+  .container:hover {
+    transform: translateY(-5px) !important;
   }
 }
 </style>
@@ -339,104 +267,95 @@ button img {
 <div class="container">
     <h2>Organização da Partida - {{ local }} ({{ esporte }})</h2>
     
-    <table>
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Posição</th>
-                <th>Presença</th>
-                <th>Ação</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Iãn</td>
-                <td>Goleiro</td>
-                <td>Confirmado</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>Natãn</td>
-                <td>Lateral</td>
-                <td>Confirmado</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>Kauãn</td>
-                <td>Meio-campo</td>
-                <td>Confirmado</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>Gabrieu</td>
-                <td>Zagueiro</td>
-                <td>Não</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>Jão</td>
-                <td>Atacante</td>
-                <td>Confirmado</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>Uéslei</td>
-                <td>Lateral</td>
-                <td>Não</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>Rafinha</td>
-                <td>Atacante</td>
-                <td>Confirmado</td>
-                <td>-</td>
-            </tr>
-            <tr id="linha-caua">
-                <td>Catapimbas da silva</td>
-                <td>
-                    <select id="posicao-caua">
-                        <option value="">Selecione</option>
-                        <option value="Goleiro">Goleiro</option>
-                        <option value="Zagueiro">Zagueiro</option>
-                        <option value="Lateral">Lateral</option>
-                        <option value="Meio-campo">Meio-campo</option>
-                        <option value="Atacante">Atacante</option>
-                    </select>
-                </td>
-                <td id="presenca-caua">Não</td>
-                <td class="actions">
-                    <button class="confirmar" onclick="confirmarCaua()">Confirmar</button>
-                    <button class="remover">Remover</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+      <table>
+          <thead>
+              <tr>
+                  <th>Nome</th>
+                  <th>Posição</th>
+                  <th>Presença</th>
+                  <th>Ação</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>Iãn</td>
+                  <td>Goleiro</td>
+                  <td>Confirmado</td>
+                  <td>-</td>
+              </tr>
+              <tr>
+                  <td>Natãn</td>
+                  <td>Lateral</td>
+                  <td>Confirmado</td>
+                  <td>-</td>
+              </tr>
+              <tr>
+                  <td>Kauãn</td>
+                  <td>Meio-campo</td>
+                  <td>Confirmado</td>
+                  <td>-</td>
+              </tr>
+              <tr>
+                  <td>Gabrieu</td>
+                  <td>Zagueiro</td>
+                  <td>Não</td>
+                  <td>-</td>
+              </tr>
+              <tr>
+                  <td>Jão</td>
+                  <td>Atacante</td>
+                  <td>Confirmado</td>
+                  <td>-</td>
+              </tr>
+              <tr>
+                  <td>Uéslei</td>
+                  <td>Lateral</td>
+                  <td>Não</td>
+                  <td>-</td>
+              </tr>
+              <tr>
+                  <td>Rafinha</td>
+                  <td>Atacante</td>
+                  <td>Confirmado</td>
+                  <td>-</td>
+              </tr>
+              <tr id="linha-caua">
+                  <td>Catapimbas da silva</td>
+                  <td>
+                      <select id="posicao-caua">
+                          <option value="">Selecione</option>
+                          <option value="Goleiro">Goleiro</option>
+                          <option value="Zagueiro">Zagueiro</option>
+                          <option value="Lateral">Lateral</option>
+                          <option value="Meio-campo">Meio-campo</option>
+                          <option value="Atacante">Atacante</option>
+                      </select>
+                  </td>
+                  <td id="presenca-caua">Não</td>
+                  <td class="actions">
+                      <button class="confirmar" onclick="confirmarCaua()">Confirmar</button>
+                      <button class="remover">Remover</button>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
 </div>
-<div style="text-align: center; margin-top: 20px;">
-    <button onclick="window.open('https://chat.whatsapp.com/GOPVN5VlnEz1l7t4KvcHMO', '_blank')" 
-            style="background: #25D366; 
-                   color: white; 
-                   border: none; 
-                   padding: 10px 20px; 
-                   border-radius: 5px; 
-                   cursor: pointer;
-                   font-size: 16px;">
-        <img src="{% static 'images/pngtree-whatsapp-icon-png-image_6315990.png' %}" 
-             alt="WhatsApp" 
-             style="width: 20px; vertical-align: middle; margin-right: 8px;">
-        Ir para grupo de WhatsApp
+
+<div style="text-align: center; margin-top: 30px; margin-bottom: 30px;">
+    <button class="whatsapp-btn" onclick="window.open('https://chat.whatsapp.com/GOPVN5VlnEz1l7t4KvcHMO', '_blank')">
+        <img src="{% static 'images/pngtree-whatsapp-icon-png-image_6315990.png' %}" alt="WhatsApp">
+        <span>Ir para grupo</span>
     </button>
 </div>
 {% endblock content %}
 
 
 {% block extra_js %}
-
-
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  // Função que trata o clique em “Confirmar” (já existente)
+  // Função que trata o clique em “Confirmar”
   window.confirmarCaua = function() {
     const presenca = document.getElementById("presenca-caua");
     const select   = document.getElementById("posicao-caua");
@@ -447,12 +366,13 @@ document.addEventListener("DOMContentLoaded", () => {
     presenca.textContent = "Confirmado";
   };
 
-  // Agora o “Remover” só volta a presença para “Não”
+  // Botão “Remover” volta a presença para “Não”
   document.querySelectorAll(".remover").forEach(btn => {
     btn.addEventListener("click", () => {
       // Encontra a célula de presença dentro da mesma linha
       const tr  = btn.closest("tr");
-      const td  = tr.querySelector("td[id^='presenca']");
+      // Esta linha procura tanto por ID (para o usuário Catapimbas) quanto pelo seletor de classe/tag para os outros
+      const td  = tr.querySelector("td:nth-child(3)");
       if (td) {
         td.textContent = "Não";
       }
@@ -463,5 +383,4 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
-
 {% endblock %}
