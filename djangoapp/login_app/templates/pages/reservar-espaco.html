@@ -231,6 +231,12 @@
         
         <!-- Formulário horizontal abaixo do mapa -->
         <form id="formPartida" class="form-container">
+            
+            <div class="form-field">
+                <label for="nome">Nome da Partida</label>
+                <input type="text" id="nome" name="nome" required placeholder="Ex: Copa da Galera">
+            </div>
+            
             <div class="form-field">
                 <label for="esporte">Esporte</label>
                 <select id="esporte" name="esporte" required>
@@ -425,6 +431,7 @@
     form.addEventListener("submit", function (e) {
     e.preventDefault();
 
+    const nome = document.getElementById("nome").value;
     const esporte = document.getElementById("esporte").value;
     const local = document.getElementById("local").value;
     const data = document.getElementById("data").value;
@@ -439,6 +446,7 @@
     partidaItem.classList.add("partida-item");
     partidaItem.href = `/participardois`; // Usando a URL existente
     partidaItem.innerHTML = `
+        <strong>${nome}</strong><br>
         <strong>${esporte}</strong> - ${local}<br>
         <small>${dataFormatada}</small>
     `;
