@@ -136,7 +136,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # CSRF Settings
 CSRF_TRUSTED_ORIGINS = ["https://localhost:8000", "http://localhost:3000", 'https://*.ngrok-free.app']
 
-
+#ddas
 # ==============================================================================
 # ALLAUTH CONFIGURATIONS
 # ==============================================================================
