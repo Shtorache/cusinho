@@ -152,6 +152,7 @@ body::before {
 }
 
 
+
 /* Título centralizado e com margem */
 .signup-container h1 {
   text-align: center;
@@ -165,6 +166,8 @@ body::before {
   display: flex;
   flex-direction: column;
 }
+
+
 
 /* Inputs com estilo */
 .signup-container form input[type="text"],
@@ -356,7 +359,7 @@ a:hover {
   top: 0;
   left: 0;
   right: 0;
-  background-color: #121212; /* exemplo de fundo escuro */
+ 
   z-index: 1000;
   padding: 0 20px; /* padding horizontal para não grudar nas bordas */
   box-sizing: border-box;
