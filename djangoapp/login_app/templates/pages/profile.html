@@ -153,24 +153,25 @@
 {% block extra_js %}
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    const input = document.getElementById("id_img");
-    const preview = document.getElementById("preview-img");
+    // CORREÇÃO 1: Encontra o input pelo ID gerado pelo Django
+    const imageInput = document.getElementById("{{ profile_form.img.id_for_label }}");
+    const previewImage = document.getElementById("preview-img");
     
-    // Esconde o input de arquivo original
-    if (input) {
-        input.style.display = "none";
-    }
+    if (imageInput) {
+      // CORREÇÃO 2: Esconde o input de forma segura
+      imageInput.style.display = "none";
 
-    input.addEventListener("change", function(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          preview.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
-    });
+      imageInput.addEventListener("change", function(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            previewImage.src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
   });
 </script>
 {% endblock extra_js %}

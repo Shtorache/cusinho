@@ -1,22 +1,24 @@
-version: '3.9'
-
+# A linha "version" foi removida por ser obsoleta.
 services:
   djangoapp:
     container_name: djangoapp
     build:
       context: .
-
-
     ports:
-      - 8000:8000
+      - "8000:8000"
     volumes:
-      - ./djangoapp:/djangoapp
+      # CORRIGIDO: Mapeia sua pasta local "djangoapp" para a pasta "/app" no container.
+      - ./djangoapp:/app
       - ./data/web/static:/data/web/static/
       - ./data/web/media:/data/web/media/
+    # Adicionado: Garante que o diretório de trabalho é /app, onde o manage.py está.
+    working_dir: /app
     env_file:
       - ./dotenv_files/.env
+    # CORRIGIDO: Agora o Django vai esperar o PostgreSQL ficar "saudável" antes de iniciar.
     depends_on:
-      - psql
+      psql:
+        condition: service_healthy
     networks:
       - nginx_network
 
@@ -29,14 +31,21 @@ services:
       - ./dotenv_files/.env
     networks:
       - nginx_network
+    # A verificação de saúde que você adicionou está correta.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   nginx:
     container_name: nginx
     image: nginx:latest
     ports:
-      - 443:443
+      - "443:443"
     volumes:
-      - ./default.conf:/etc/nginx/conf.d/default.conf
+      # CORRIGIDO: Mapeia o diretório de configuração inteiro para evitar erros de montagem no Windows.
+      - ./nginx/conf.d:/etc/nginx/conf.d
       - ./certs:/etc/nginx/ssl
     depends_on:
       - djangoapp
