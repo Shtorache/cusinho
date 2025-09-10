@@ -1,43 +1,34 @@
-# login_app/urls.py
+# login_app/urls.py (Versão Corrigida e Final)
 from . import views
 from django.urls import path, include
-from login_app.views import (
-    mainPage,
-    # registerPage foi removido daqui
-    areaProprietario,
-    profile,
-    listacampos,
-    fazer_relatorio,
-    feedPage,
-    available_places,
-    campo_detalhes,
-    participar_partida,
-    selecao_opcao,
-    reservar_espaco,
-    criar_partida,
-    participar_dois
-)
 
+# URLs do painel de perfil
+profile_urlpatterns = [
+    path("", views.profile, name="perfilUsuario"),
+    path("add-campo/", views.areaProprietario, name="alugar-campo"),
+    path("listas/", views.listacampos, name="listacampos"),
+    path("relatorio/", views.relatorio_partidas, name="relatorio_partidas"),
+]
+
+# URLs principais do app
 urlpatterns = [
-    path("", mainPage, name="home"),
-    # As URLs abaixo são específicas da lógica do seu aplicativo e estão corretas.
-    path("accounts/profile/", mainPage, name="main"),
-    path("available_places/", available_places, name="available_places"),
-    path("available_places/<str:nome_campo>/", campo_detalhes, name="campo_detalhes"),
-    path('partida/<int:partida_id>/', participar_partida, name='participar_partida'),
+    # Rota da tela inicial (home)
+    path("", views.mainPage, name="home"),
     
-    # A LINHA ABAIXO FOI REMOVIDA PARA DEIXAR O ALLAUTH CONTROLAR O CADASTRO
-    # path("signup/", registerPage, name="signup"), 
+    # Rotas de campos e suas interações
+    path("available_places/", views.available_places, name="available_places"),
+    path("campo/<int:campo_id>/", views.campo_detalhes, name="campo_detalhes"),
+    path("campo/<int:campo_id>/feedback/", views.feedPage, name="feedPage"),
     
-    path("accounts/profile/add-campo", areaProprietario, name="alugar-campo"),
-    path("accounts/profile/perfilUsuario", profile, name="perfilUsuario"),
-    path("accounts/profile/listas", listacampos, name="listacampos"),
-    path("accounts/profile/relatorio", fazer_relatorio, name="relatorio"),
-    path("accounts/profile/feedback/<int:id>",feedPage,name="feedback"),
-    path('campo/<int:id>/feedback/', feedPage, name='feedPage'),
-    path('escolher-opcao/<str:esporte>/', selecao_opcao, name='selecao_opcao'),
-    path('reservar-espaco/', reservar_espaco, name='reservar_espaco'),
-    path('relatorio/', views.relatorio_partidas, name='relatorio_partidas'), # 'name' adicionado!
-    path('participardois/', participar_dois, name='participar_dois'),
-    path('criar-partida/', criar_partida, name='criar_partida')
+    # Rotas de partidas
+    path('criar-partida/', views.criar_partida, name='criar_partida'),
+    path('partida/<int:partida_id>/', views.participar_partida, name='participar_partida'),
+    
+    # Rotas adicionais
+    path('escolher-opcao/<str:esporte>/', views.selecao_opcao, name='selecao_opcao'),
+    path('reservar-espaco/', views.reservar_espaco, name='reservar_espaco'),
+    path('participardois/', views.participar_dois, name='participar_dois'),
+    
+    # Inclusão das URLs de perfil
+    path("accounts/profile/", include(profile_urlpatterns)),
 ]

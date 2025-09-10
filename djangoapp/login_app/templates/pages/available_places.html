@@ -6,26 +6,13 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
 {% endblock %}
-
-
-<div class="bubble-container">
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-</div>
 
 {% block content %}
 <div class="content">
     <h1 class="titulo-quadras {% if esporte == 'futebol' %}futebol{% endif %}">
-    Quadras disponíveis
-</h1>
-
+        Quadras disponíveis
+    </h1>
     
     <!-- Filtros de Região -->
     <div class="region-filters">
@@ -40,8 +27,6 @@
     <div class="map-container">
         <div id="map"></div>
     </div>
-    
-    
 </div>
 
 <!-- Modal -->
@@ -64,7 +49,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Coordenadas das regiões
         const regioes = {
             itaipuacu: [-22.963530, -42.97589],
             centro: [-22.9187, -42.8224],
@@ -73,174 +57,27 @@
             itaocaia: [-22.929425, -42.967063],
             parque_nanci: [-22.9287, -42.8124]
         };
-
-        const campos = [
-    // Região: Itaipuaçu
-    { 
-            nome: "Arena itaipuaçu", 
-            regiao: "itaipuacu", 
-            esporte: ["Futebol", "Vôlei", "Basquete", "Tênis"], 
-            lat: -22.963, 
-            lng: -42.991,
-            imagens: [
-                "{% static 'images/arena_itaipuaçu.jpg' %}",
-                "{% static 'images/arena_itaipuaçu2.jpg' %}",
-                "{% static 'images/arena_itaipuaçu3.jpeg' %}"
-            ],
-            url: "{% url 'campo_detalhes' 'campo_a' %}"
-        },
-        { 
-            nome: "Arena barroco", 
-            regiao: "itaipuacu", 
-            esporte: ["Futebol", "Vôlei", "Basquete", "Tênis"], 
-            lat: -22.962, 
-            lng: -42.980,
-            imagens: [
-                "/static/images/arena_barroco.jpg",
-                "/static/images/arena_itaipuaçu2.jpg",
-                "/static/images/arena_itaipeaçu3.jpg"
-            ],
-            url: "{% url 'campo_detalhes' 'campo_itaipuacu_1' %}"
-        },
-        { 
-            nome: "Campo Divino Esporte e Lazer", 
-            regiao: "itaipuacu", 
-            esporte: ["Futebol", "Vôlei", "Basquete", "Tênis"], 
-            lat: -22.965, 
-            lng: -42.932,
-            imagens: [
-                "/static/images/campo_divino.jpg",
-                "/static/images/itaipuacu2b.jpg",
-                "/static/images/itaipuacu2c.jpg"
-            ],
-            url: "{% url 'campo_detalhes' 'arena_marques' %}"
-        },
-        { 
-            nome: "Campo inter academy", 
-            regiao: "itaipuacu", 
-            esporte: ["Futebol", "Vôlei", "Basquete", "Tênis"], 
-            lat: -22.948, 
-            lng: -42.962,
-            imagens: [
-                "/static/images/campo_inter_academy.jpg",
-                "/static/images/itaipuacu3b.jpg",
-                "/static/images/itaipuacu3c.jpg"
-            ],
-            url: "{% url 'campo_detalhes' 'campo_palmeiras' %}"
-        },
-
-        // Região: Centro
-        { 
-            nome: "Arena Flamengo", 
-            regiao: "centro", 
-            esporte: ["Futebol", "Vôlei", "Basquete", "Tênis"], 
-            lat: -22.909, 
-            lng: -42.804,
-            imagens: [
-                "/static/images/arena_flamengo1.jpg",
-                "/static/images/arena_flamengo2.jpg",
-                "/static/images/arena_flamengo3.jpeg"
-            ],
-            url: "{% url 'campo_detalhes' 'arena_flamengo' %}"
-        },
-        { 
-            nome: "Arena Centro", 
-            regiao: "centro", 
-            esporte: ["Futebol", "Vôlei", "Basquete", "Tênis"], 
-            lat: -22.917, 
-            lng: -42.820,
-            imagens: [
-                "/static/images/arena centro.png",
-                "/static/images/centro1b.jpg",
-                "/static/images/centro1c.jpg"
-            ],
-            url: "{% url 'campo_detalhes' 'campo_central' %}"
-        },
-        { 
-            nome: "Campo Amparo Esporte Clube", 
-            regiao: "centro", 
-            esporte: ["Futebol", "Vôlei", "Basquete", "Tênis"], 
-            lat: -22.915, 
-            lng: -42.837,
-            imagens: [
-                "/static/images/amparo.jpg",
-                "/static/images/centro2b.jpg",
-                "/static/images/centro2c.jpg"
-            ],
-            url: "{% url 'campo_detalhes' 'quadra_centro' %}"
-        },
         
-        
-
-        // Região: São José
-        { 
-            nome: "Arena Itapeba", 
-            regiao: "centro", 
-            esporte: ["Futebol", "Vôlei", "Basquete", "Tênis"], 
-            lat: -22.904, 
-            lng: -42.835,
-            imagens: [
-                "{% static 'images/arena_itapeba.jpeg' %}",
-                "{% static 'images/arena2.jpg' %}",
-                "{% static 'images/arena3.jpg' %}"
-            ],
-            url: "{% url 'campo_detalhes' 'campo_c' %}"
-        },
-        { 
-            nome: "Arena São José", 
-            regiao: "sao_jose", 
-            esporte: ["Futebol", "Vôlei", "Basquete", "Tênis"], 
-            lat: -22.937, 
-            lng: -42.891,
-            imagens: [
-                "/static/images/arena_são josé.jpg",
-                "/static/images/saojose1b.jpg",
-                "/static/images/saojose1c.jpg"
-            ],
-            url: "{% url 'campo_detalhes' 'campo_saojose_1' %}"
-        },
-        { 
-            nome: "Quadra inoã", 
-            regiao: "inoa", 
-            esporte: ["Futebol", "Vôlei", "Basquete", "Tênis"], 
-            lat: -22.898, 
-            lng: -42.936,
-            imagens: [
-                "/static/images/quadra_inoã.jpg",
-                "/static/images/saojose2b.jpg",
-                "/static/images/saojose2c.jpg"
-            ],
-            url: "{% url 'campo_detalhes' 'arena_jose' %}"
-        },
-        { 
-            nome: "Quadra Poliesportiva Parque Nanci", 
-            regiao: "parque_nanci", 
-            esporte: ["Futebol", "Vôlei", "Basquete", "Tênis"], 
-            lat: -22.922, 
-            lng: -42.847,
-            imagens: [
-                "/static/images/parque_nanci.jpg",
-                "/static/images/saojose3b.jpg",
-                "/static/images/saojose3c.jpg"
-            ],
-            url: "{% url 'campo_detalhes' 'quadra_saojose' %}"
+        let campos = [];
+        try {
+            // Tenta consumir os dados dinâmicos do Django
+            campos = JSON.parse('{{ campos_json|escapejs }}');
+            console.log("Dados dos campos recebidos:", campos);
+        } catch (e) {
+            console.error("Erro ao processar JSON dos campos:", e);
+            console.log("JSON bruto recebido:", '{{ campos_json|escapejs }}');
         }
-    ];
 
-            // Obter parâmetros da URL
-            const urlParams = new URLSearchParams(window.location.search);
-            let regiao = urlParams.get('regiao') || "centro"; // Define região padrão
-            let esporte = urlParams.get('esporte') || "futebol"; 
-            
-            // Criar mapa
-            var map = L.map('map').setView(regioes[regiao], 15);
+        const urlParams = new URLSearchParams(window.location.search);
+        let regiao = urlParams.get('regiao') || (campos.length > 0 ? campos[0].regiao : 'centro');
+        let esporte = urlParams.get('esporte') || "futebol";
+        
+        var map = L.map('map').setView(regioes[regiao], 15);
 
-        // Adicionar camada do OpenStreetMap
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Elementos do modal
         const modal = document.getElementById("campoModal");
         const modalTitle = document.getElementById("modalTitle");
         const carouselInner = document.getElementById("carouselInner");
@@ -252,14 +89,12 @@
         let currentCampo = null;
         let currentSlide = 0;
 
-        // Função para abrir o modal
         function openModal(campo) {
             currentCampo = campo;
             currentSlide = 0;
             modalTitle.textContent = campo.nome;
             playBtn.href = campo.url;
             
-            // Limpar e adicionar imagens ao carrossel
             carouselInner.innerHTML = '';
             campo.imagens.forEach(img => {
                 const item = document.createElement("div");
@@ -272,17 +107,14 @@
             modal.style.display = "block";
         }
 
-        // Função para fechar o modal
         function closeModal() {
             modal.style.display = "none";
         }
 
-        // Função para atualizar o carrossel
         function updateCarousel() {
             carouselInner.style.transform = `translateX(-${currentSlide * 100}%)`;
         }
 
-        // Event listeners
         closeBtn.addEventListener("click", closeModal);
         window.addEventListener("click", (e) => {
             if (e.target === modal) closeModal();
@@ -306,50 +138,40 @@
             updateCarousel();
         });
 
-        // Adicionar marcadores clicáveiss
-        // ...
-// Adicionar marcadores clicáveis
-campos.forEach(campo => {
-    // A CONDIÇÃO 'IF' FOI REMOVIDA DAQUI
-    const marker = L.marker([campo.lat, campo.lng])
-        .addTo(map)
-        .bindPopup(`<b>${campo.nome}</b><br>Esporte: ${campo.esporte}`)
-        .on('click', function() {
-            openModal(campo);
-        });
-}); // A CHAVE DO 'IF' FOI REMOVIDA DAQUI
-// ...
+        function addMarkers(data) {
+            if (!data || data.length === 0) {
+                console.log("Nenhum dado para adicionar marcadores.");
+                return;
+            }
+            data.forEach(campo => {
+                const marker = L.marker([campo.lat, campo.lng])
+                    .addTo(map)
+                    .bindPopup(`<b>${campo.nome}</b><br>Região: ${campo.regiao}`)
+                    .on('click', function() {
+                        openModal(campo);
+                    });
+            });
+        }
+        
+        addMarkers(campos);
 
-        // Função para alterar a região do mapa ao clicar nos botões de filtro
         function changeRegion(novaRegiao) {
             if (novaRegiao in regioes) {
                 map.setView(regioes[novaRegiao], 15);
                 map.eachLayer(layer => {
-                    if (!!layer.toGeoJSON) {
+                    if (!!layer.toGeoJSON && layer !== map) {
                         map.removeLayer(layer);
                     }
                 });
 
-                // Adiciona a camada do OpenStreetMap novamente
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 }).addTo(map);
 
-                // Adicionar marcadores da nova região
-                campos.forEach(campo => {
-                    if (campo.regiao === novaRegiao) {
-                        const marker = L.marker([campo.lat, campo.lng])
-                            .addTo(map)
-                            .bindPopup(`<b>${campo.nome}</b><br>Esporte: ${campo.esporte}`)
-                            .on('click', function() {
-                                openModal(campo);
-                            });
-                    }
-                });
+                const camposFiltrados = campos.filter(campo => campo.regiao === novaRegiao);
+                addMarkers(camposFiltrados);
             }
         }
-
-        // Tornar a função acessível globalmente
         window.changeRegion = changeRegion;
     });
 </script>

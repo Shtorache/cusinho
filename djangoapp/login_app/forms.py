@@ -1,53 +1,76 @@
+# login_app/forms.py
 from django import forms
-from .models import Coordenada, Reserva, Profile, DadosCampo, Feedback
-from datetime import datetime
 from django.contrib.auth.models import User
-
-
-class CoordenadaForm(forms.ModelForm):
-    class Meta:
-        model = Coordenada
-        fields = ["latitude", "longitude", "valor_hora"]
-
-
-class DadosCampoForm(forms.ModelForm):
-    class Meta:
-        model = DadosCampo
-        fields = ["endereco","telefone","email","foto","nome"]
-           
-
-class ReservasForm(forms.ModelForm):
-    dia = forms.DateField(widget=forms.SelectDateWidget())
-    inicio = forms.TimeField(widget=forms.TimeInput(attrs={"type": "time"}))
-    final = forms.TimeField(widget=forms.TimeInput(attrs={"type": "time"}))
-
-    class Meta:
-        model = Reserva
-        fields = ["dia", "inicio", "final"]
-
+from .models import Profile, Campo, Reserva, Feedback, Partida
 
 class UpdateUserForm(forms.ModelForm):
-    username = forms.CharField(
-        max_length=100,
-        required=True,
-        widget=forms.TextInput(attrs={"class": "form-control"}),
-    )
-    email = forms.EmailField(
-        required=True, widget=forms.TextInput(attrs={"class": "form-control"})
-    )
-
+    email = forms.EmailField(required=True)
     class Meta:
         model = User
-        fields = ["username", "email"]
-
+        fields = ('username', 'email')
 
 class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ["img"]
+        fields = ['img']
 
+class CampoForm(forms.ModelForm):
+    class Meta:
+        model = Campo
+        fields = '__all__' # Inclui todos os campos do modelo Campo
+
+class PartidaForm(forms.ModelForm):
+    class Meta:
+        model = Partida
+        fields = ['titulo', 'data', 'horario', 'esporte', 'categoria', 'genero', 'vagas']
+        widgets = {
+            'data': forms.DateInput(attrs={'type': 'date'}),
+            'horario': forms.TimeInput(attrs={'type': 'time'}),
+        }
+
+        # Em login_app/forms.py
+from django import forms
+from .models import Profile, Campo, Reserva, Feedback, Partida, User
+
+
+
+# ADICIONE ESTA CLASSE AO SEU ARQUIVO DE FORMULÁRIOS
+class ReservasForm(forms.ModelForm):
+    class Meta:
+        model = Reserva
+        # O campo, usuário e valor_total serão definidos na view
+        fields = ['dia', 'inicio', 'final']
+        widgets = {
+            'dia': forms.SelectDateWidget(),
+            'inicio': forms.TimeInput(attrs={"type": "time"}),
+            'final': forms.TimeInput(attrs={"type": "time"}),
+        }
+
+# Em login_app/forms.py
+from django import forms
+from .models import Profile, Campo, Reserva, Feedback, Partida, User
+
+# ... (seus outros formulários, como UpdateUserForm, etc.) ...
+
+# ADICIONE ESTA CLASSE AO SEU ARQUIVO DE FORMULÁRIOS
 class FeedbackForm(forms.ModelForm):
-    
     class Meta:
         model = Feedback
-        fields = ["comentario","avaliacoes"]
+        # O campo e o usuário serão definidos na view
+        fields = ["comentario", "avaliacao"]
+
+# Em login_app/views.py
+
+# ... (resto das suas views e imports) ...
+
+def listacampos(request):
+    """
+    Lista todos os campos cadastrados no banco de dados.
+    """
+    # Busca todos os objetos do modelo Campo
+    todos_os_campos = Campo.objects.all()
+
+    context = {
+        'campos': todos_os_campos
+    }
+    return render(request, 'pages/listacampos.html', context)

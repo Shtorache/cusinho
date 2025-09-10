@@ -28,7 +28,7 @@
     animation: gradientFlow 15s ease infinite;
     color: var(--text-primary);
 }
-  .main-container {
+    .main-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 3rem 2rem;
@@ -455,7 +455,7 @@
 
 
 
-   /* Vagas disponíveis - verde */
+    /* Vagas disponíveis - verde */
 .partida-vagas-green {
     background-color: rgba(40, 167, 69, 0.15); /* Verde suave */
     color: #28a745; /* Verde forte */
@@ -542,11 +542,13 @@
 {% endblock %}
 
 {% block content %}
+
+
 <div class="main-container">
     <!-- Cabeçalho com imagem do campo -->
-    <div class="campo-header" style="background-image: url('{{ imagem_capa }}')">
+    <div class="campo-header" style="background-image: url('{{ imagem_capa_url }}')">
         <div class="campo-header-overlay">
-            <h1 class="campo-title">{{ nome }}</h1>
+            <h1 class="campo-title">{{ campo.nome }}</h1>
         </div>
     </div>
 

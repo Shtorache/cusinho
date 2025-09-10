@@ -14,10 +14,9 @@
 <body>
 
     <nav class="navbar">    
-        <div class="navbar-logo" onclick="window.location.href = '/accounts/profile/'">
-            EsporteFY
-        </div>
-    
+        <div class="navbar-logo" onclick="window.location.href = '{% url 'home' %}'">
+    EsporteFY
+</div>
         <!-- IMAGEM CENTRAL -->
         <div class="navbar-center-logo">
             <img src="{% static 'images/logo-prefeitura.png' %}" alt="Logo Maricá">
@@ -36,7 +35,7 @@
             </a>
 
             {% if request.user.is_superuser %}
-            <a href="{% url 'relatorio' %}" class="btn">
+            <a href="{% url 'relatorio_partidas' %}" class="btn">
                 Relatório
             </a>
             {% endif %}

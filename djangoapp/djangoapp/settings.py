@@ -119,7 +119,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
-
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [
@@ -129,7 +128,7 @@ STATICFILES_DIRS = [
 
 # Media files
 MEDIA_URL = "/media/"
-MEDIA_ROOT = DATA_DIR / "media"
+MEDIA_ROOT = os.path.join(BASE_DIR, "data", "web", "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -157,7 +156,7 @@ ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email' # Mude para 'mandatory' para forçar verificação de e-mail
 
 # URLs de Redirecionamento
-LOGIN_REDIRECT_URL = "main" # O 'name' da URL para onde o usuário vai após o login
+LOGIN_REDIRECT_URL = "home" # O 'name' da URL para onde o usuário vai após o login
 ACCOUNT_LOGOUT_REDIRECT_URL = "account_login" # O 'name' da URL para onde o usuário vai após o logout
 
 # Configurações de MFA (Multi-Factor Authentication)

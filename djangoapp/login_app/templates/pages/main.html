@@ -224,32 +224,32 @@
         <h1>Bem-vindo ao EsporteFY!</h1>
         <p>Encontre as melhores quadras esportivas da sua região</p>
 
-        <nav class="sport-icons" aria-label="{% trans 'Seleção de esportes' %}">
-            <div class="sport-icon fade-in-up" style="animation-delay: 0.1s">
-                <a href="{% url 'selecao_opcao' 'futebol' %}" title="{% trans 'Ver quadras de Futebol' %}">
-                    <img src="{% static 'images/soccer-ball.png' %}" alt="{% trans 'Ícone de futebol' %}">
-                    <span>{% trans 'Futebol' %}</span>
-                </a>
-            </div>
-            <div class="sport-icon fade-in-up" style="animation-delay: 0.2s">
-                <a href="{% url 'selecao_opcao' 'basquete' %}" title="{% trans 'Ver quadras de Basquete' %}">
-                    <img src="{% static 'images/basketball.jpg' %}" alt="{% trans 'Ícone de basquete' %}">
-                    <span>{% trans 'Basquete' %}</span>
-                </a>
-            </div>
-            <div class="sport-icon fade-in-up" style="animation-delay: 0.3s">
-                <a href="{% url 'selecao_opcao' 'vôlei' %}" title="{% trans 'Ver quadras de Vôlei' %}">
-                    <img src="{% static 'images/volleyball.jpg' %}" alt="{% trans 'Ícone de vôlei' %}">
-                    <span>{% trans 'Vôlei' %}</span>
-                </a>
-            </div>
-            <div class="sport-icon fade-in-up" style="animation-delay: 0.4s">
-                <a href="{% url 'selecao_opcao' 'tênis' %}" title="{% trans 'Ver quadras de Tênis' %}">
-                    <img src="{% static 'images/tennis.jpg' %}" alt="{% trans 'Ícone de tênis' %}">
-                    <span>{% trans 'Tênis' %}</span>
-                </a>
-            </div>
-        </nav>
+       <nav class="sport-icons" aria-label="{% trans 'Seleção de esportes' %}">
+    <div class="sport-icon fade-in-up" style="animation-delay: 0.1s">
+        <a href="{% url 'available_places' %}?esporte=futebol" title="{% trans 'Ver quadras de Futebol' %}">
+            <img src="{% static 'images/soccer-ball.png' %}" alt="{% trans 'Ícone de futebol' %}">
+            <span>{% trans 'Futebol' %}</span>
+        </a>
+    </div>
+    <div class="sport-icon fade-in-up" style="animation-delay: 0.2s">
+        <a href="{% url 'available_places' %}?esporte=basquete" title="{% trans 'Ver quadras de Basquete' %}">
+            <img src="{% static 'images/basketball.jpg' %}" alt="{% trans 'Ícone de basquete' %}">
+            <span>{% trans 'Basquete' %}</span>
+        </a>
+    </div>
+    <div class="sport-icon fade-in-up" style="animation-delay: 0.3s">
+        <a href="{% url 'available_places' %}?esporte=vôlei" title="{% trans 'Ver quadras de Vôlei' %}">
+            <img src="{% static 'images/volleyball.jpg' %}" alt="{% trans 'Ícone de vôlei' %}">
+            <span>{% trans 'Vôlei' %}</span>
+        </a>
+    </div>
+    <div class="sport-icon fade-in-up" style="animation-delay: 0.4s">
+        <a href="{% url 'available_places' %}?esporte=tênis" title="{% trans 'Ver quadras de Tênis' %}">
+            <img src="{% static 'images/tennis.jpg' %}" alt="{% trans 'Ícone de tênis' %}">
+            <span>{% trans 'Tênis' %}</span>
+        </a>
+    </div>
+</nav>
     </section>
 </div>
 
